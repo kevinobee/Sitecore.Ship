@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Sitecore.Ship</id>
+    <version>0.0.0</version>
+    <authors>Kevin Obee</authors>
+    <owners>kevinobee</owners>
+    <!--<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>-->
+    <!--<projectUrl>https://github.com/kevinobee/ship</projectUrl>-->
+    <!--<iconUrl>http://www.sitecore.net/favicon.ico</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This project contains a HTTP handler which installs Sitecore Update packages</description>
+    <releaseNotes>This is a pre-release version of the package.</releaseNotes>
+    <!--<copyright>Copyright (C) by Sitecore A/S</copyright>-->
+    <tags>Sitecore Update Package Deploy</tags>
+    <language>en-GB</language>
+    <dependencies>
+      <!--<dependency id="Microsoft.AspNet.Mvc" version="3.0.20105.1" />-->
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\artifacts\Build\Ship.Web.dll" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Ship.Web.pdb" target="lib\net40" />
+
+    <file src="..\..\src\Ship.Web\content\**\*" target="content" />
+  </files>
+</package>

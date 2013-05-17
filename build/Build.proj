@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Go" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildProjectDirectory)\Build.tasks" />
+  <Import Project="$(MSBuildProjectDirectory)\Ship.versions.targets" />
+  
+  <PropertyGroup>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+    <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
+    <LibsSrcPath>D:\LibsSrc\6\6.6\Update-4</LibsSrcPath>
+    <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
+    <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
+    <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
+    <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
+    <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
+    <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
+    <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
+    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
+    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+    <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
+    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
+    <NunitPath>$(ToolsPath)\nunit</NunitPath>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(ToolsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" />
+  
+  <PropertyGroup>
+    <!-- Build number is of the format (CurrentYear - VersionStartYear + 1)(2 digit month)(2 digit day) -->
+    <BuildDate>$([MSBuild]::Add(1, $([MSBuild]::Subtract($([System.DateTime]::Now.Year), $(VersionStartYear)))))$([System.DateTime]::Now.ToString("MMdd"))</BuildDate>
+    <Revision Condition="$(BUILD_NUMBER) != ''">$(BUILD_NUMBER)</Revision>
+    <Revision Condition="$(BUILD_NUMBER) == ''">0</Revision>
+    <PrereleaseTagWithSeparator Condition="$(PRERELEASE) != ''">.$([System.DateTime]::Now.ToString("yyMMdd"))</PrereleaseTagWithSeparator>
+    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
+    <FileVersion>$(MajorVersion).$(MinorVersion).$(BuildDate).$(Revision)</FileVersion>
+    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(PrereleaseTagWithSeparator)</PackageVersion>
+  </PropertyGroup>
+
+  <Target Name="CopyLibs">
+    <ItemGroup>
+      <LibFiles Include="$(LibsSrcPath)\*.dll" />
+    </ItemGroup>
+      
+      <Copy
+          SourceFiles="@(LibFiles)"
+          DestinationFolder="$(LibsDestPath)"
+        />
+  </Target>
+  
+  <Target Name="Clean">
+    <RemoveDir Directories="$(ArtifactsPath)"  />
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Clean; CopyLibs">
+    <MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
+    <MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
+    <MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />        
+    <MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Init">
+    <MSBuild Projects="$(ProjectRoot)\Ship.sln"
+             Targets="Build"
+             Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
+  </Target>
+  
+  <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
+    <ItemGroup>
+      <AnalysisProjects Include="$(ProjectRoot)\src\Ship\Ship.csproj;$(ProjectRoot)\src\Ship.Web\Ship.Web.csproj" />
+    </ItemGroup>
+
+    <MSBuild Projects="%(AnalysisProjects.Identity)"
+             Targets="ReBuild"
+             Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
+
+    <!-- Remove the build artifacts -->
+    <ItemGroup>
+      <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
+    </ItemGroup>
+
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+  
+  <ItemGroup>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
+      <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
+    </RegexTransform>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
+      <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
+    </RegexTransform>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
+      <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
+    </RegexTransform>
+  </ItemGroup>
+
+  <Target Name="UpdateVersion">
+    <RegexTransform Items="@(RegexTransform)" />
+  </Target>
+
+  <Target Name="RunUnitTests" DependsOnTargets="Build">
+    <CreateItem Include="$(BuildResultsPath)\*.Tests.dll">
+      <Output TaskParameter="Include" ItemName="TestAssembly" />
+    </CreateItem>
+   
+    <NUnit
+      ToolPath="$(NunitPath)"
+      DisableShadowCopy="true"
+      Assemblies="@(TestAssembly)"
+      OutputXmlFile="$(OutputXmlFile)"
+      ExcludeCategory="Acceptance;Database;Integration;Smoke" />   
+
+  </Target>
+
+  <Target Name="ReportUnitTests" DependsOnTargets="RunUnitTests">
+    <Message Text="##teamcity[importData type='nunit' path='$(OutputXmlFile)']" />    
+  </Target>          
+  
+  <Target Name="RunTests" DependsOnTargets="RunUnitTests; "> <!-- Add other test types as depends here -->
+  </Target>
+
+  <Target Name="StdPackage">
+<!--    <CreateItem Include="$(PackagingPath)\*.nuspec">-->
+<!--      <Output TaskParameter="Include" ItemName="NuspecFile" />-->
+<!--    </CreateItem>-->
+
+    <Exec 
+        Command="$(NuGetExePath) pack $(PackagingPath)\Sitecore.Ship.nuspec -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+  </Target>
+  
+  <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
+  </Target>
+
+  <Target Name="GoCI" DependsOnTargets="UpdateVersion; CopyLibs; Build">
+  </Target>
+  
+</Project>

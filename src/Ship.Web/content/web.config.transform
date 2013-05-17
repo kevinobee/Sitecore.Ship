@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration>
+    <configSections>
+		<section name="packageInstallation" type="Ship.Web.Update.Configuration.PackageInstallationConfiguration, Ship.Web"/>
+    </configSections>
+	<packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" />
+    <system.web>
+        <httpHandlers>
+            <add verb="POST,GET" path="installer.ashx" type="Ship.Web.Update.UpdatePackageInstallerHandler, Ship.Web" />
+        </httpHandlers>
+    </system.web>
+    <system.webServer>
+        <handlers>
+			<add verb="POST,GET" path="installer.ashx" type="Ship.Web.Update.UpdatePackageInstallerHandler, Ship.Web" name="Ship.UpdatePackageInstaller" />
+        </handlers>
+    </system.webServer>
+</configuration>

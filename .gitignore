@@ -1,0 +1,44 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+
+#ignore thumbnails created by windows
+Thumbs.db
+#Ignore files build by Visual Studio
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+TestResults
+
+#Project specific ignores
+lib/Sitecore.*.dll
+lib/ComponentArt.Web.UI.dll
+lib/HtmlAgilityPack.dll
+lib/ITHit.WebDAV.Server.dll
+lib/Lucene.Net.dll
+lib/Mvp.Xml.dll
+lib/Newtonsoft.Json.dll
+lib/RadEditor.Net2.dll
+lib/Telerik.Web.UI.dll
+lib/
+
+/packages
+
+# Build ignores
+/msbuild.log
+/artifacts
