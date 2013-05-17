@@ -21,7 +21,7 @@ Run the following powershell command in the package manager console of the Visua
 
     install-package Sitecore.Ship -Source <path>
 
-Where <path> is the path to the  `artifacts\Packages\Sitecore.Ship.x.x.xxxx.nupkg` that was produced by the build command.
+Where `<path>` is the path to the  `artifacts\Packages\Sitecore.Ship.x.x.xxxx.nupkg` that was produced by the build command.
 
 If you wish to remove jthe package run the  following command:
 
