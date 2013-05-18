@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{BFDC90B2-65F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packaging", "packaging", "{05F4023A-A4F6-4844-8175-8D7E04C63913}"
 	ProjectSection(SolutionItems) = preProject
-		build\packaging\Ship.nuspec = build\packaging\Ship.nuspec
+		build\packaging\Sitecore.Ship.nuspec = build\packaging\Sitecore.Ship.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D11D4F10-B2C8-4E1C-BF78-B192D303D20D}"
