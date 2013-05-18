@@ -5,23 +5,25 @@
     <version>0.0.0</version>
     <authors>Kevin Obee</authors>
     <owners>kevinobee</owners>
-    <!--<licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>-->
-    <!--<projectUrl>https://github.com/kevinobee/ship</projectUrl>-->
-    <!--<iconUrl>http://www.sitecore.net/favicon.ico</iconUrl>-->
+    <projectUrl>https://github.com/kevinobee/Sitecore.Ship</projectUrl>
+    <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410?s=140&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This project contains a HTTP handler which installs Sitecore Update packages</description>
+    <description>Sitecore package installer and remote publishing over HTTP</description>
     <releaseNotes>This is a pre-release version of the package.</releaseNotes>
-    <!--<copyright>Copyright (C) by Sitecore A/S</copyright>-->
     <tags>Sitecore Update Package Deploy</tags>
     <language>en-GB</language>
     <dependencies>
-      <!--<dependency id="Microsoft.AspNet.Mvc" version="3.0.20105.1" />-->
+      <dependency id="Nancy.Hosting.Aspnet" version="0.17.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\artifacts\Build\Ship.Web.dll" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Ship.Web.pdb" target="lib\net40" />
-
-    <file src="..\..\src\Ship.Web\content\**\*" target="content" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.dll" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.pdb" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Core.dll" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Core.pdb" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.dll" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.pdb" target="lib\net40" />
+    
+    <file src="..\..\src\Sitecore.Ship\content\**\*" target="content" />
   </files>
 </package>

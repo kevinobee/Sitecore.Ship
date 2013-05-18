@@ -17,40 +17,84 @@ This is an early proof of concept and as such packages have not been pushed to N
 
 ### Installing the Package
 
+Ensure that the website project is set to run with .NET Framework 4.0
+
 Run the following powershell command in the package manager console of the Visual Studio solution for the target website:
 
     install-package Sitecore.Ship -Source <path>
 
-Where `<path>` is the path to the  `artifacts\Packages\Sitecore.Ship.x.x.xxxx.nupkg` that was produced by the build command.
-
-If you wish to remove jthe package run the  following command:
-
-    uninstall-package Sitecore.Ship
+Where `<path>` is the path to the  `artifacts\Packages\` folder that was produced by the build command.
 
 Installing the package will do the following:
 
-* Add a new `packageInstallation` section to your `web.config` file. You can set configuration options in this section to enable remote access to the installer and to enable the package streaming functionality. These options are safe by default, that is, no remote access and package streaming disabled.
+* Add a new `packageInstallation` section to your `web.config` file. You can set configuration options in this section to enable remote access to the installer and to enable the package streaming functionality. These options are safe by default, that is, no remote access and package streaming disabled. **Note:** the configuration settings are ignored in this branch of Sitecore.Ship.
 
 * Register a single new HTTP handler section in `<system.web>` and `<system.webserver>`
 
 * Add a `ship.config` Sitecore include file to the `App_Config\include` folder.
 
+### Uninstalling the Package
+
+Run the following commands:
+
+    uninstall-package Sitecore.Ship
+
+    uninstall-package Nancy.Hosting.Aspnet
+
+    uninstall-package Nancy
+
+
 ### Using the Installer
 
-#### GET Request - File Install
+#### Update Package - File Install
 
-http://domain/install/installer.ashx?package=D:\path_to_update_file\your_package.update
+Issue a POST request to `/services/package/install` and pass it a path parameter in x-www-form-urlencoded form-data specifying the location of the update package.
 
-#### POST Request - Package Streaming
+Example:
 
-Issue a POST request to the HTTP Handler and add upload the update package in the form data as per RFC 1867.
+    POST /services/package/install HTTP/1.1
+    Host: shiptester
+    Cache-Control: no-cache
+    
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+    Content-Disposition: form-data; name="path"
+    
+    d:\foo.update
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
-http://domain/install/installer.ashx
+
+#### Update Package - Package Streaming
+
+Not implemented yet.
+
+
+#### Publishing
+
+Issue a POST request to `/services/publish/{mode}` where {mode} is 
+
+* full
+* smart
+* incremental
+
+Currently the publish will publish only the en language from the `master` database to the `web` database.
+
+Example:
+
+    POST /services/publish/full HTTP/1.1
+    Host: shiptester
+    Cache-Control: no-cache
+
+
+#### About
+
+Issue a GET request to `/services/about`
+
+
+### Tools
+
+POSTMAN is a powerful HTTP client that runs as a Chrome browser extension and greatly helps with testing test REST web services. Find out more <http://www.getpostman.com/> 
 
 References:
 
 http://curl.haxx.se/docs/httpscripting.html - see section 4.3 File Upload POST 
 
-The repository comes with a simple console application and a command script to help you stream packages to the installer.
-
-    .\artifacts\Build\Ship -p .\yourpackage.update -u http://domain/install/installer.ashx

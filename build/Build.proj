@@ -16,12 +16,16 @@
     <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
     <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
     <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+    <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
     <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
     <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-    <NunitPath>$(ToolsPath)\nunit</NunitPath>
+
+    <XunitPath>$(ProjectRoot)\packages\xunit.1.9.1\lib\net20</XunitPath>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(ToolsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" />
+  <UsingTask
+    AssemblyFile="$(XunitPath)\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit"/>
   
   <PropertyGroup>
     <!-- Build number is of the format (CurrentYear - VersionStartYear + 1)(2 digit month)(2 digit day) -->
@@ -64,7 +68,7 @@
   
   <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
     <ItemGroup>
-      <AnalysisProjects Include="$(ProjectRoot)\src\Ship\Ship.csproj;$(ProjectRoot)\src\Ship.Web\Ship.Web.csproj" />
+      <AnalysisProjects Include="$(ProjectRoot)\src\Sitecore.Ship\Sitecore.Ship.csproj;$(ProjectRoot)\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj;$(ProjectRoot)\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj" />
     </ItemGroup>
 
     <MSBuild Projects="%(AnalysisProjects.Identity)"
@@ -97,33 +101,24 @@
   <Target Name="UpdateVersion">
     <RegexTransform Items="@(RegexTransform)" />
   </Target>
-
+  
   <Target Name="RunUnitTests" DependsOnTargets="Build">
-    <CreateItem Include="$(BuildResultsPath)\*.Tests.dll">
-      <Output TaskParameter="Include" ItemName="TestAssembly" />
-    </CreateItem>
-   
-    <NUnit
-      ToolPath="$(NunitPath)"
-      DisableShadowCopy="true"
-      Assemblies="@(TestAssembly)"
-      OutputXmlFile="$(OutputXmlFile)"
-      ExcludeCategory="Acceptance;Database;Integration;Smoke" />   
+    <ItemGroup>
+      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" />
+    </ItemGroup>
 
-  </Target>
+    <xunit
+        Assemblies="@(TestAssemblies)"
+        WorkingFolder="$(XunitPath)"
+        Xml="$(OutputXmlFile)"
+        Html="$(OutputHtmlFile)"/>
 
-  <Target Name="ReportUnitTests" DependsOnTargets="RunUnitTests">
-    <Message Text="##teamcity[importData type='nunit' path='$(OutputXmlFile)']" />    
-  </Target>          
+  </Target>       
   
   <Target Name="RunTests" DependsOnTargets="RunUnitTests; "> <!-- Add other test types as depends here -->
   </Target>
 
   <Target Name="StdPackage">
-<!--    <CreateItem Include="$(PackagingPath)\*.nuspec">-->
-<!--      <Output TaskParameter="Include" ItemName="NuspecFile" />-->
-<!--    </CreateItem>-->
-
     <Exec 
         Command="$(NuGetExePath) pack $(PackagingPath)\Sitecore.Ship.nuspec -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
   </Target>
