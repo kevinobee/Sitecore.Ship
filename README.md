@@ -76,13 +76,27 @@ Issue a POST request to `/services/publish/{mode}` where {mode} is
 * smart
 * incremental
 
-Currently the publish will publish only the en language from the `master` database to the `web` database.
+The publishing source, targets and languages can be specified as form parameters. These will default to `master`, `web` and `en` respecitely if not present in the form-data.
 
 Example:
 
     POST /services/publish/full HTTP/1.1
     Host: shiptester
     Cache-Control: no-cache
+    
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+    Content-Disposition: form-data; name="source"
+    
+    master
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+    Content-Disposition: form-data; name="targets"
+    
+    web, target2
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+    Content-Disposition: form-data; name="languages"
+    
+    en, da, de-DE
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
 #### About

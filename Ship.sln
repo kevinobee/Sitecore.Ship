@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packaging", "packaging", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D11D4F10-B2C8-4E1C-BF78-B192D303D20D}"
 	ProjectSection(SolutionItems) = preProject
+		docs\Assembly Linkage.dgml = docs\Assembly Linkage.dgml
 		README.md = README.md
 	EndProjectSection
 EndProject

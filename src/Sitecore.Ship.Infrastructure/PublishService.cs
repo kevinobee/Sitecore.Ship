@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sitecore.Data;
 using Sitecore.Data.Managers;
 using Sitecore.Globalization;
@@ -21,25 +22,25 @@ namespace Sitecore.Ship.Infrastructure
                 };
         }
 
-        public void Run(string mode)
+        public void Run(PublishParameters publishParameters)
         {
-            var publishingMode = mode.ToLower();
+            var publishingMode = publishParameters.Mode.ToLower();
 
             if (!_publishingActions.ContainsKey(publishingMode))
             {
-                throw new InvalidOperationException(string.Format("Invalid publishing mode ({0})", mode));
+                throw new InvalidOperationException(string.Format("Invalid publishing mode ({0})", publishingMode));
             }
 
-            PublishingTask(_publishingActions[publishingMode]);
+            PublishingTask(_publishingActions[publishingMode], publishParameters);
         }
 
-        private static void PublishingTask(Func<Database, Database[], Language[], Handle> publishType)
+        private static void PublishingTask(Func<Database, Database[], Language[], Handle> publishType, PublishParameters publishParameters)
         {
             using (new SecurityModel.SecurityDisabler())
             {
-                var master = Sitecore.Configuration.Factory.GetDatabase("master");
-                var targetDBs = new[] { Sitecore.Configuration.Factory.GetDatabase("web") };
-                var languages = new[] { LanguageManager.GetLanguage("en") };
+                var master = Sitecore.Configuration.Factory.GetDatabase(publishParameters.Source);
+                var targetDBs = publishParameters.Targets.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray();
+                var languages = publishParameters.Languages.Select(LanguageManager.GetLanguage).ToArray();
 
                 publishType(master, targetDBs, languages);
             }

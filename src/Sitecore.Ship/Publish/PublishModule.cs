@@ -10,10 +10,11 @@ namespace Sitecore.Ship.Publish
     {
         private readonly IPublishService _publishService;
 
-        public PublishModule(IPublishService publishService): base("/services")
+        public PublishModule(IPublishService publishService)
+            : base("/services/publish")
         {
             _publishService = publishService;
-            Post["/publish/{mode}"] = InvokePublishing;
+            Post["/{mode}"] = InvokePublishing;
         }
 
         private dynamic InvokePublishing(dynamic o)
@@ -28,12 +29,27 @@ namespace Sitecore.Ship.Publish
                     };
             }
 
-            _publishService.Run(publishRequest.Mode);
+            var publishParameters = new PublishParameters
+                {
+                    Mode = publishRequest.Mode,
+                    Source = publishRequest.Source ?? "master",
+                    Targets = DecodeCsvStringParam(publishRequest.Targets, new [] { "web"}),
+                    Languages = DecodeCsvStringParam(publishRequest.Languages, new[] { "en" }),
+                };
+
+            _publishService.Run(publishParameters);
 
             return new Response
                 {
                     StatusCode = HttpStatusCode.Accepted
                 };
+        }
+
+        private static string[] DecodeCsvStringParam(string inputValue, string[] defaultValue)
+        {
+            if (string.IsNullOrWhiteSpace(inputValue)) return defaultValue;
+
+            return inputValue.Split(new[] { ',' }).Select(x => x.Trim()).ToArray();
         }
 
         private static bool IsAllowedPublishingMode(string mode)
