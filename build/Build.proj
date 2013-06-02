@@ -6,7 +6,7 @@
   <PropertyGroup>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
-    <LibsSrcPath>D:\LibsSrc\6\6.6\Update-4</LibsSrcPath>
+    <LibsSrcPath>D:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
     <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
     <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
     <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
@@ -126,7 +126,7 @@
   <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
   </Target>
 
-  <Target Name="GoCI" DependsOnTargets="UpdateVersion; CopyLibs; Build">
+  <Target Name="GoCI" DependsOnTargets="UpdateVersion; Build">
   </Target>
   
 </Project>
