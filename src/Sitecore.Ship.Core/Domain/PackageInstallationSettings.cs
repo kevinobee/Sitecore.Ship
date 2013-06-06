@@ -1,4 +1,4 @@
-﻿namespace Sitecore.Ship.Core
+﻿namespace Sitecore.Ship.Core.Domain
 {
     public class PackageInstallationSettings
     {

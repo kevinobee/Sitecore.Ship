@@ -52,12 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\PackageInstallationConfiguration.cs" />
     <Compile Include="Configuration\PackageInstallationConfigurationProvider.cs" />
-    <Compile Include="HttpRequestAuthoriser.cs" />
-    <Compile Include="IAuthoriser.cs" />
-    <Compile Include="PackageRepository.cs" />
+    <Compile Include="Web\HttpRequestChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishService.cs" />
     <Compile Include="Update\UpdatePackageRunner.cs" />

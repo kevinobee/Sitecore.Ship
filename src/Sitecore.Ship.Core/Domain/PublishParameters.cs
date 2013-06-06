@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Sitecore.Ship.Core
+﻿namespace Sitecore.Ship.Core.Domain
 {
     public class PublishParameters
     {

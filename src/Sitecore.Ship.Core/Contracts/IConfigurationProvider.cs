@@ -1,4 +1,4 @@
-﻿namespace Sitecore.Ship.Infrastructure.Configuration
+﻿namespace Sitecore.Ship.Core.Contracts
 {
     public interface IConfigurationProvider<out T>
     {

@@ -40,15 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstallPackage.cs" />
-    <Compile Include="IPackageRepository.cs" />
-    <Compile Include="IPublishService.cs" />
+    <Compile Include="Contracts\IAuthoriser.cs" />
+    <Compile Include="Contracts\ICheckRequests.cs" />
+    <Compile Include="Contracts\IConfigurationProvider.cs" />
+    <Compile Include="Contracts\IPackageRunner.cs" />
+    <Compile Include="Domain\InstallPackage.cs" />
+    <Compile Include="Contracts\IPackageRepository.cs" />
+    <Compile Include="Contracts\IPublishService.cs" />
     <Compile Include="NotFoundException.cs" />
-    <Compile Include="PackageInstallationSettings.cs">
+    <Compile Include="Domain\PackageInstallationSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PackageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublishParameters.cs" />
+    <Compile Include="Domain\PublishParameters.cs" />
+    <Compile Include="RequestAuthoriser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

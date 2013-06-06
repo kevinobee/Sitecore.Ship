@@ -73,6 +73,10 @@
       <Project>{F9CC137C-E000-4D1E-9997-B8E3D20F7E36}</Project>
       <Name>Sitecore.Ship.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
+      <Project>{A0ED41C4-D292-47BD-8457-A40267B4EA8C}</Project>
+      <Name>Sitecore.Ship.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\Sitecore.Ship\Sitecore.Ship.csproj">
       <Project>{cd35b0f4-791f-452a-a7ba-98d82a00007f}</Project>
       <Name>Sitecore.Ship</Name>

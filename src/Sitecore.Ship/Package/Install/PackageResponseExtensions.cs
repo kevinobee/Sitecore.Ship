@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Nancy;
 using Sitecore.Ship.Core;
+using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Package.Install
 {

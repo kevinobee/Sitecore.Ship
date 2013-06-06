@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Sitecore.Data;
 using Sitecore.Data.Managers;
 using Sitecore.Globalization;
-using Sitecore.Ship.Core;
+
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Infrastructure
 {

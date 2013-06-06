@@ -1,4 +1,5 @@
 ﻿using Sitecore.Ship.Core;
+using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Test
 {

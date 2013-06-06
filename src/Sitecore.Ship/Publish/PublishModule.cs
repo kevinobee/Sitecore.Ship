@@ -3,18 +3,35 @@ using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using Sitecore.Ship.Core;
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Publish
 {
     public class PublishModule : NancyModule
     {
         private readonly IPublishService _publishService;
+        private readonly IAuthoriser _authoriser;
 
-        public PublishModule(IPublishService publishService)
+        public PublishModule(IPublishService publishService, IAuthoriser authoriser)
             : base("/services/publish")
         {
             _publishService = publishService;
+            _authoriser = authoriser;
+
+            Before += AuthoriseRequest; 
+
             Post["/{mode}"] = InvokePublishing;
+        }
+
+        private Response AuthoriseRequest(NancyContext ctx)
+        {
+            if (!_authoriser.IsAllowed())
+            {
+                ctx.Response =
+                 new Response { StatusCode = HttpStatusCode.Unauthorized };
+            }
+            return null;
         }
 
         private dynamic InvokePublishing(dynamic o)

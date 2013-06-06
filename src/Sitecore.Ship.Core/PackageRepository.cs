@@ -1,7 +1,7 @@
-﻿using Sitecore.Ship.Core;
-using Sitecore.Ship.Infrastructure.Update;
+﻿using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 
-namespace Sitecore.Ship.Infrastructure
+namespace Sitecore.Ship.Core
 {
     public class PackageRepository : IPackageRepository
     {

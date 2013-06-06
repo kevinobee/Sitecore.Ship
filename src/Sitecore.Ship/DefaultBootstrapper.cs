@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
-using Sitecore.Ship.Core;
-using Sitecore.Ship.Infrastructure;
-using Sitecore.Ship.Infrastructure.Update;
+
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure.Configuration;
 
 namespace Sitecore.Ship
 {
@@ -24,9 +26,8 @@ namespace Sitecore.Ship
         {
             base.ConfigureApplicationContainer(container);
 
-            container.Register<IPublishService, PublishService>();
-            container.Register<IPackageRepository, PackageRepository>();
-            container.Register<IPackageRunner, UpdatePackageRunner>();
+            container.Register<IConfigurationProvider<PackageInstallationSettings>>(
+                new PackageInstallationConfigurationProvider());
 
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider
@@ -44,9 +45,11 @@ namespace Sitecore.Ship
                     new Func<Assembly, bool>[]
                         {
                             asm => asm.FullName.StartsWith("Oracle", StringComparison.InvariantCulture),
-                            asm => asm.FullName.StartsWith("Sitecore", StringComparison.InvariantCulture)
+//                            asm => asm.FullName.StartsWith("Sitecore", StringComparison.InvariantCulture)
                         }
                     );
+
+                ignoredAssemblies.Remove(asm => asm.FullName.StartsWith("Sitecore.Ship", StringComparison.InvariantCulture));
 
                 return ignoredAssemblies;
             }

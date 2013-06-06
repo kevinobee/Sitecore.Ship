@@ -3,6 +3,8 @@ using Moq;
 using Nancy;
 using Nancy.Testing;
 using Sitecore.Ship.Core;
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 using Sitecore.Ship.Publish;
 using Xunit;
 
@@ -13,18 +15,24 @@ namespace Sitecore.Ship.Test
         private readonly Browser _browser;
 
         private readonly Mock<IPublishService> _mockPublishService;
+        private readonly Mock<IAuthoriser> _mockAuthoriser;
 
         public PublishModuleTests()
         {
             _mockPublishService = new Mock<IPublishService>();
 
+            _mockAuthoriser = new Mock<IAuthoriser>();
+
             var bootstrapper = new ConfigurableBootstrapper(with =>
             {
                 with.Module<PublishModule>();
                 with.Dependency(_mockPublishService.Object);
+                with.Dependency(_mockAuthoriser.Object);
             });
 
-            _browser = new Browser(bootstrapper);            
+            _browser = new Browser(bootstrapper);
+
+            _mockAuthoriser.Setup(x => x.IsAllowed()).Returns(true);
         }
 
         [Fact]
@@ -141,6 +149,19 @@ namespace Sitecore.Ship.Test
             Assert.Equal(1, publishParameters.Languages.Count());
             Assert.Equal("en", publishParameters.Languages[0]);
             Assert.Equal(HttpStatusCode.Accepted, response.StatusCode);
+        }
+
+        [Fact]
+        public void Should_return_status_unauthorized_when_security_configuration_restricts_access_to_publish()
+        {
+            // Arrange
+            _mockAuthoriser.Setup(x => x.IsAllowed()).Returns(false);
+
+            // Act
+            var response = _browser.Post("/services/publish/full");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
     }
 }

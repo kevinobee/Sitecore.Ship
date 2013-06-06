@@ -1,4 +1,4 @@
-﻿namespace Sitecore.Ship.Infrastructure
+﻿namespace Sitecore.Ship.Core.Contracts
 {
     public interface IAuthoriser
     {

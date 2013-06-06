@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Sitecore.Ship.Core;
+using Sitecore.Ship.Core.Contracts;
 using Sitecore.Update;
 using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
@@ -11,11 +12,6 @@ using Sitecore.Update.Utils;
 
 namespace Sitecore.Ship.Infrastructure.Update
 {
-    public interface IPackageRunner
-    {
-        void Execute(string packagePath);
-    }
-
     public class UpdatePackageRunner : IPackageRunner
     {
         public void Execute(string packagePath)
