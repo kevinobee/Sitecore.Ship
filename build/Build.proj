@@ -106,8 +106,11 @@
   </Target>
 
   <Target Name="RunSmokeTests" DependsOnTargets="Build">
+    <PropertyGroup>
+      <TestPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\tests\acceptance-test\package.update'))</TestPackagePath>
+    </PropertyGroup>
     <ItemGroup>
-      <ShipAssemblies Include="$(BuildResultsPath)\Sitecore.Ship*.dll" Exclude="$(BuildResultsPath)\*.Test.dll" />
+      <ShipAssemblies Include="$(BuildResultsPath)\Sitecore*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />
     </ItemGroup>
 
     <Copy
@@ -115,15 +118,18 @@
               DestinationFolder="$(TestWebsitePath)\bin"
         />    
   
+    <!-- Site root page -->
     <Exec Command="$(CurlExePath) $(TestWebsiteUrl)" />
 
+    <!-- Ship About page -->
     <Exec Command="$(CurlExePath) $(TestWebsiteUrl)/services/about" />
 
-
+    <!-- Smart Publish -->
     <Exec Command="$(CurlExePath) -X POST $(TestWebsiteUrl)/services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot; "  />
     
-  <!-- TODO expect a TODO status code -->
-    
+    <!-- Package install via Form Path parameter -->
+    <Exec Command="$(CurlExePath) -X POST $(TestWebsiteUrl)/services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
+  
   </Target>
   
   <Target Name="RunUnitTests" DependsOnTargets="Build">
