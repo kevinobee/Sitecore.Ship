@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
-using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 

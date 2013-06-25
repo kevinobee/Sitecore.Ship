@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using Sitecore.Ship.Core;
@@ -12,14 +13,16 @@ namespace Sitecore.Ship.Package.Install
     {
         private readonly IPackageRepository _repository;
         private readonly IAuthoriser _authoriser;
+        private readonly ITempPackager _tempPackager;
 
         const string StartTime = "start_time";
 
-        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser)
+        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager)
             : base("/services")
         {
             _repository = repository;
             _authoriser = authoriser;
+            _tempPackager = tempPackager;
 
             Before += AuthoriseRequest; 
             
@@ -30,6 +33,8 @@ namespace Sitecore.Ship.Package.Install
             };
 
             After += AddProcessingTimeToResponse;
+
+            Post["/package/install/fileupload"] = InstallUploadPackage;
 
             Post["/package/install"] = InstallPackage;
         }
@@ -58,6 +63,38 @@ namespace Sitecore.Ship.Package.Install
                 var package = this.Bind<InstallPackage>();
                 _repository.AddPackage(package);
                 return Response.AsNewPackage(package);
+            }
+            catch (NotFoundException)
+            {
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+        }
+
+        private dynamic InstallUploadPackage(dynamic o)
+        {
+            try
+            {
+                var file = Request.Files.FirstOrDefault();
+
+                if (file == null)
+                {
+                    return new Response {StatusCode = HttpStatusCode.BadRequest};
+                }
+
+                try
+                {
+                    var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
+                    _repository.AddPackage(package);
+                }
+                finally 
+                {
+                    _tempPackager.Dispose();
+                }
+
+                return Response.AsNewPackage(new InstallPackage {Path = file.Name});
             }
             catch (NotFoundException)
             {

@@ -125,11 +125,15 @@
     <Exec Command="$(CurlExePath) $(TestWebsiteUrl)/services/about" />
 
     <!-- Smart Publish -->
-    <Exec Command="$(CurlExePath) -X POST $(TestWebsiteUrl)/services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot; "  />
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot; "  />
     
     <!-- Package install via Form Path parameter -->
-    <Exec Command="$(CurlExePath) -X POST $(TestWebsiteUrl)/services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
-  
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
+
+    <!-- Package install via File Upload -->
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)/services/package/install/fileupload"  />
+    
+
   </Target>
   
   <Target Name="RunUnitTests" DependsOnTargets="Build">

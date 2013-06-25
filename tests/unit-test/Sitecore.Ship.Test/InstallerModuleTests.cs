@@ -1,12 +1,13 @@
-﻿using Moq;
+﻿using System.IO;
+using Moq;
 using Nancy;
 using Nancy.Testing;
+using Xunit;
+
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
-using Sitecore.Ship.Infrastructure;
 using Sitecore.Ship.Package.Install;
-using Xunit;
 
 namespace Sitecore.Ship.Test
 {
@@ -16,18 +17,20 @@ namespace Sitecore.Ship.Test
 
         private readonly Mock<IPackageRepository> _mockPackageRepos;
         private readonly Mock<IAuthoriser> _mockAuthoriser;
+        private readonly Mock<ITempPackager> _mockTempPackager; 
 
         public InstallerModuleTests()
         {
             _mockPackageRepos = new Mock<IPackageRepository>();
-
             _mockAuthoriser = new Mock<IAuthoriser>();
+            _mockTempPackager = new Mock<ITempPackager>();
 
             var bootstrapper = new ConfigurableBootstrapper(with =>
             {
                 with.Module<InstallerModule>();
                 with.Dependency(_mockPackageRepos.Object);
                 with.Dependency(_mockAuthoriser.Object);
+                with.Dependency(_mockTempPackager.Object);
             });
 
             _browser = new Browser(bootstrapper);
@@ -102,6 +105,37 @@ namespace Sitecore.Ship.Test
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public void Should_return_status_created_when_installing_a_package_by_file_upload()
+        {
+            // Arrange
+            var stream = CreateFakeFileStream("This is the contents of a file");
+            var multipart = new BrowserContextMultipartFormData(x => x.AddFile("foo", "foo.update", "text/plain", stream));
+
+            _mockTempPackager.Setup(x => x.GetPackageToInstall(It.IsAny<Stream>())).Returns("foo.update");
+
+            // Act
+            var response = _browser.Post("/services/package/install/fileupload", with =>
+            {
+                with.HttpRequest();
+                with.MultiPartFormData(multipart);
+            });
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.True(response.Headers["Location"].Contains("/services/package/install/fileupload/foo.update"), "Location Header mismatch");
+        }
+
+        private static Stream CreateFakeFileStream(string thisIsTheContentsOfAFile)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(thisIsTheContentsOfAFile);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
         }
     }
 }

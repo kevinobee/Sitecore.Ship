@@ -44,8 +44,7 @@ namespace Sitecore.Ship
                 ignoredAssemblies.AddRange(
                     new Func<Assembly, bool>[]
                         {
-                            asm => asm.FullName.StartsWith("Oracle", StringComparison.InvariantCulture),
-//                            asm => asm.FullName.StartsWith("Sitecore", StringComparison.InvariantCulture)
+                            asm => asm.FullName.StartsWith("Oracle", StringComparison.InvariantCulture)
                         }
                     );
 
