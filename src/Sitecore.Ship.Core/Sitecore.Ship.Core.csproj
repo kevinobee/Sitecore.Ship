@@ -44,6 +44,8 @@
     <Compile Include="Contracts\ICheckRequests.cs" />
     <Compile Include="Contracts\IConfigurationProvider.cs" />
     <Compile Include="Contracts\IPackageRunner.cs" />
+    <Compile Include="Contracts\ITempFile.cs" />
+    <Compile Include="Contracts\ITempPackager.cs" />
     <Compile Include="Domain\InstallPackage.cs" />
     <Compile Include="Contracts\IPackageRepository.cs" />
     <Compile Include="Contracts\IPublishService.cs" />

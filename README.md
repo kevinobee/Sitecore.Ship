@@ -46,7 +46,7 @@ Run the following commands:
 
 ### Using the Installer
 
-#### Update Package - File Install
+#### Install Package - Specify Server File Path
 
 Issue a POST request to `/services/package/install` and pass it a path parameter in x-www-form-urlencoded form-data specifying the location of the update package.
 
@@ -59,13 +59,27 @@ Example:
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
     Content-Disposition: form-data; name="path"
     
-    d:\foo.update
+    d:\package.update
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
-#### Update Package - Package Streaming
+#### Install Package - File Upload
 
-Not implemented yet.
+Issue a POST request to `/services/package/install/fileupload` and pass it the location of an update package file to upload to the server.
+
+Example:
+
+    POST /services/package/install/fileupload HTTP/1.1
+    Host: shiptester
+    Accept: application/json, text/javascript, */*
+    Cache-Control: no-cache
+    
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+    Content-Disposition: form-data; name="path"; filename="package.update"
+    Content-Type: 
+    
+    
+    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
 #### Publishing
