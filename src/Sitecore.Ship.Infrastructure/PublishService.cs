@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sitecore.Data;
 using Sitecore.Data.Managers;
+using Sitecore.Diagnostics;
 using Sitecore.Globalization;
 
 using Sitecore.Ship.Core.Contracts;
@@ -35,6 +36,25 @@ namespace Sitecore.Ship.Infrastructure
             }
 
             PublishingTask(_publishingActions[publishingMode], publishParameters);
+        }
+
+        public DateTime GetLastCompletedRun(PublishLastCompleted completeParameters)
+        {
+
+            // please note http://stackoverflow.com/questions/12416141/get-the-date-time-that-sitecore-last-published
+
+            var source = Sitecore.Configuration.Factory.GetDatabase(completeParameters.Source);
+            var target = Sitecore.Configuration.Factory.GetDatabase(completeParameters.Target);
+            
+            var language = LanguageManager.GetLanguage(completeParameters.Language);
+
+
+            Assert.IsNotNull(source, "Source database {0} cannot be found".Formatted(completeParameters.Source));
+            Assert.IsNotNull(source, "Target database {0} cannot be found".Formatted(completeParameters.Target));
+            Assert.IsNotNull(language, "Language {0} cannot be found".Formatted(completeParameters.Language));
+
+            var date = source.Properties.GetLastPublishDate(target, language);
+            return date;
         }
 
         private static void PublishingTask(Func<Database, Database[], Language[], Handle> publishType, PublishParameters publishParameters)

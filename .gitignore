@@ -35,7 +35,8 @@ lib/Mvp.Xml.dll
 lib/Newtonsoft.Json.dll
 lib/RadEditor.Net2.dll
 lib/Telerik.Web.UI.dll
-lib/
+lib/*.dll
+lib/*.pdb
 
 /packages
 
