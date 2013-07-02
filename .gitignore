@@ -36,6 +36,7 @@ lib/Newtonsoft.Json.dll
 lib/RadEditor.Net2.dll
 lib/Telerik.Web.UI.dll
 lib/*.dll
+lib/*.pdb
 
 /packages
 
