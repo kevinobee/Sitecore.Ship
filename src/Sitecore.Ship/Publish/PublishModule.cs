@@ -76,10 +76,13 @@ namespace Sitecore.Ship.Publish
                     Languages = DecodeCsvStringParam(publishRequest.Languages, new[] {"en"}),
                 };
 
+            var now = DateTime.Now;
+            var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
             _publishService.Run(publishParameters);
 
 
-            return new Nancy.Responses.JsonResponse(DateTime.Now, new JsonNetSerializer())
+            return new Nancy.Responses.JsonResponse(date, new JsonNetSerializer())
                 {
                     StatusCode = HttpStatusCode.Accepted
                 };
