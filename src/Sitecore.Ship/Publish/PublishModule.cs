@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
+using Nancy.Serialization.JsonNet;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -22,6 +23,8 @@ namespace Sitecore.Ship.Publish
             Before += AuthoriseRequest; 
 
             Post["/{mode}"] = InvokePublishing;
+            Get["/lastcompleted"] = LastCompleted;
+            Get["/lastcompleted/{source}/{target}/{language}"] = LastCompleted;
         }
 
         private Response AuthoriseRequest(NancyContext ctx)
@@ -32,6 +35,25 @@ namespace Sitecore.Ship.Publish
                  new Response { StatusCode = HttpStatusCode.Unauthorized };
             }
             return null;
+        }
+
+        private dynamic LastCompleted(dynamic o)
+        {
+            var completedRequest = this.Bind<PublishLastCompletedRequest>();
+
+            var parameters = new PublishLastCompleted()
+                {
+                    Language = completedRequest.Language ?? "en",
+                    Target = completedRequest.Target ?? "web",
+                    Source = completedRequest.Source ?? "master"
+                };
+            
+            var date = _publishService.GetLastCompletedRun(parameters);
+
+            return new Nancy.Responses.JsonResponse(date, new JsonNetSerializer())
+                {
+                    StatusCode = HttpStatusCode.OK
+                };
         }
 
         private dynamic InvokePublishing(dynamic o)
