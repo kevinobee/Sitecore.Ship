@@ -72,13 +72,14 @@ namespace Sitecore.Ship.Publish
                 {
                     Mode = publishRequest.Mode,
                     Source = publishRequest.Source ?? "master",
-                    Targets = DecodeCsvStringParam(publishRequest.Targets, new [] { "web"}),
-                    Languages = DecodeCsvStringParam(publishRequest.Languages, new[] { "en" }),
+                    Targets = DecodeCsvStringParam(publishRequest.Targets, new[] {"web"}),
+                    Languages = DecodeCsvStringParam(publishRequest.Languages, new[] {"en"}),
                 };
 
             _publishService.Run(publishParameters);
 
-            return new Response
+
+            return new Nancy.Responses.JsonResponse(DateTime.Now, new JsonNetSerializer())
                 {
                     StatusCode = HttpStatusCode.Accepted
                 };
