@@ -14,15 +14,17 @@ namespace Sitecore.Ship.Package.Install
         private readonly IPackageRepository _repository;
         private readonly IAuthoriser _authoriser;
         private readonly ITempPackager _tempPackager;
+        private readonly IInstallationRecorder _installationRecorder;
 
         const string StartTime = "start_time";
 
-        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager)
+        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager, IInstallationRecorder installationRecorder)
             : base("/services")
         {
             _repository = repository;
             _authoriser = authoriser;
             _tempPackager = tempPackager;
+            _installationRecorder = installationRecorder;
 
             Before += AuthoriseRequest; 
             
@@ -37,6 +39,8 @@ namespace Sitecore.Ship.Package.Install
             Post["/package/install/fileupload"] = InstallUploadPackage;
 
             Post["/package/install"] = InstallPackage;
+
+            Post["/package/latestversion"] = LatestVersion;
         }
 
         private Response AuthoriseRequest(NancyContext ctx)
@@ -95,6 +99,21 @@ namespace Sitecore.Ship.Package.Install
                 }
 
                 return Response.AsNewPackage(new InstallPackage {Path = file.Name});
+            }
+            catch (NotFoundException)
+            {
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+        }
+
+        private dynamic LatestVersion(dynamic o)
+        {
+            try
+            {
+                return _installationRecorder.GetLatestPackage();
             }
             catch (NotFoundException)
             {
