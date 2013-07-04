@@ -47,7 +47,7 @@ namespace Sitecore.Ship
                 new PublishService());
 
             container.Register<IInstallationRecorder>(
-                new InstallationRecorder(new PackageHistoryRepository()));
+                new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()));
 
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider

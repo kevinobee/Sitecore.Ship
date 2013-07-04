@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Moq;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -12,17 +11,32 @@ namespace Sitecore.Ship.Test
     public class InstallationRecorderTests
     {
         private Mock<IPackageHistoryRepository> _mockPackageHistoryRepository;
+        private Mock<IConfigurationProvider<PackageInstallationSettings>> _mockConfigurationProvider;
 
         public InstallationRecorderTests()
         {
             _mockPackageHistoryRepository = new Mock<IPackageHistoryRepository>();
+            _mockConfigurationProvider = new Mock<IConfigurationProvider<PackageInstallationSettings>>();
+            _mockConfigurationProvider.Setup(x => x.Settings.RecordInstallationHistory).Returns(true);
+        }
+
+        [Fact]
+        public void recordinstall_does_not_install_when_disabled()
+        {
+            _mockConfigurationProvider.Setup(x => x.Settings.RecordInstallationHistory).Returns(false);
+            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object, _mockConfigurationProvider.Object);
+            var dateInstalled = DateTime.Now;
+
+            recorder.RecordInstall("01-Description.zip", dateInstalled);
+
+            _mockPackageHistoryRepository.Verify(x => x.Add(It.IsAny<InstalledPackage>()), Times.Never());
         }
 
         
         [Fact]
         public void recordinstall_parses_packageid_correctly_when_relative_path_provided()
         {
-            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object);
+            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object, _mockConfigurationProvider.Object);
             var dateInstalled = DateTime.Now;
 
             recorder.RecordInstall("01-Description.zip", dateInstalled);
@@ -33,7 +47,7 @@ namespace Sitecore.Ship.Test
         [Fact]
         public void recordinstall_parses_packageid_correctly_when_full_path_provided()
         {
-            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object);
+            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object, _mockConfigurationProvider.Object);
             var dateInstalled = DateTime.Now;
 
             recorder.RecordInstall("C:\\aaa\\bbb\\01-Description.zip", dateInstalled);
@@ -44,7 +58,7 @@ namespace Sitecore.Ship.Test
         [Fact]
         public void recordinstall_parses_description_correctly()
         {
-            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object);
+            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object, _mockConfigurationProvider.Object);
             var dateInstalled = DateTime.Now;
 
             recorder.RecordInstall("01-Description.zip", dateInstalled);
@@ -64,7 +78,7 @@ namespace Sitecore.Ship.Test
                         
                     });
 
-            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object);
+            var recorder = new InstallationRecorder(_mockPackageHistoryRepository.Object, _mockConfigurationProvider.Object);
 
             var expected = new InstalledPackage() {PackageId = "03"};
             var result = recorder.GetLatestPackage();

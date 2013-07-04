@@ -14,7 +14,8 @@ namespace Sitecore.Ship.Infrastructure.Configuration
                            {
                                IsEnabled = config.Enabled,
                                AllowRemoteAccess = config.AllowRemoteAccess,
-                               AllowPackageStreaming = config.AllowPackageStreaming
+                               AllowPackageStreaming = config.AllowPackageStreaming,
+                               RecordInstallationHistory = config.RecordInstallationHistory
                            };
         }
 

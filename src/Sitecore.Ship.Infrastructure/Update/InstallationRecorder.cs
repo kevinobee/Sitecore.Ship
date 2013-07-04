@@ -10,18 +10,28 @@ namespace Sitecore.Ship.Infrastructure.Update
     public class InstallationRecorder : IInstallationRecorder
     {
         private readonly IPackageHistoryRepository _packageHistoryRepository;
+        private readonly IConfigurationProvider<PackageInstallationSettings> m_configurationProvider;
 
-        public InstallationRecorder(IPackageHistoryRepository packageHistoryRepository)
+        public InstallationRecorder(IPackageHistoryRepository packageHistoryRepository, IConfigurationProvider<PackageInstallationSettings> configurationProvider)
         {
             _packageHistoryRepository = packageHistoryRepository;
+            m_configurationProvider = configurationProvider;
         }
 
         public void RecordInstall(string packagePath, DateTime dateInstalled)
         {
-            var packageId = GetPackageIdFromName(packagePath);
-            var description = GetDescription(packagePath);
-            var record = new InstalledPackage {DateInstalled = dateInstalled, PackageId = packageId, Description = description};
-            _packageHistoryRepository.Add(record);
+            if (m_configurationProvider.Settings.RecordInstallationHistory)
+            {
+                var packageId = GetPackageIdFromName(packagePath);
+                var description = GetDescription(packagePath);
+                var record = new InstalledPackage
+                                 {
+                                     DateInstalled = dateInstalled,
+                                     PackageId = packageId,
+                                     Description = description
+                                 };
+                _packageHistoryRepository.Add(record);
+            }
         }
 
         public InstalledPackage GetLatestPackage()
