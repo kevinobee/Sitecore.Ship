@@ -113,7 +113,7 @@ namespace Sitecore.Ship.Package.Install
         {
             try
             {
-                return _installationRecorder.GetLatestPackage();
+                return Response.AsJson(_installationRecorder.GetLatestPackage());
             }
             catch (NotFoundException)
             {

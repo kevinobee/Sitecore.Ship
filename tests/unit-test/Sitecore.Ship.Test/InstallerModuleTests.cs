@@ -140,5 +140,22 @@ namespace Sitecore.Ship.Test
             stream.Position = 0;
             return stream;
         }
+
+        [Fact]
+        public void Should_return_valid_json_when_accessing_latestversion()
+        {
+            _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
+
+            // Act
+            var response = _browser.Post("/services/package/latestversion", with =>
+            {
+                with.HttpRequest();
+            });
+
+           // var isntalledPackage = response.Body.DeserializeJson<InstalledPackage>();
+
+            // Assert
+          //  Assert.NotNull(isntalledPackage);
+        }
     }
 }

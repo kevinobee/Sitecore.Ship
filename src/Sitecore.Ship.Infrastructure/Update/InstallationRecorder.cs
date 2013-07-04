@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -26,16 +27,12 @@ namespace Sitecore.Ship.Infrastructure.Update
         public InstalledPackage GetLatestPackage()
         {
             List<InstalledPackage> children = _packageHistoryRepository.GetAll();
-            return children.OrderByDescending(x => x.DateInstalled).FirstOrDefault();
+            return children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
         }
 
         private string GetDescription(string packagePath)
         {
-            if (packagePath.Contains('\\')) //will have a fulll file path
-            {
-                packagePath = packagePath.Split('\\').Last();
-            }
-            return packagePath.Split('-').Last().Split('.').First();
+           return Path.GetFileName(packagePath).Split('-').Last().Split('.').First();
         }
 
         private string GetPackageIdFromName(string packagePath)
@@ -45,12 +42,7 @@ namespace Sitecore.Ship.Infrastructure.Update
             //So, Covention is currently: {ID}-DescriptiveName.extension
             // E.G 01-AboutPage.update
             // E.G 02-HomePage.zip
-
-            if (packagePath.Contains('\\')) //will have a fulll file path
-            {
-                packagePath = packagePath.Split('\\').Last();
-            }
-            return packagePath.Split('-').First();
+            return Path.GetFileName(packagePath).Split('-').First();
         }
     }
 }
