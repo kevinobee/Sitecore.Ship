@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Moq;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Core.Services;
 using Sitecore.Ship.Infrastructure.Update;
 using Xunit;
 

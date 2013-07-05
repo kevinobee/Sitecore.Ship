@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Ship.Test", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Ship", "src\Sitecore.Ship\Sitecore.Ship.csproj", "{CD35B0F4-791F-452A-A7BA-98D82A00007F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Ship.Core.Test", "tests\unit-test\Sitecore.Ship.Core.Test\Sitecore.Ship.Core.Test.csproj", "{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,16 @@ Global
 		{CD35B0F4-791F-452A-A7BA-98D82A00007F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CD35B0F4-791F-452A-A7BA-98D82A00007F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CD35B0F4-791F-452A-A7BA-98D82A00007F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,5 +121,6 @@ Global
 		{05F4023A-A4F6-4844-8175-8D7E04C63913} = {33043060-6D33-4018-9F77-A36E70771C93}
 		{923D9377-9025-425B-9698-1A38947CA973} = {2A29E5BC-9DE1-4299-AFD9-86F1CC77B921}
 		{4363354A-7FF5-492B-B7F6-B02802C52DE8} = {923D9377-9025-425B-9698-1A38947CA973}
+		{F4CB1736-C922-4119-A8C4-E6285E5E6B6A} = {923D9377-9025-425B-9698-1A38947CA973}
 	EndGlobalSection
 EndGlobal

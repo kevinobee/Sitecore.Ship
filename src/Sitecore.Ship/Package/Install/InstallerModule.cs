@@ -113,7 +113,17 @@ namespace Sitecore.Ship.Package.Install
         {
             try
             {
-                return Response.AsJson(_installationRecorder.GetLatestPackage());
+                InstalledPackage installedPackage = _installationRecorder.GetLatestPackage();
+
+                if (installedPackage is InstalledPackageNotFound)
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.NoContent
+                    }; 
+                }
+
+                return Response.AsJson(installedPackage);
             }
             catch (NotFoundException)
             {

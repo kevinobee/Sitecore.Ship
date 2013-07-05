@@ -142,6 +142,18 @@ namespace Sitecore.Ship.Test
         }
 
         [Fact]
+        public void Should_return_status_no_content_when_package_recording_is_disabled()
+        {
+            _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackageNotFound());
+
+            // Act
+            var response = _browser.Post("/services/package/latestversion", with => with.HttpRequest());
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
         public void Should_return_valid_json_when_accessing_latestversion()
         {
             _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
@@ -156,6 +168,8 @@ namespace Sitecore.Ship.Test
 
             // Assert
           //  Assert.NotNull(isntalledPackage);
+
+            // TODO no assert here..
         }
     }
 }

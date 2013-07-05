@@ -5,22 +5,22 @@ using System.Linq;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
-namespace Sitecore.Ship.Infrastructure.Update
+namespace Sitecore.Ship.Core.Services
 {
     public class InstallationRecorder : IInstallationRecorder
     {
         private readonly IPackageHistoryRepository _packageHistoryRepository;
-        private readonly IConfigurationProvider<PackageInstallationSettings> m_configurationProvider;
+        private readonly IConfigurationProvider<PackageInstallationSettings> _configurationProvider;
 
         public InstallationRecorder(IPackageHistoryRepository packageHistoryRepository, IConfigurationProvider<PackageInstallationSettings> configurationProvider)
         {
             _packageHistoryRepository = packageHistoryRepository;
-            m_configurationProvider = configurationProvider;
+            _configurationProvider = configurationProvider;
         }
 
         public void RecordInstall(string packagePath, DateTime dateInstalled)
         {
-            if (m_configurationProvider.Settings.RecordInstallationHistory)
+            if (_configurationProvider.Settings.RecordInstallationHistory)
             {
                 var packageId = GetPackageIdFromName(packagePath);
                 var description = GetDescription(packagePath);
@@ -36,8 +36,15 @@ namespace Sitecore.Ship.Infrastructure.Update
 
         public InstalledPackage GetLatestPackage()
         {
-            List<InstalledPackage> children = _packageHistoryRepository.GetAll();
-            return children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
+            if (_configurationProvider.Settings.RecordInstallationHistory)
+            {
+                List<InstalledPackage> children = _packageHistoryRepository.GetAll();
+                InstalledPackage package = children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
+
+                if (package != null) return package;
+            }
+
+            return new InstalledPackageNotFound();
         }
 
         private string GetDescription(string packagePath)

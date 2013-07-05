@@ -133,6 +133,8 @@
     <!-- Package install via File Upload -->
     <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)/services/package/install/fileupload"  />
     
+    <!-- Package latest version check -->
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/latestversion --header &quot;Content-Length: 0&quot; "  />
 
   </Target>
   

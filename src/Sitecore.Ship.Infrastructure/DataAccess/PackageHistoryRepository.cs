@@ -21,8 +21,11 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
         {
             using (new SecurityDisabler())
             {
+                // TODO how does this behave if the package has not been installed?
+
                 var database = Factory.GetDatabase(DATABASE_NAME);
                 var rootItem = database.GetItem(HISTORY_FOLDER_PATH);
+
                 TemplateItem template = database.GetTemplate(PACKAGE_HISTORY_TEMPLATE_PATH);
                 var item = rootItem.Add(package.PackageId, template);
 
@@ -42,20 +45,31 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
 
         public List<InstalledPackage> GetAll()
         {
-            var database = Factory.GetDatabase(DATABASE_NAME);
-            var rootItem = database.GetItem(HISTORY_FOLDER_PATH);
             var entries = new List<InstalledPackage>();
-            foreach (Item child in rootItem.Children)
+
+            var rootItem = GetRootItem();
+
+            if (rootItem != null)
             {
-                entries.Add(new InstalledPackage()
-                    {
-                        DateInstalled = DateTime.Parse(child.Fields[DATE_INSTALLED_FIELD_NAME].Value),
-                        PackageId = child.Fields[PACKAGE_ID_FIELD_NAME].Value,
-                        Description = child.Fields[DESCRIPTION_FIELD_NAME].Value
-                    });
+                foreach (Item child in rootItem.Children)
+                {
+                    entries.Add(new InstalledPackage()
+                        {
+                            DateInstalled = DateTime.Parse(child.Fields[DATE_INSTALLED_FIELD_NAME].Value),
+                            PackageId = child.Fields[PACKAGE_ID_FIELD_NAME].Value,
+                            Description = child.Fields[DESCRIPTION_FIELD_NAME].Value
+                        });
+                }
             }
 
             return entries;
+        }
+
+        private static Item GetRootItem()
+        {
+            var database = Factory.GetDatabase(DATABASE_NAME);
+            var rootItem = database.GetItem(HISTORY_FOLDER_PATH);
+            return rootItem;
         }
     }
 }
