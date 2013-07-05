@@ -13,6 +13,7 @@ namespace Sitecore.Ship.Infrastructure.Configuration
         private const string EnabledKey = "enabled";
         private const string AllowRemoteKey = "allowRemote";
         private const string AllowPackageStreamingKey = "allowPackageStreaming";
+        private const string RecordInstallationHistoryKey = "recordInstallationHistory";
 
         [ConfigurationProperty(EnabledKey, IsRequired = false, DefaultValue = false)]
         public bool Enabled { get { return (bool)this[EnabledKey]; } }
@@ -22,5 +23,8 @@ namespace Sitecore.Ship.Infrastructure.Configuration
 
         [ConfigurationProperty(AllowPackageStreamingKey, IsRequired = false, DefaultValue = false)]
         public bool AllowPackageStreaming { get { return (bool)this[AllowPackageStreamingKey]; } }
+
+        [ConfigurationProperty(RecordInstallationHistoryKey, IsRequired = false, DefaultValue = false)]
+        public bool RecordInstallationHistory { get { return (bool)this[RecordInstallationHistoryKey]; } }
     }
 }

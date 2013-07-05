@@ -1,5 +1,4 @@
-﻿using Sitecore.Ship.Core;
-using Sitecore.Ship.Core.Contracts;
+﻿using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Infrastructure.Configuration
@@ -14,7 +13,8 @@ namespace Sitecore.Ship.Infrastructure.Configuration
                            {
                                IsEnabled = config.Enabled,
                                AllowRemoteAccess = config.AllowRemoteAccess,
-                               AllowPackageStreaming = config.AllowPackageStreaming
+                               AllowPackageStreaming = config.AllowPackageStreaming,
+                               RecordInstallationHistory = config.RecordInstallationHistory
                            };
         }
 
