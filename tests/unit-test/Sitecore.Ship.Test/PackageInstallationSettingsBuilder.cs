@@ -30,6 +30,12 @@ namespace Sitecore.Ship.Test
             return this;
         }
 
+        public PackageInstallationSettingsBuilder WithInstallationHistory()
+        {
+            _packageInstallationSettings.RecordInstallationHistory = true;
+            return this;
+        }
+
         public PackageInstallationSettings Build()
         {
             return _packageInstallationSettings;

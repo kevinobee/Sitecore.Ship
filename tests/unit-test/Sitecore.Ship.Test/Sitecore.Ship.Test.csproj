@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutModuleTests.cs" />
+    <Compile Include="InstallationRecorderTests.cs" />
     <Compile Include="InstallerModuleTests.cs" />
     <Compile Include="PackageInstallationSettingsBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

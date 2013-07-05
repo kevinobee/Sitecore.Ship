@@ -17,13 +17,15 @@ namespace Sitecore.Ship.Test
 
         private readonly Mock<IPackageRepository> _mockPackageRepos;
         private readonly Mock<IAuthoriser> _mockAuthoriser;
-        private readonly Mock<ITempPackager> _mockTempPackager; 
+        private readonly Mock<ITempPackager> _mockTempPackager;
+        private readonly Mock<IInstallationRecorder> _mockInstallationRecorder;
 
         public InstallerModuleTests()
         {
             _mockPackageRepos = new Mock<IPackageRepository>();
             _mockAuthoriser = new Mock<IAuthoriser>();
             _mockTempPackager = new Mock<ITempPackager>();
+            _mockInstallationRecorder = new Mock<IInstallationRecorder>();
 
             var bootstrapper = new ConfigurableBootstrapper(with =>
             {
@@ -31,6 +33,7 @@ namespace Sitecore.Ship.Test
                 with.Dependency(_mockPackageRepos.Object);
                 with.Dependency(_mockAuthoriser.Object);
                 with.Dependency(_mockTempPackager.Object);
+                with.Dependency(_mockInstallationRecorder.Object);
             });
 
             _browser = new Browser(bootstrapper);
@@ -136,6 +139,23 @@ namespace Sitecore.Ship.Test
             writer.Flush();
             stream.Position = 0;
             return stream;
+        }
+
+        [Fact]
+        public void Should_return_valid_json_when_accessing_latestversion()
+        {
+            _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
+
+            // Act
+            var response = _browser.Post("/services/package/latestversion", with =>
+            {
+                with.HttpRequest();
+            });
+
+           // var isntalledPackage = response.Body.DeserializeJson<InstalledPackage>();
+
+            // Assert
+          //  Assert.NotNull(isntalledPackage);
         }
     }
 }
