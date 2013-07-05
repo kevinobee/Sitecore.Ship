@@ -6,10 +6,14 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
-
+using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure;
 using Sitecore.Ship.Infrastructure.Configuration;
+using Sitecore.Ship.Infrastructure.IO;
+using Sitecore.Ship.Infrastructure.Update;
+using Sitecore.Ship.Infrastructure.Web;
 
 namespace Sitecore.Ship
 {
@@ -29,6 +33,18 @@ namespace Sitecore.Ship
             container.Register<IConfigurationProvider<PackageInstallationSettings>>(
                 new PackageInstallationConfigurationProvider());
 
+            container.Register<IPackageRepository>(
+                new PackageRepository(new UpdatePackageRunner()));
+
+            container.Register<IAuthoriser>(
+                new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()));
+
+            container.Register<ITempPackager>(
+                new TempPackager(new ServerTempFile()));
+
+            container.Register<IPublishService>(
+                new PublishService());
+
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider
                 .RootNamespaces
@@ -44,7 +60,8 @@ namespace Sitecore.Ship
                 ignoredAssemblies.AddRange(
                     new Func<Assembly, bool>[]
                         {
-                            asm => asm.FullName.StartsWith("Oracle", StringComparison.InvariantCulture)
+                            asm => asm.FullName.StartsWith("Oracle", StringComparison.InvariantCulture),
+                            asm => asm.FullName.StartsWith("Sitecore", StringComparison.InvariantCulture)
                         }
                     );
 
