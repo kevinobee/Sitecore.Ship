@@ -9,7 +9,7 @@
     <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Sitecore package installer and remote publishing over HTTP</description>
-    <releaseNotes>This is a pre-release version of the package.</releaseNotes>
+    <releaseNotes>This is a development release version of the package.</releaseNotes>
     <tags>Sitecore Update Package Deploy</tags>
     <language>en-GB</language>
     <dependencies>
