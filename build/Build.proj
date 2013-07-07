@@ -140,6 +140,9 @@
     <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/latestversion --header &quot;Content-Length: 0&quot; "  />
 
     <!-- Show the last completed publish time (after publishing) -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/publish/lastcompleted  "  />
+    
+    <!-- Show the last completed publish time (after publishing) specifying source/target/language parameters -->
     <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/publish/lastcompleted/master/web/en"  />
     
   </Target>
