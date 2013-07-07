@@ -113,6 +113,10 @@ Example:
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
+Issue a GET request to `/services/publish/lastcompleted/{source}/{target}/{language}` to review the timestamp of the last publish operation. The `{source}`, `{target}` and `{language}` parameters are optional and will default to `master`, `web` and `en` respectively if not specified in the request.
+
+
+
 #### About
 
 Issue a GET request to `/services/about`
