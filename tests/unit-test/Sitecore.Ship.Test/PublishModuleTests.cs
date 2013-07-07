@@ -1,12 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+
 using Moq;
 using Nancy;
 using Nancy.Testing;
-using Sitecore.Ship.Core;
+using Xunit;
+
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 using Sitecore.Ship.Publish;
-using Xunit;
 
 namespace Sitecore.Ship.Test
 {
@@ -162,6 +164,74 @@ namespace Sitecore.Ship.Test
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public void Should_return_status_unauthorized_when_security_configuration_restricts_access_to_lastcompleted()
+        {
+            // Arrange
+            _mockAuthoriser.Setup(x => x.IsAllowed()).Returns(false);
+
+            // Act
+            var response = _browser.Get("/services/publish/lastcompleted");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public void Should_request_publish_date_of_master_and_web_in_en_when_last_completed_called_with_no_parameters()
+        {
+            // Arrange
+            PublishLastCompleted parameters = null;
+            var expected = DateTime.Now;
+            _mockPublishService.Setup(x => x.GetLastCompletedRun(It.IsAny<PublishLastCompleted>())).Callback<PublishLastCompleted>(x => parameters = x).Returns(expected);
+
+            //Act
+            _browser.Get("/services/publish/lastcompleted");
+
+            //Assert
+            Assert.Equal("master", parameters.Source);
+            Assert.Equal("web", parameters.Target);
+            Assert.Equal("en", parameters.Language);
+        }
+
+        [Fact]
+        public void Should_request_publish_date_of_source_and_target_in_specified_language_when_last_completed_called_with_parameters()
+        {
+            // Arrange
+            PublishLastCompleted parameters = null;
+            var expected = DateTime.Now;
+            const string sourceDb = "mysource";
+            const string targetDb = "myTarget";
+            const string language = "mylanguage";
+
+            _mockPublishService.Setup(x => x.GetLastCompletedRun(It.IsAny<PublishLastCompleted>())).Callback<PublishLastCompleted>(x => parameters = x).Returns(expected);
+
+            //Act
+            _browser.Get("/services/publish/lastcompleted/{0}/{1}/{2}".Formatted(sourceDb, targetDb,language));
+
+            //Assert
+            Assert.Equal(sourceDb, parameters.Source);
+            Assert.Equal(targetDb, parameters.Target);
+            Assert.Equal(language, parameters.Language);
+        }
+
+        [Fact]
+        public void Should_return_publish_date_in_JSON_format_in_response_body_when_last_completed_called()
+        {
+            // Arrange
+            var expected = DateTime.Now;
+            _mockPublishService.Setup(x => x.GetLastCompletedRun(It.IsAny<PublishLastCompleted>())).Returns(expected);
+
+            //Act
+            var response = _browser.Get("/services/publish/lastcompleted");
+
+            //Assert
+            var date = Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(response.Body.AsString());
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected.ToLongTimeString(), date.ToLongTimeString());
         }
     }
 }

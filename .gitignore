@@ -27,8 +27,7 @@ TestResults
 
 #Project specific ignores
 lib/*.dll
-
-
+lib/*.pdb
 /packages
 
 # Build ignores
