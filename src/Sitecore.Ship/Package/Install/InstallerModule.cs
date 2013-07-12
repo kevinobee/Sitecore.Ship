@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
@@ -47,8 +48,7 @@ namespace Sitecore.Ship.Package.Install
         {
             if (!_authoriser.IsAllowed())
             {
-                ctx.Response = 
-                 new Response {StatusCode = HttpStatusCode.Unauthorized};
+                ctx.Response = new Response {StatusCode = HttpStatusCode.Unauthorized};
             }
             return null;
         }
@@ -65,8 +65,11 @@ namespace Sitecore.Ship.Package.Install
             try
             {
                 var package = this.Bind<InstallPackage>();
-                _repository.AddPackage(package);
-                return Response.AsNewPackage(package);
+                var manifest = _repository.AddPackage(package);
+
+                return Response
+                            .AsJson(manifest, HttpStatusCode.Created)
+                            .WithHeader("Location", GetPackageUrl(package.Path));
             }
             catch (NotFoundException)
             {
@@ -88,17 +91,20 @@ namespace Sitecore.Ship.Package.Install
                     return new Response {StatusCode = HttpStatusCode.BadRequest};
                 }
 
+                PackageManifest manifest;
                 try
                 {
                     var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
-                    _repository.AddPackage(package);
+                    manifest = _repository.AddPackage(package);
                 }
                 finally 
                 {
                     _tempPackager.Dispose();
                 }
 
-                return Response.AsNewPackage(new InstallPackage {Path = file.Name});
+                return Response
+                            .AsJson(manifest, HttpStatusCode.Created)
+                            .WithHeader("Location", GetPackageUrl(file.Name));
             }
             catch (NotFoundException)
             {
@@ -107,6 +113,11 @@ namespace Sitecore.Ship.Package.Install
                     StatusCode = HttpStatusCode.NotFound
                 };
             }
+        }
+
+        private string GetPackageUrl(string filename)
+        {
+            return string.Format("{0}/{1}", Request.Url, Path.GetFileName(filename));            
         }
 
         private dynamic LatestVersion(dynamic o)

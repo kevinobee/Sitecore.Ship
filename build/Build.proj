@@ -149,7 +149,7 @@
   
   <Target Name="RunUnitTests" DependsOnTargets="Build">
     <ItemGroup>
-      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" />
+      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" Exclude="$(BuildResultsPath)\*.Intg.Test.dll" />
     </ItemGroup>
 
     <xunit

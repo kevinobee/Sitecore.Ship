@@ -63,6 +63,18 @@ Example:
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
+When the package is installed correctly a 201 Created HTTP Status code will be returned with a location header indicating the name of the package installed.
+
+    Content-Length 108
+    Content-Type application/json
+    Date Sun, 14 Jul 2013 07:44:50 GMT
+    Location http://shiptest:80/services/package/install/fileupload/package.update
+
+The body of a successfull request will contain details of the package contents in JSON format. For example:
+
+     {"Entries":[{"ID":"110d559f-dea5-42ea-9c1c-8a5df7e70ef9","Path":"addeditems/master/sitecore/content/home"}]}
+
+
 #### Install Package - File Upload
 
 Issue a POST request to `/services/package/install/fileupload` and pass it the location of an update package file to upload to the server.
@@ -80,6 +92,9 @@ Example:
     
     
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+
+
+Refer to the `Install Package - Specify Server File Path` above for details of the commands response format.
 
 
 #### Publishing

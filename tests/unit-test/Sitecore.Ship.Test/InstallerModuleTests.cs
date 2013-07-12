@@ -119,6 +119,8 @@ namespace Sitecore.Ship.Test
 
             _mockTempPackager.Setup(x => x.GetPackageToInstall(It.IsAny<Stream>())).Returns("foo.update");
 
+            _mockPackageRepos.Setup(x => x.AddPackage(It.IsAny<InstallPackage>())).Returns(new PackageManifest());
+
             // Act
             var response = _browser.Post("/services/package/install/fileupload", with =>
             {
@@ -159,17 +161,38 @@ namespace Sitecore.Ship.Test
             _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
 
             // Act
-            var response = _browser.Post("/services/package/latestversion", with =>
-            {
-                with.HttpRequest();
-            });
-
-           // var isntalledPackage = response.Body.DeserializeJson<InstalledPackage>();
+            var response = _browser.Post("/services/package/latestversion", with => with.HttpRequest());
 
             // Assert
-          //  Assert.NotNull(isntalledPackage);
+            var installedPackage = Newtonsoft.Json.JsonConvert.DeserializeObject<InstalledPackage>(response.Body.AsString());
 
-            // TODO no assert here..
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(installedPackage);
+        }
+
+        [Fact]
+        public void Should_return_json_containing_installed_package_details()
+        {
+            // Arrange
+            var stream = CreateFakeFileStream("This is the contents of a file");
+            var multipart = new BrowserContextMultipartFormData(x => x.AddFile("foo", "foo.update", "text/plain", stream));
+
+            _mockTempPackager.Setup(x => x.GetPackageToInstall(It.IsAny<Stream>())).Returns("foo.update");
+
+            _mockPackageRepos.Setup(x => x.AddPackage(It.IsAny<InstallPackage>())).Returns(new PackageManifest());
+
+            // Act
+            var response = _browser.Post("/services/package/install/fileupload", with =>
+            {
+                with.HttpRequest();
+                with.MultiPartFormData(multipart);
+            });
+
+            //Assert
+            var manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<PackageManifest>(response.Body.AsString());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.NotNull(manifest.Entries);
         }
     }
 }

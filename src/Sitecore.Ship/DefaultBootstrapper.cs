@@ -14,6 +14,7 @@ using Sitecore.Ship.Infrastructure;
 using Sitecore.Ship.Infrastructure.Configuration;
 using Sitecore.Ship.Infrastructure.DataAccess;
 using Sitecore.Ship.Infrastructure.IO;
+using Sitecore.Ship.Infrastructure.Install;
 using Sitecore.Ship.Infrastructure.Update;
 using Sitecore.Ship.Infrastructure.Web;
 
@@ -36,7 +37,7 @@ namespace Sitecore.Ship
                 new PackageInstallationConfigurationProvider());
 
             container.Register<IPackageRepository>(
-                new PackageRepository(new UpdatePackageRunner()));
+                new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())));
 
             container.Register<IAuthoriser>(
                 new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()));

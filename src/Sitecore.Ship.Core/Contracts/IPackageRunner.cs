@@ -1,7 +1,9 @@
-﻿namespace Sitecore.Ship.Core.Contracts
+﻿using Sitecore.Ship.Core.Domain;
+
+namespace Sitecore.Ship.Core.Contracts
 {
     public interface IPackageRunner
     {
-        void Execute(string packagePath);
+        PackageManifest Execute(string packagePath);
     }
 }

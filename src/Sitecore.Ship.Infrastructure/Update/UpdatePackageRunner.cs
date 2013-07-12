@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 using Sitecore.Update;
 using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
@@ -14,7 +15,14 @@ namespace Sitecore.Ship.Infrastructure.Update
 {
     public class UpdatePackageRunner : IPackageRunner
     {
-        public void Execute(string packagePath)
+        private readonly IPackageManifestRepository _manifestRepository;
+
+        public UpdatePackageRunner(IPackageManifestRepository manifestRepository)
+        {
+            _manifestRepository = manifestRepository;
+        }
+
+        public PackageManifest Execute(string packagePath)
         {
             if (!File.Exists(packagePath)) throw new NotFoundException();
 
@@ -25,8 +33,9 @@ namespace Sitecore.Ship.Infrastructure.Update
                 List<ContingencyEntry> entries = null;
                 try
                 {
-                    var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
+                    var logger = Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
                     entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
+                    return _manifestRepository.GetManifest(packagePath);
                 }
                 catch (PostStepInstallerException exception)
                 {
