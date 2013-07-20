@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\GenericConfigurationElementCollection.cs" />
     <Compile Include="Configuration\PackageInstallationConfiguration.cs" />
     <Compile Include="Configuration\PackageInstallationConfigurationProvider.cs" />
     <Compile Include="DataAccess\PackageHistoryRepository.cs" />

@@ -16,6 +16,14 @@ namespace Sitecore.Ship.Infrastructure.Configuration
                                AllowPackageStreaming = config.AllowPackageStreaming,
                                RecordInstallationHistory = config.RecordInstallationHistory
                            };
+
+            if (config.Whitelist.Count > 0)
+            {
+                foreach (var item in config.Whitelist)
+                {
+                    Settings.AddressWhitelist.Add(item.IP);
+                }
+            }
         }
 
         public PackageInstallationSettings Settings { get; private set; }
