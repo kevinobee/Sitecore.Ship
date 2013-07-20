@@ -61,6 +61,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">
+      <Project>{F9CC137C-E000-4D1E-9997-B8E3D20F7E36}</Project>
+      <Name>Sitecore.Ship.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
       <Project>{a0ed41c4-d292-47bd-8457-a40267b4ea8c}</Project>
       <Name>Sitecore.Ship.Infrastructure</Name>
