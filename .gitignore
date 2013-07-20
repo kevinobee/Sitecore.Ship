@@ -26,6 +26,7 @@ _ReSharper*/
 TestResults
 
 #Project specific ignores
+build/Ship.environment.props
 lib/*.dll
 lib/*.pdb
 /packages
