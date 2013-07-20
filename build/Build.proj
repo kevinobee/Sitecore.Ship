@@ -3,12 +3,19 @@
   <Import Project="$(MSBuildProjectDirectory)\Build.tasks" />
   <Import Project="$(MSBuildProjectDirectory)\Ship.versions.targets" />
 
-  <Import Project="$(MSBuildProjectDirectory)\Ship.environment.props" />
+  <!-- Read in environment properties from Ship.environment.props if present -->
+  <Import Project="$(MSBuildProjectDirectory)\Ship.environment.props" Condition="Exists('$(MSBuildProjectDirectory)\Ship.environment.props')" />
   
+  <!-- Provide defaults for values for environment properties if Ship.environment.props is not present -->
+  <PropertyGroup>
+    <TestWebsitePath Condition="$(TestWebsitePath) == ''">D:\Websites\shiptest\Website</TestWebsitePath>
+    <TestWebsiteUrl Condition="$(TestWebsiteUrl) == ''">http://shiptest/</TestWebsiteUrl>
+    <LibsSrcPath Condition="$(LibsSrcPath) == ''">D:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
-    <LibsSrcPath>D:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
     <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
     <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
     <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
@@ -43,7 +50,11 @@
 
   <Target Name="CopyLibs">
     <ItemGroup>
-      <LibFiles Include="$(LibsSrcPath)\*.dll" />
+      <LibFiles Include="$(LibsSrcPath)\Sitecore.Client.dll" />
+      <LibFiles Include="$(LibsSrcPath)\Sitecore.Kernel.dll" />
+      <LibFiles Include="$(LibsSrcPath)\Sitecore.Logging.dll" />
+      <LibFiles Include="$(LibsSrcPath)\Sitecore.Update.dll" />
+      <LibFiles Include="$(LibsSrcPath)\Sitecore.Zip.dll" />
     </ItemGroup>
       
       <Copy
