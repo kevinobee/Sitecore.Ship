@@ -1,19 +1,46 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Helpers;
+
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure;
 
 namespace Sitecore.Ship.AspNet.Publish
 {
     public class InvokePublishingCommand : CommandHandler
     {
+        private readonly IPublishService _publishService;
+
+        public InvokePublishingCommand(IPublishService publishService)
+        {
+            _publishService = publishService;
+        }
+
+        public InvokePublishingCommand() : this(new PublishService())
+        {            
+        }
+
         public override void HandleRequest(HttpContextBase context)
         {
             if (CanHandle(context))
             {
-                var builder = new StringBuilder();
-                builder.AppendFormat("TODO implement InvokePublishingCommand command");
+                var publishParameters = GetRequest(context.Request);
 
-                context.Response.Write(builder.ToString());
+                var now = DateTime.Now;
+                var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+                _publishService.Run(publishParameters);
+
+                // serialize and send..
+                var json = Json.Encode(new { date });
+
+                context.Response.StatusCode = (int) HttpStatusCode.Accepted;
+                context.Response.Clear();
+                context.Response.ContentType = "application/json; charset=utf-8";
+                context.Response.Write(json);
             }
             else if (Successor != null)
             {
@@ -24,9 +51,30 @@ namespace Sitecore.Ship.AspNet.Publish
         private static bool CanHandle(HttpContextBase context)
         {
             return context.Request.Url != null &&
-                   context.Request.Url.PathAndQuery.EndsWith("/services/publish/{mode}", StringComparison.InvariantCultureIgnoreCase)  // TODO {mode} == ....
-                //           TODO        && context.Request.HttpMethod == "POST"
-                ;
+                   IsPublishModeUrl(context.Request.Url.PathAndQuery.ToLowerInvariant()) && 
+                   context.Request.HttpMethod == "POST";
+        }
+
+        private static bool IsPublishModeUrl(string urlPath)
+        {
+            return urlPath.EndsWith("/services/publish/full") ||  
+                   urlPath.EndsWith("/services/publish/smart") ||  
+                   urlPath.EndsWith("/services/publish/incremental");
+        }
+
+        private static PublishParameters GetRequest(HttpRequestBase request)
+        {
+            if (request.Url == null) throw new InvalidOperationException("Missing Url");
+
+            var publishRequest = new PublishParameters
+                {
+                    Mode = request.Url.PathAndQuery.Split(new[] {'/'}).Last(),
+                    Source = request.Form["source"] ?? "master",
+                    Targets = request.Form["targets"].CsvStringToStringArray(new[] { "web" }),
+                    Languages = request.Form["languages"].CsvStringToStringArray(new[] { "en" })
+                };
+
+            return publishRequest;
         }
     }
 }

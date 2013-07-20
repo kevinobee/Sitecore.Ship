@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
       <Project>{a0ed41c4-d292-47bd-8457-a40267b4ea8c}</Project>
       <Name>Sitecore.Ship.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sitecore.Ship\Sitecore.Ship.csproj">
+      <Project>{CD35B0F4-791F-452A-A7BA-98D82A00007F}</Project>
+      <Name>Sitecore.Ship</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -69,8 +69,8 @@ namespace Sitecore.Ship.Publish
                 {
                     Mode = publishRequest.Mode,
                     Source = publishRequest.Source ?? "master",
-                    Targets = DecodeCsvStringParam(publishRequest.Targets, new[] {"web"}),
-                    Languages = DecodeCsvStringParam(publishRequest.Languages, new[] {"en"}),
+                    Targets = publishRequest.Targets.CsvStringToStringArray(new[] {"web"}),
+                    Languages = publishRequest.Languages.CsvStringToStringArray(new[] {"en"}),
                 };
 
             var now = DateTime.Now;
@@ -79,13 +79,6 @@ namespace Sitecore.Ship.Publish
             _publishService.Run(publishParameters);
 
             return Response.AsJson(date, HttpStatusCode.Accepted);
-        }
-
-        private static string[] DecodeCsvStringParam(string inputValue, string[] defaultValue)
-        {
-            if (string.IsNullOrWhiteSpace(inputValue)) return defaultValue;
-
-            return inputValue.Split(new[] { ',' }).Select(x => x.Trim()).ToArray();
         }
 
         private static bool IsAllowedPublishingMode(string mode)

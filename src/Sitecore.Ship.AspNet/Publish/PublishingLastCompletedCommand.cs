@@ -1,18 +1,42 @@
-﻿using System.Text;
+﻿using System;
+using System.Net;
 using System.Web;
+using System.Web.Helpers;
+
+using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure;
 
 namespace Sitecore.Ship.AspNet.Publish
 {
     public class PublishingLastCompletedCommand : CommandHandler
     {
+        private readonly IPublishService _publishService;
+
+        public PublishingLastCompletedCommand(IPublishService publishService)
+        {
+            _publishService = publishService;
+        }
+
+        public PublishingLastCompletedCommand() : this(new PublishService())
+        {            
+        }
+
         public override void HandleRequest(HttpContextBase context)
         {
             if (CanHandle(context))
             {
-                var builder = new StringBuilder();
-                builder.AppendFormat("TODO implement PublishingLastCompletedCommand command");
+                var completedRequest = GetRequest(context.Request);
 
-                context.Response.Write(builder.ToString());
+                var date = _publishService.GetLastCompletedRun(completedRequest);
+
+                // serialize and send..
+                var json = Json.Encode(new { date });
+
+                context.Response.StatusCode = (int) HttpStatusCode.Accepted;
+                context.Response.Clear();
+                context.Response.ContentType = "application/json; charset=utf-8";
+                context.Response.Write(json);
             }
             else if (Successor != null)
             {
@@ -20,6 +44,19 @@ namespace Sitecore.Ship.AspNet.Publish
             }
         }
 
+        private static PublishLastCompleted GetRequest(HttpRequestBase request)
+        {
+            if (request.Url == null) throw new InvalidOperationException("Missing Url");
+
+            var parameters = new PublishLastCompleted
+            {
+                Source = request.Form["source"] ?? "master",
+                Target = request.Form["target"] ?? "web", // TODO check form parmaeter
+                Language = request.Form["language"]?? "en"  // TODO check form parmaeter
+            };
+
+            return parameters;
+        }
         private static bool CanHandle(HttpContextBase context)
         {
 //            Get["/lastcompleted"] = LastCompleted;
