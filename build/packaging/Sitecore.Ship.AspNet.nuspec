@@ -12,15 +12,16 @@
     <releaseNotes>This is a development release version of the package.</releaseNotes>
     <tags>Sitecore Update Package Deploy</tags>
     <language>en-GB</language>
-    <dependencies>
-      <!--<dependency id="Nancy.Hosting.Aspnet" version="0.17.1" />-->
-    </dependencies>
+    <!--<references>
+      <reference file="sitecore.ship.aspnet.dll" />
+    </references>-->
   </metadata>
   <files>
     <file src="..\..\artifacts\Build\Sitecore.Ship.AspNet.dll" target="lib\net40" />
     <file src="..\..\artifacts\Build\Sitecore.Ship.AspNet.pdb" target="lib\net40" />
-
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.dll" target="lib\net40" />
+    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.pdb" target="lib\net40" />
     
-    <!--<file src="..\..\src\Sitecore.Ship\content\**\*" target="content" />-->
+    <file src="..\..\src\Sitecore.Ship.AspNet\content\**\*" target="content" />
   </files>
 </package>

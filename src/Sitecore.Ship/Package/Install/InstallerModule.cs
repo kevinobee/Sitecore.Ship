@@ -2,8 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+
 using Nancy;
 using Nancy.ModelBinding;
+
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -41,7 +43,7 @@ namespace Sitecore.Ship.Package.Install
 
             Post["/package/install"] = InstallPackage;
 
-            Post["/package/latestversion"] = LatestVersion;
+            Post["/package/latestversion"] = LatestVersion;  // TODO should this be POST?
         }
 
         private Response AuthoriseRequest(NancyContext ctx)
