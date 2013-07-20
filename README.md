@@ -137,6 +137,27 @@ Issue a GET request to `/services/publish/lastcompleted/{source}/{target}/{langu
 Issue a GET request to `/services/about`
 
 
+### Confuration Options
+
+Shown below is a fully specified configuration section for Sitecore.Ship:
+
+    <packageInstallation enabled="true" allowRemote="true" allowPackageStreaming="true" recordInstallationHistory="true">
+      <Whitelist>
+        <add name="local loopback" IP="127.0.01" />
+        <add name="Allowed machine 1" IP="10.20.3.4" />
+        <add name="Allowed machine 2" IP="10.40.4.5" />
+      </Whitelist>
+    </packageInstallation>
+
+
+Default configuration:
+
+* enabled = false
+* allowRemote = false
+* allowPackageStreaming = false
+* recordInstallationHistory = false
+* IP address whitelisting is disabled if no elements are specified below the `<Whitelist>` element or if the element is omited.
+
 ### Tools
 
 POSTMAN is a powerful HTTP client that runs as a Chrome browser extension and greatly helps with testing test REST web services. Find out more <http://www.getpostman.com/> 
