@@ -54,6 +54,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration test", "integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Ship.Infrastructure.Intg.Test", "tests\intg-test\Sitecore.Ship.Infrastructure.Intg.Test\Sitecore.Ship.Infrastructure.Intg.Test.csproj", "{E18F1279-A765-4852-BF4C-CB401BDBC909}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitecore.Ship.AspNet", "src\Sitecore.Ship.AspNet\Sitecore.Ship.AspNet.csproj", "{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "acceptance test", "acceptance test", "{9BF13B7F-07E4-43B3-9B90-E06EBB39CC53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test packages", "test packages", "{20FEF273-8A20-4A33-A54F-5B91026A511E}"
+	ProjectSection(SolutionItems) = preProject
+		tests\acceptance-test\package.update = tests\acceptance-test\package.update
+		tests\acceptance-test\Sitecore.Mvc.Contrib.1.0.0.130626.update = tests\acceptance-test\Sitecore.Mvc.Contrib.1.0.0.130626.update
+		tests\acceptance-test\Sitecore.Mvc.Contrib.Sample.1.0.0.130626.update = tests\acceptance-test\Sitecore.Mvc.Contrib.Sample.1.0.0.130626.update
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +135,16 @@ Global
 		{E18F1279-A765-4852-BF4C-CB401BDBC909}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E18F1279-A765-4852-BF4C-CB401BDBC909}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E18F1279-A765-4852-BF4C-CB401BDBC909}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,11 +153,14 @@ Global
 		{F9CC137C-E000-4D1E-9997-B8E3D20F7E36} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{A0ED41C4-D292-47BD-8457-A40267B4EA8C} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{CD35B0F4-791F-452A-A7BA-98D82A00007F} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
+		{D8D5E56C-6E0A-4A70-AA85-E0F6DDD97B38} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{05F4023A-A4F6-4844-8175-8D7E04C63913} = {33043060-6D33-4018-9F77-A36E70771C93}
 		{923D9377-9025-425B-9698-1A38947CA973} = {2A29E5BC-9DE1-4299-AFD9-86F1CC77B921}
 		{62E649F4-4878-4EA3-BCF6-82CB86D2B685} = {2A29E5BC-9DE1-4299-AFD9-86F1CC77B921}
+		{9BF13B7F-07E4-43B3-9B90-E06EBB39CC53} = {2A29E5BC-9DE1-4299-AFD9-86F1CC77B921}
 		{4363354A-7FF5-492B-B7F6-B02802C52DE8} = {923D9377-9025-425B-9698-1A38947CA973}
 		{A4356DB1-04AC-48E9-B70B-6C6E0C38A96E} = {923D9377-9025-425B-9698-1A38947CA973}
 		{E18F1279-A765-4852-BF4C-CB401BDBC909} = {62E649F4-4878-4EA3-BCF6-82CB86D2B685}
+		{20FEF273-8A20-4A33-A54F-5B91026A511E} = {9BF13B7F-07E4-43B3-9B90-E06EBB39CC53}
 	EndGlobalSection
 EndGlobal

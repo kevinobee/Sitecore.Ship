@@ -177,6 +177,10 @@
   <Target Name="StdPackage">
     <Exec 
         Command="$(NuGetExePath) pack $(PackagingPath)\Sitecore.Ship.nuspec -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+
+    <Exec
+      Command="$(NuGetExePath) pack $(PackagingPath)\Sitecore.Ship.AspNet.nuspec -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+    
   </Target>
   
   <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
