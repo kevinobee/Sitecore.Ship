@@ -137,7 +137,7 @@ Issue a GET request to `/services/publish/lastcompleted/{source}/{target}/{langu
 Issue a GET request to `/services/about`
 
 
-### Confuration Options
+### Configuration Options
 
 Shown below is a fully specified configuration section for Sitecore.Ship:
 
