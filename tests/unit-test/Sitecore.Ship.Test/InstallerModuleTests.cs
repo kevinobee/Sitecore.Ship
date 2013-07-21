@@ -149,7 +149,7 @@ namespace Sitecore.Ship.Test
             _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackageNotFound());
 
             // Act
-            var response = _browser.Post("/services/package/latestversion", with => with.HttpRequest());
+            var response = _browser.Get("/services/package/latestversion", with => with.HttpRequest());
 
             // Assert
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -161,7 +161,7 @@ namespace Sitecore.Ship.Test
             _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
 
             // Act
-            var response = _browser.Post("/services/package/latestversion", with => with.HttpRequest());
+            var response = _browser.Get("/services/package/latestversion", with => with.HttpRequest());
 
             // Assert
             var installedPackage = Newtonsoft.Json.JsonConvert.DeserializeObject<InstalledPackage>(response.Body.AsString());

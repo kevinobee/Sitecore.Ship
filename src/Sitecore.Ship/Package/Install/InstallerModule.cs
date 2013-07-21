@@ -43,7 +43,7 @@ namespace Sitecore.Ship.Package.Install
 
             Post["/package/install"] = InstallPackage;
 
-            Post["/package/latestversion"] = LatestVersion;  // TODO should this be POST?
+            Get["/package/latestversion"] = LatestVersion;
         }
 
         private Response AuthoriseRequest(NancyContext ctx)

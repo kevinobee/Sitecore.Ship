@@ -97,6 +97,14 @@ Example:
 Refer to the `Install Package - Specify Server File Path` above for details of the commands response format.
 
 
+#### Package - Latest Version
+
+Issue a GET request to `/services/package/latestversion` to get details of the last package to have been installed by the Ship services.
+
+Note that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the Configuration Options section.
+
+
+
 #### Publishing
 
 Issue a POST request to `/services/publish/{mode}` where {mode} is 
@@ -137,7 +145,7 @@ Issue a GET request to `/services/publish/lastcompleted/{source}/{target}/{langu
 Issue a GET request to `/services/about`
 
 
-### Confuration Options
+### Configuration Options
 
 Shown below is a fully specified configuration section for Sitecore.Ship:
 
