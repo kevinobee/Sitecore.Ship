@@ -121,7 +121,7 @@
       <TestPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\tests\acceptance-test\package.update'))</TestPackagePath>
     </PropertyGroup>
     <ItemGroup>
-      <ShipAssemblies Include="$(BuildResultsPath)\Sitecore*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />
+      <ShipAssemblies Include="$(BuildResultsPath)\Sitecore.Ship*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />
     </ItemGroup>
 
     <Copy
