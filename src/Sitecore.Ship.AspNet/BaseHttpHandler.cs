@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Globalization;
+using System.Net;
 using System.Web;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
@@ -10,6 +12,7 @@ namespace Sitecore.Ship.AspNet
     public abstract class BaseHttpHandler : IHttpHandler
     {
         private readonly IAuthoriser _authoriser;
+        private const string StartTime = "start_time";
 
         protected BaseHttpHandler(IAuthoriser authoriser)
         {
@@ -18,7 +21,6 @@ namespace Sitecore.Ship.AspNet
 
         protected BaseHttpHandler() : this(new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()))
         {
-            
         }
 
         public virtual bool IsReusable
@@ -31,19 +33,30 @@ namespace Sitecore.Ship.AspNet
 
         public void ProcessRequest(HttpContext context)
         {
-            // TODO KO use abstractions ILog
-            //            Sitecore.Diagnostics.Log.Audit(this, "Started at: {0}", new[] { DateTime.Now.ToLongTimeString() });
-
             if (!_authoriser.IsAllowed())
             {
                 context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
             }
 
-            ProcessRequest(new HttpContextWrapper(context));
+            context.Items.Add(StartTime, DateTime.UtcNow);
 
-            //            Sitecore.Diagnostics.Log.Audit(this, "Ended at: {0}", new[] { DateTime.Now.ToLongTimeString() });
+            try
+            {
+                ProcessRequest(new HttpContextWrapper(context));
+            }
+            finally
+            {
+                AddProcessingTimeToResponse(context);
+            }
         }
 
         public abstract void ProcessRequest(HttpContextBase context);
+
+        private static void AddProcessingTimeToResponse(HttpContext context)
+        {
+            var processTime = (DateTime.UtcNow - (DateTime)context.Items[StartTime]).TotalMilliseconds;
+
+            context.Response.AddHeader("x-processing-time", processTime.ToString(CultureInfo.InvariantCulture));
+        }
     }
 }
