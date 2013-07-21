@@ -96,6 +96,8 @@ Example:
 
 Refer to the `Install Package - Specify Server File Path` above for details of the commands response format.
 
+*Note* that if you have `recordInstallationHistory` enabled you will need to provide `PackageId` and `Description` form parameters in the request that you make.
+
 
 #### Package - Latest Version
 

@@ -13,7 +13,7 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
 
         public PackageReaderTests()
         {
-            _testPackagePath = @"..\..\..\..\acceptance-test\package.update";
+            _testPackagePath = @"..\..\..\..\acceptance-test\01-package.update";
         }
 
         [Fact]

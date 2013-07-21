@@ -90,6 +90,8 @@ namespace Sitecore.Ship.Package.Install
             {
                 var file = Request.Files.FirstOrDefault();
 
+                var uploadPackage = this.Bind<InstallUploadPackage>();
+
                 if (file == null)
                 {
                     return new Response {StatusCode = HttpStatusCode.BadRequest};
@@ -100,7 +102,7 @@ namespace Sitecore.Ship.Package.Install
                 {
                     var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
                     manifest = _repository.AddPackage(package);
-                    _installationRecorder.RecordInstall(package.Path, DateTime.Now);
+                    _installationRecorder.RecordInstall(uploadPackage.PackageId, uploadPackage.Description, DateTime.Now);
                 }
                 finally 
                 {

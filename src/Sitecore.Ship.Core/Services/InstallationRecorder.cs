@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
@@ -20,18 +21,38 @@ namespace Sitecore.Ship.Core.Services
 
         public void RecordInstall(string packagePath, DateTime dateInstalled)
         {
-            if (_configurationProvider.Settings.RecordInstallationHistory)
-            {
-                var packageId = GetPackageIdFromName(packagePath);
-                var description = GetDescription(packagePath);
-                var record = new InstalledPackage
-                                 {
-                                     DateInstalled = dateInstalled,
-                                     PackageId = packageId,
-                                     Description = description
-                                 };
-                _packageHistoryRepository.Add(record);
-            }
+            if (!_configurationProvider.Settings.RecordInstallationHistory) return;
+
+            var packageId = GetPackageIdFromName(packagePath);
+            var description = GetDescription(packagePath);
+            
+            var record = new InstalledPackage
+                {
+                    DateInstalled = dateInstalled,
+                    PackageId = packageId,
+                    Description = description
+                };
+
+            _packageHistoryRepository.Add(record);
+        }
+
+        public void RecordInstall(string packageId, string description, DateTime dateInstalled)
+        {
+            if (!_configurationProvider.Settings.RecordInstallationHistory) return;
+
+            const string formatString = "Missing {0} parameter, required as installation is being recorded";
+
+            if (string.IsNullOrEmpty(packageId)) throw new ArgumentException(string.Format(formatString, "PackageId"));
+            if (string.IsNullOrEmpty(description)) throw new ArgumentException(string.Format(formatString, "Description"));
+
+            var record = new InstalledPackage
+                {
+                    DateInstalled = dateInstalled,
+                    PackageId = packageId,
+                    Description = description
+                };
+
+            _packageHistoryRepository.Add(record);
         }
 
         public InstalledPackage GetLatestPackage()

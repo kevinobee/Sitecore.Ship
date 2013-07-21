@@ -49,12 +49,16 @@ namespace Sitecore.Ship.AspNet.Package
 
                     var file = context.Request.Files[0];
 
+                    var uploadPackage = GetRequest(context.Request);
+
                     PackageManifest manifest;
                     try
                     {
                         var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.InputStream) };
                         manifest = _repository.AddPackage(package);
-                        _installationRecorder.RecordInstall(package.Path, DateTime.Now);
+
+                        _installationRecorder.RecordInstall(uploadPackage.PackageId, uploadPackage.Description, DateTime.Now);
+
                     }
                     finally
                     {
@@ -83,6 +87,15 @@ namespace Sitecore.Ship.AspNet.Package
             return context.Request.Url != null &&
                    context.Request.Url.PathAndQuery.EndsWith("/services/package/install/fileupload", StringComparison.InvariantCultureIgnoreCase) && 
                    context.Request.HttpMethod == "POST";
+        }
+
+        private static InstallUploadPackage GetRequest(HttpRequestBase request)
+        {
+            return new InstallUploadPackage
+                {
+                    PackageId = request.Form["packageId"],
+                    Description = request.Form["description"]
+                };
         }
     }
 }

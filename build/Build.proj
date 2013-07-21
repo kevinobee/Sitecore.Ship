@@ -145,7 +145,7 @@
     <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
 
     <!-- Package install via File Upload -->
-    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)/services/package/install/fileupload"  />
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)/services/package/install/fileupload -F &quot;PackageId=02&quot; -F &quot;Description=File Upload&quot;"  />
     
     <!-- Package latest version check -->
     <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/latestversion --header &quot;Content-Length: 0&quot; "  />
