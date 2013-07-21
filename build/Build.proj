@@ -118,6 +118,7 @@
 
   <Target Name="RunSmokeTests" DependsOnTargets="Build">
     <PropertyGroup>
+      <SitecoreShipPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\build\sitecore packages\SitecoreShip.zip'))</SitecoreShipPackagePath>
       <TestPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\tests\acceptance-test\01-package.update'))</TestPackagePath>
     </PropertyGroup>
     <ItemGroup>
@@ -133,28 +134,31 @@
     <Exec Command="$(CurlExePath) $(TestWebsiteUrl)" />
 
     <!-- Ship About page -->
-    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/about" />
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/about" />
+
+    <!-- Install the SitecoreShip content package -->
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(SitecoreShipPackagePath)&quot; $(TestWebsiteUrl)services/package/install/fileupload -F &quot;PackageId=00&quot; -F &quot;Description=Sitecore Ship package&quot;"  />
 
     <!-- Show the last completed publish time (before publishing) -->
-    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/publish/lastcompleted  "  />
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted  "  />
 
     <!-- Smart Publish -->
-    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot; "  />
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot; "  />
    
     <!-- Package install via Form Path parameter -->
-    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
 
     <!-- Package install via File Upload -->
-    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)/services/package/install/fileupload -F &quot;PackageId=02&quot; -F &quot;Description=File Upload&quot;"  />
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)services/package/install/fileupload -F &quot;PackageId=02&quot; -F &quot;Description=File Upload&quot;"  />
     
     <!-- Package latest version check -->
-    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)/services/package/latestversion --header &quot;Content-Length: 0&quot; "  />
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/package/latestversion"  />
 
     <!-- Show the last completed publish time (after publishing) -->
-    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/publish/lastcompleted  "  />
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted"  />
     
     <!-- Show the last completed publish time (after publishing) specifying source/target/language parameters -->
-    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)/services/publish/lastcompleted/master/web/en"  />
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted/master/web/en"  />
     
   </Target>
   
