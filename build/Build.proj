@@ -118,7 +118,7 @@
 
   <Target Name="RunSmokeTests" DependsOnTargets="Build">
     <PropertyGroup>
-      <TestPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\tests\acceptance-test\package.update'))</TestPackagePath>
+      <TestPackagePath>$([System.IO.Path]::GetFullPath('$(ProjectRoot)\tests\acceptance-test\01-package.update'))</TestPackagePath>
     </PropertyGroup>
     <ItemGroup>
       <ShipAssemblies Include="$(BuildResultsPath)\Sitecore.Ship*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />

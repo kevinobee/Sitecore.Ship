@@ -9,6 +9,7 @@ using Nancy.ModelBinding;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure.Web;
 
 namespace Sitecore.Ship.Package.Install
 {
@@ -68,10 +69,11 @@ namespace Sitecore.Ship.Package.Install
             {
                 var package = this.Bind<InstallPackage>();
                 var manifest = _repository.AddPackage(package);
+                _installationRecorder.RecordInstall(package.Path, DateTime.Now);
 
                 return Response
                             .AsJson(manifest, HttpStatusCode.Created)
-                            .WithHeader("Location", GetPackageUrl(package.Path));
+                            .WithHeader("Location", ShipServiceUrl.PackageLatestVersion);
             }
             catch (NotFoundException)
             {
@@ -98,6 +100,7 @@ namespace Sitecore.Ship.Package.Install
                 {
                     var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
                     manifest = _repository.AddPackage(package);
+                    _installationRecorder.RecordInstall(package.Path, DateTime.Now);
                 }
                 finally 
                 {
@@ -106,7 +109,7 @@ namespace Sitecore.Ship.Package.Install
 
                 return Response
                             .AsJson(manifest, HttpStatusCode.Created)
-                            .WithHeader("Location", GetPackageUrl(file.Name));
+                            .WithHeader("Location", ShipServiceUrl.PackageLatestVersion);
             }
             catch (NotFoundException)
             {
@@ -115,11 +118,6 @@ namespace Sitecore.Ship.Package.Install
                     StatusCode = HttpStatusCode.NotFound
                 };
             }
-        }
-
-        private string GetPackageUrl(string filename)
-        {
-            return string.Format("{0}/{1}", Request.Url, Path.GetFileName(filename));            
         }
 
         private dynamic LatestVersion(dynamic o)

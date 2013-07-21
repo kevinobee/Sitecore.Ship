@@ -76,6 +76,7 @@
     <Compile Include="PublishService.cs" />
     <Compile Include="Update\UpdatePackageRunner.cs" />
     <Compile Include="Web\ServerTempFile.cs" />
+    <Compile Include="Web\ShipServiceUrl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">

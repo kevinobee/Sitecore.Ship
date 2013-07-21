@@ -57,16 +57,16 @@ namespace Sitecore.Ship.Test
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal("application/x-www-form-urlencoded", response.Context.Request.Headers.ContentType);
-            Assert.True(response.Headers["Location"].Contains("/services/package/install/package.update"), "Location Header mismatch");
+            Assert.Equal("/services/package/latestversion", response.Headers["Location"]);
         }
 
         [Fact]
         public void Should_return_a_processing_time_header()
         {
             // Arrange
-            
+
             // Act
-            var response = _browser.Post("/services/package/install");
+            var response = _browser.Post("/services/package/install", with => with.HttpRequest());
 
             // Assert
             Assert.NotNull(response.Headers["x-processing-time"]);
@@ -130,7 +130,7 @@ namespace Sitecore.Ship.Test
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.True(response.Headers["Location"].Contains("/services/package/install/fileupload/foo.update"), "Location Header mismatch");
+            Assert.Equal("/services/package/latestversion", response.Headers["Location"]);
         }
 
         private static Stream CreateFakeFileStream(string thisIsTheContentsOfAFile)

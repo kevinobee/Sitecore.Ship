@@ -63,12 +63,12 @@ Example:
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
-When the package is installed correctly a 201 Created HTTP Status code will be returned with a location header indicating the name of the package installed.
+When the package is installed correctly a 201 Created HTTP Status code will be returned.
 
     Content-Length 108
     Content-Type application/json
     Date Sun, 14 Jul 2013 07:44:50 GMT
-    Location http://shiptest:80/services/package/install/fileupload/package.update
+    Location: http://shiptest/services/package/latestversion
 
 The body of a successfull request will contain details of the package contents in JSON format. For example:
 
@@ -165,6 +165,23 @@ Default configuration:
 * allowPackageStreaming = false
 * recordInstallationHistory = false
 * IP address whitelisting is disabled if no elements are specified below the `<Whitelist>` element or if the element is omited.
+
+When `recordInstallationHistory` has been set to true packages should follow the naming conventions set out below:
+
+Packages should follow the following naming conventions. Id should be an int.
+
+    {ID}-DescriptiveName.{Extension}
+
+where:
+
+* **ID** should be an integer
+* **Extension** should be either *update* or *zip*
+
+For example:
+
+    01-AboutPage.update
+
+    02-HomePage.zip
 
 ### Tools
 
