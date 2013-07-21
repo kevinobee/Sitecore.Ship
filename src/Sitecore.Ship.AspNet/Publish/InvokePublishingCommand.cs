@@ -34,13 +34,9 @@ namespace Sitecore.Ship.AspNet.Publish
 
                 _publishService.Run(publishParameters);
 
-                // serialize and send..
                 var json = Json.Encode(new { date });
 
-                context.Response.StatusCode = (int) HttpStatusCode.Accepted;
-                context.Response.Clear();
-                context.Response.ContentType = "application/json; charset=utf-8";
-                context.Response.Write(json);
+                JsonResponse(json, HttpStatusCode.Accepted, context);
             }
             else if (Successor != null)
             {

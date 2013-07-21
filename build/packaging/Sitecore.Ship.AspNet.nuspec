@@ -12,9 +12,6 @@
     <releaseNotes>This is a development release version of the package.</releaseNotes>
     <tags>Sitecore Update Package Deploy</tags>
     <language>en-GB</language>
-    <!--<references>
-      <reference file="sitecore.ship.aspnet.dll" />
-    </references>-->
   </metadata>
   <files>
     <file src="..\..\artifacts\Build\Sitecore.Ship.AspNet.dll" target="lib\net40" />

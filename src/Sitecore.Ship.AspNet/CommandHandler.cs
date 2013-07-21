@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Net;
+using System.Web;
 
 namespace Sitecore.Ship.AspNet
 {
@@ -12,5 +13,13 @@ namespace Sitecore.Ship.AspNet
         }
 
         public abstract void HandleRequest(HttpContextBase context);
+
+        protected void JsonResponse(string json, HttpStatusCode statusCode, HttpContextBase context)
+        {
+            context.Response.StatusCode = (int)statusCode;
+            context.Response.Clear();
+            context.Response.ContentType = "application/json; charset=utf-8";
+            context.Response.Write(json);
+        }
     }
 }

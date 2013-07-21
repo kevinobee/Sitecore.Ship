@@ -58,7 +58,7 @@ namespace Sitecore.Ship.Package.Install
         private static void AddProcessingTimeToResponse(NancyContext ctx)
         {
             var processTime = (DateTime.UtcNow - (DateTime)ctx.Items[StartTime]).TotalMilliseconds;
-            System.Diagnostics.Debug.WriteLine("Processing Time: " + processTime);
+
             ctx.Response.WithHeader("x-processing-time", processTime.ToString(CultureInfo.InvariantCulture));
         }
 
@@ -126,7 +126,7 @@ namespace Sitecore.Ship.Package.Install
         {
             try
             {
-                InstalledPackage installedPackage = _installationRecorder.GetLatestPackage();
+                var installedPackage = _installationRecorder.GetLatestPackage();
 
                 if (installedPackage is InstalledPackageNotFound)
                 {

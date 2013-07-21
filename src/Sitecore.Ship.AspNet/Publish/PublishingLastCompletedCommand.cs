@@ -30,13 +30,9 @@ namespace Sitecore.Ship.AspNet.Publish
 
                 var date = _publishService.GetLastCompletedRun(completedRequest);
 
-                // serialize and send..
                 var json = Json.Encode(new { date });
 
-                context.Response.StatusCode = (int) HttpStatusCode.Accepted;
-                context.Response.Clear();
-                context.Response.ContentType = "application/json; charset=utf-8";
-                context.Response.Write(json);
+                JsonResponse(json, HttpStatusCode.Accepted, context);
             }
             else if (Successor != null)
             {
@@ -51,17 +47,15 @@ namespace Sitecore.Ship.AspNet.Publish
             var parameters = new PublishLastCompleted
             {
                 Source = request.Form["source"] ?? "master",
-                Target = request.Form["target"] ?? "web", // TODO check form parmaeter
-                Language = request.Form["language"]?? "en"  // TODO check form parmaeter
+                Target = request.Form["target"] ?? "web",
+                Language = request.Form["language"] ?? "en"
             };
 
             return parameters;
         }
+
         private static bool CanHandle(HttpContextBase context)
         {
-//            Get["/lastcompleted"] = LastCompleted;
-//            Get["/lastcompleted/{source}/{target}/{language}"] = LastCompleted;
-
             return context.Request.Url != null &&
                    context.Request.Url.PathAndQuery.ToLowerInvariant().Contains("/services/publish/lastcompleted");
         }

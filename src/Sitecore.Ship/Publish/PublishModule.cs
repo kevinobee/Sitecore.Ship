@@ -43,9 +43,9 @@ namespace Sitecore.Ship.Publish
 
             var parameters = new PublishLastCompleted
                 {
-                    Language = completedRequest.Language ?? "en",
+                    Source = completedRequest.Source ?? "master",
                     Target = completedRequest.Target ?? "web",
-                    Source = completedRequest.Source ?? "master"
+                    Language = completedRequest.Language ?? "en"
                 };
             
             var date = _publishService.GetLastCompletedRun(parameters);
