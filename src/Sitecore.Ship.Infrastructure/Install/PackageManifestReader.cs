@@ -5,6 +5,7 @@ using Sitecore.Install;
 using Sitecore.Install.Zip;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Core.Services;
 using Sitecore.Zip;
 
 namespace Sitecore.Ship.Infrastructure.Install
@@ -42,15 +43,11 @@ namespace Sitecore.Ship.Infrastructure.Install
                 {
                     var data = new ZipEntryData(entry2);
 
-                    if (data.Key.EndsWith("}"))
+                    var packageManifestEntry = ZipEntryDataParser.GetManifestEntry(data.Key);
+
+                    if (! (packageManifestEntry is PackageManifestEntryNotFound))
                     {
-                        var elements = data.Key.Split(new[] { "_{" }, 2, StringSplitOptions.None);
-                        manifest.Entries.Add(
-                            new PackageManifestEntry
-                                {
-                                    ID = new Guid(elements[1].Trim(new[] { '{', '}'})), 
-                                    Path = elements[0]
-                                });        
+                        manifest.Entries.Add(packageManifestEntry);
                     }
                 }
             }

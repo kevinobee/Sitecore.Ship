@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 using Sitecore.Ship.Infrastructure.Install;
@@ -56,7 +56,6 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
             Assert.Equal("addeditems/master/sitecore/content/home", response.Entries[0].Path);
         }
 
-
         [Fact]
         public void Process_should_return_added_item_field_values_for_multiple_items()
         {
@@ -70,7 +69,6 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
             // Assert
             Assert.True(response.Entries.Count > 1);
         }
-     
 
         [Fact]
         public void Process_should_throw_invalid_operation_exception_if_package_not_found()
@@ -92,6 +90,20 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
 
             // Assert
             Assert.NotNull(exceptionThrown);
+        }
+
+        [Fact]
+        public void Process_should_return_added_item_field_values_for_templates()
+        {
+            // Arrange
+            const string testPackagePath = @"..\..\..\..\..\build\sitecore packages\SitecoreShip.zip";
+            var reader = new PackageManifestReader();
+
+            // Act
+            var response = reader.GetManifest(testPackagePath);
+
+            // Assert
+            Assert.True(response.Entries.Count(x => x.Path.ToLower().Contains("master/sitecore/templates")) > 1, "No template items found in package");
         }
     }
 }

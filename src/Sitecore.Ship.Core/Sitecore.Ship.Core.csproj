@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\PublishParameters.cs" />
     <Compile Include="Services\InstallationRecorder.cs" />
+    <Compile Include="Services\ZipEntryDataParser.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="HttpRequestAuthoriser.cs" />
   </ItemGroup>
