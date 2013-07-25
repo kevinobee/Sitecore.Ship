@@ -22,12 +22,17 @@ namespace Sitecore.Ship.Infrastructure.Update
             _manifestRepository = manifestRepository;
         }
 
-        public PackageManifest Execute(string packagePath)
+        public PackageManifest Execute(string packagePath, bool disableIndexing)
         {
             if (!File.Exists(packagePath)) throw new NotFoundException();
 
             using (new ShutdownGuard())
             {
+                if (disableIndexing)
+                {
+                    Sitecore.Configuration.Settings.Indexing.Enabled = false;
+                }
+
                 var installationInfo = GetInstallationInfo(packagePath);
                 string historyPath = null;
                 List<ContingencyEntry> entries = null;
@@ -45,6 +50,11 @@ namespace Sitecore.Ship.Infrastructure.Update
                 }
                 finally
                 {
+                    if (disableIndexing)
+                    {
+                        Sitecore.Configuration.Settings.Indexing.Enabled = true;
+                    }
+
                     UpdateHelper.SaveInstallationMessages(entries, historyPath);
                 }
             }

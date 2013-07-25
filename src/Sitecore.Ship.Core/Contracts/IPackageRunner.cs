@@ -4,6 +4,6 @@ namespace Sitecore.Ship.Core.Contracts
 {
     public interface IPackageRunner
     {
-        PackageManifest Execute(string packagePath);
+        PackageManifest Execute(string packagePath, bool disableIndexing);
     }
 }

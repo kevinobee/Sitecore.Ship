@@ -14,7 +14,7 @@ namespace Sitecore.Ship.Core
 
         public PackageManifest AddPackage(InstallPackage package)
         {
-            return _packageRunner.Execute(package.Path);
+            return _packageRunner.Execute(package.Path, package.DisableIndexing);
         }
     }
 }

@@ -100,7 +100,11 @@ namespace Sitecore.Ship.Package.Install
                 PackageManifest manifest;
                 try
                 {
-                    var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
+                    var package = new InstallPackage
+                                      {
+                                          Path = _tempPackager.GetPackageToInstall(file.Value), 
+                                          DisableIndexing = uploadPackage.DisableIndexing
+                                      };
                     manifest = _repository.AddPackage(package);
                     _installationRecorder.RecordInstall(uploadPackage.PackageId, uploadPackage.Description, DateTime.Now);
                 }

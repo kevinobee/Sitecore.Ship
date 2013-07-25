@@ -5,7 +5,11 @@ Sitecore.Ship is a lightweight means to install Sitecore Update packages via HTT
 
 ## Instructions for Use
 
-This is an early proof of concept and as such packages have not been pushed to NuGet.org
+The latest release versions of the Sitecore.Ship packages can be found on the NuGet gallery:
+
+* [Sitecore.Ship](http://www.nuget.org/packages/Sitecore.Ship/) 
+* [Sitecore.Ship.AspNet](http://www.nuget.org/packages/Sitecore.Ship.AspNet/) 
+
 
 ### Building the Package
 
@@ -48,7 +52,7 @@ Run the following commands:
 
 #### Install Package - Specify Server File Path
 
-Issue a POST request to `/services/package/install` and pass it a path parameter in x-www-form-urlencoded form-data specifying the location of the update package.
+Issue a POST request to `/services/package/install` and pass it a path parameter in the x-www-form-urlencoded form-data specifying the location of the update package.
 
 Example:
 
@@ -74,6 +78,10 @@ The body of a successfull request will contain details of the package contents i
 
      {"Entries":[{"ID":"110d559f-dea5-42ea-9c1c-8a5df7e70ef9","Path":"addeditems/master/sitecore/content/home"}]}
 
+The request also takes an optional `DisableIndexing` parameter in the x-www-form-urlencoded form-data which defaults to *false*. When the parameter is set to *true* updating of search indexes during the package installation will be suspended. Disabling the search index updates will increase the speed at which packages are installed into the CMS. You can read more about this approach on Alex Shyba's 
+[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard – disable search index update during install")
+ 
+
 
 #### Install Package - File Upload
 
@@ -94,7 +102,7 @@ Example:
     ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
 
-Refer to the `Install Package - Specify Server File Path` above for details of the commands response format.
+The request also accepts an optional `DisableIndexing` parameter. For details of this and information on the command's response format refer to the `Install Package - Specify Server File Path` above.
 
 *Note* that if you have `recordInstallationHistory` enabled you will need to provide `PackageId` and `Description` form parameters in the request that you make.
 
