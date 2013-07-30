@@ -49,5 +49,32 @@ namespace Sitecore.Ship.Core.Test.Services
             Assert.Equal(new Guid("C2B9B6C7-5F2F-4638-9A1C-244557BE959E"), manifestEntry.ID);
             Assert.Equal("items/master/sitecore/templates/SitecoreShip/InstalledPackage", manifestEntry.Path);
         }
+
+        [Fact]
+        public void File_key_can_be_parsed_into_path_and_empty_guid()
+        {
+            // Arrange
+            const string dataKey = "files/xsl/system/WebEdit/Hidden Rendering.xslt";
+
+            // Act
+            var manifestEntry = ZipEntryDataParser.GetManifestEntry(dataKey);
+
+            // Assert
+            Assert.Null(manifestEntry.ID);
+            Assert.Equal("/xsl/system/WebEdit/Hidden Rendering.xslt", manifestEntry.Path);
+        }
+
+        [Fact]
+        public void Manifest_not_found_should_be_returned_for_properties()
+        {
+            // Arrange
+            const string dataKey = "properties/files/xsl/system/WebEdit/Hidden Rendering.xslt";
+
+            // Act
+            var manifestEntry = ZipEntryDataParser.GetManifestEntry(dataKey);
+
+            // Assert
+            Assert.IsType<PackageManifestEntryNotFound>(manifestEntry);
+        }
     }
 }

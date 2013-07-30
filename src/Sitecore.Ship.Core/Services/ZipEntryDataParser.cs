@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Core.Services
@@ -7,7 +8,7 @@ namespace Sitecore.Ship.Core.Services
     {
         public static PackageManifestEntry GetManifestEntry(string dataKey)
         {
-            if (dataKey.EndsWith("}"))
+            if (dataKey.EndsWith("}", StringComparison.InvariantCultureIgnoreCase))
             {
                 var elements = dataKey.Split(new[] { "_{" }, 2, StringSplitOptions.None);
 
@@ -17,8 +18,8 @@ namespace Sitecore.Ship.Core.Services
                         Path = elements[0]
                     };
             }
-            
-            if (dataKey.EndsWith("/xml"))
+
+            if (dataKey.EndsWith("/xml", StringComparison.InvariantCultureIgnoreCase))
             {
                 var elements = dataKey.Split(new[] { "/{" }, 2, StringSplitOptions.None);
                 
@@ -29,6 +30,12 @@ namespace Sitecore.Ship.Core.Services
                     };
             }
 
+            const string filesPrefix = "files";
+            if (dataKey.StartsWith(filesPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new FileManifestEntry(dataKey.Substring(filesPrefix.Length));
+            }
+            
             return new PackageManifestEntryNotFound();
         }
     }
