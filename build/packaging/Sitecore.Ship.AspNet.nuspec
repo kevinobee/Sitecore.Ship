@@ -9,7 +9,7 @@
     <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Sitecore package installer and remote publishing over HTTP. This package is built using native ASP.NET functionality and takes no dependency on the Nancy framework.</description>
-    <releaseNotes>This is a development release version of the package.</releaseNotes>
+    <releaseNotes>0.3.5 - support for Sitecore 7 added</releaseNotes>
     <tags>Sitecore Update Package Deploy</tags>
     <language>en-GB</language>
   </metadata>

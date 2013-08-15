@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MajorVersion>0</MajorVersion>
     <MinorVersion>3</MinorVersion>
-    <PatchVersion>4</PatchVersion>
+    <PatchVersion>5</PatchVersion>
 
    
   <!-- Change PRERELEASE to an empty value or comment out the tag to prevent package names being generated with a -->

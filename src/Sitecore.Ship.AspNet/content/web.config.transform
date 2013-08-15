@@ -6,7 +6,7 @@
   <packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" recordInstallationHistory="false" />
   <system.web>
     <httpHandlers>
-      <add verb="*" type="Sitecore.Ship.AspNet.SitecoreShipHttpHandler, Sitecore.Ship.AspNet" path="services/*" />
+      <add verb="*" type="Sitecore.Ship.AspNet.SitecoreShipHttpHandler, Sitecore.Ship.AspNet" path="/services/*" />
     </httpHandlers>
   </system.web>
   <system.webServer>
@@ -14,7 +14,7 @@
     <validation validateIntegratedModeConfiguration="false"/>
     <handlers>
       <remove name="Sitecore.Ship" />
-      <add name="Sitecore.Ship" verb="*" type="Sitecore.Ship.AspNet.SitecoreShipHttpHandler, Sitecore.Ship.AspNet" path="services/*"  />
+      <add name="Sitecore.Ship" verb="*" type="Sitecore.Ship.AspNet.SitecoreShipHttpHandler, Sitecore.Ship.AspNet" path="/services/*"  />
     </handlers>
   </system.webServer>
 </configuration>

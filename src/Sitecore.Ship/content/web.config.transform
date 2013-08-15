@@ -9,9 +9,8 @@
     <bootstrapper assembly="Sitecore.Ship" type="Sitecore.Ship.DefaultBootstrapper, Sitecore.Ship" />
   </nancyFx>
   <system.web>
-    <compilation debug="false" targetFramework="4.0" />
     <httpHandlers>
-      <add verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="services/*" />
+      <add verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="/services/*" />
     </httpHandlers>
   </system.web>
   <system.webServer>
@@ -19,7 +18,7 @@
     <validation validateIntegratedModeConfiguration="false"/>
     <handlers>
       <remove name="Nancy" />
-      <add name="Nancy" verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="services/*"  />
+      <add name="Nancy" verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="/services/*"  />
     </handlers>
   </system.webServer>
 </configuration>
