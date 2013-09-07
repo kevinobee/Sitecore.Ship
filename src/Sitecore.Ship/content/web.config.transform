@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<configuration>
+  <configSections>
+    <section name="packageInstallation" type="Sitecore.Ship.Infrastructure.Configuration.PackageInstallationConfiguration, Sitecore.Ship.Infrastructure"/>
+    <section name="nancyFx" type="Nancy.Hosting.Aspnet.NancyFxSection" />
+  </configSections>
+  <packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" recordInstallationHistory="false" />
+  <nancyFx>
+    <bootstrapper assembly="Sitecore.Ship" type="Sitecore.Ship.DefaultBootstrapper, Sitecore.Ship" />
+  </nancyFx>
+  <system.web>
+    <httpHandlers>
+      <add verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="/services/*" />
+    </httpHandlers>
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true"/>
+    <validation validateIntegratedModeConfiguration="false"/>
+    <handlers>
+      <remove name="Nancy" />
+      <add name="Nancy" verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="/services/*"  />
+    </handlers>
+  </system.webServer>
+</configuration>

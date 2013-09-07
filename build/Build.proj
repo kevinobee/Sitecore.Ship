@@ -1,137 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Go" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildProjectDirectory)\Build.tasks" />
-  <Import Project="$(MSBuildProjectDirectory)\Ship.versions.targets" />
-  
   <PropertyGroup>
-    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
-    <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
-    <LibsSrcPath>D:\LibsSrc\6\6.6\Update-4</LibsSrcPath>
-    <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
-    <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
-    <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
-    <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
-    <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
-    <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
-    <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
-    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
-    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
-    <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
-    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-    <NunitPath>$(ToolsPath)\nunit</NunitPath>
+    <ProjectName>Sitecore.Ship</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\versions.targets" />
+  <Import Project="$(MSBuildProjectDirectory)\build.targets" />
+
+  <!-- Read in environment properties from environment.props if present -->
+  <Import Project="$(MSBuildProjectDirectory)\environment.props" Condition="Exists('$(MSBuildProjectDirectory)\environment.props')" />
+  
+  <!-- Provide defaults for values for environment properties if environment.props is not present -->
+  <PropertyGroup>
+    <TestWebsitePath Condition="$(TestWebsitePath) == ''">C:\Websites\shiptest\Website</TestWebsitePath>
+    <TestWebsiteUrl Condition="$(TestWebsiteUrl) == ''">http://shiptest/</TestWebsiteUrl>
+    <LibsSrcPath Condition="$(LibsSrcPath) == ''">C:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(ToolsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.NUnit" />
-  
-  <PropertyGroup>
-    <!-- Build number is of the format (CurrentYear - VersionStartYear + 1)(2 digit month)(2 digit day) -->
-    <BuildDate>$([MSBuild]::Add(1, $([MSBuild]::Subtract($([System.DateTime]::Now.Year), $(VersionStartYear)))))$([System.DateTime]::Now.ToString("MMdd"))</BuildDate>
-    <Revision Condition="$(BUILD_NUMBER) != ''">$(BUILD_NUMBER)</Revision>
-    <Revision Condition="$(BUILD_NUMBER) == ''">0</Revision>
-    <PrereleaseTagWithSeparator Condition="$(PRERELEASE) != ''">.$([System.DateTime]::Now.ToString("yyMMdd"))</PrereleaseTagWithSeparator>
-    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
-    <FileVersion>$(MajorVersion).$(MinorVersion).$(BuildDate).$(Revision)</FileVersion>
-    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(PrereleaseTagWithSeparator)</PackageVersion>
-  </PropertyGroup>
-
-  <Target Name="CopyLibs">
-    <ItemGroup>
-      <LibFiles Include="$(LibsSrcPath)\*.dll" />
-    </ItemGroup>
-      
-      <Copy
-          SourceFiles="@(LibFiles)"
-          DestinationFolder="$(LibsDestPath)"
-        />
-  </Target>
-  
-  <Target Name="Clean">
-    <RemoveDir Directories="$(ArtifactsPath)"  />
-  </Target>
-
-  <Target Name="Init" DependsOnTargets="Clean; CopyLibs">
-    <MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
-    <MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
-    <MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />        
-    <MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
-  </Target>
-
-  <Target Name="Build" DependsOnTargets="Init">
-    <MSBuild Projects="$(ProjectRoot)\Ship.sln"
-             Targets="Build"
-             Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
-  </Target>
-  
-  <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
-    <ItemGroup>
-      <AnalysisProjects Include="$(ProjectRoot)\src\Ship\Ship.csproj;$(ProjectRoot)\src\Ship.Web\Ship.Web.csproj" />
-    </ItemGroup>
-
-    <MSBuild Projects="%(AnalysisProjects.Identity)"
-             Targets="ReBuild"
-             Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
-
-    <!-- Remove the build artifacts -->
-    <ItemGroup>
-      <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
-    </ItemGroup>
-
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
-  
   <ItemGroup>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
-      <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
-    </RegexTransform>
+    <LibFiles Include="$(LibsSrcPath)\Sitecore.Client.dll" />
+    <LibFiles Include="$(LibsSrcPath)\Sitecore.Kernel.dll" />
+    <LibFiles Include="$(LibsSrcPath)\Sitecore.Logging.dll" />
+    <LibFiles Include="$(LibsSrcPath)\Sitecore.Update.dll" />
+    <LibFiles Include="$(LibsSrcPath)\Sitecore.Zip.dll" />
   </ItemGroup>
 
-  <Target Name="UpdateVersion">
-    <RegexTransform Items="@(RegexTransform)" />
-  </Target>
+  <Target Name="RunSmokeTests" DependsOnTargets="Build">
+    <PropertyGroup>
+      <SitecoreShipPackagePath>$(ProjectRoot)\build\sitecore packages\SitecoreShip.zip</SitecoreShipPackagePath>
+      <TestPackagePath>$(ProjectRoot)\tests\acceptance-test\01-package.update</TestPackagePath>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectSrcAssemblies Include="$(BuildResultsPath)\Sitecore*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />
+    </ItemGroup>
 
-  <Target Name="RunUnitTests" DependsOnTargets="Build">
-    <CreateItem Include="$(BuildResultsPath)\*.Tests.dll">
-      <Output TaskParameter="Include" ItemName="TestAssembly" />
-    </CreateItem>
+    <Copy
+          SourceFiles="@(ProjectSrcAssemblies)"
+          DestinationFolder="$(TestWebsitePath)\bin"
+        /> 
+  
+    <!-- Site root page -->
+    <Exec Command="$(CurlExePath) $(TestWebsiteUrl)" />
+
+    <!-- Ship About page -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/about" />
+
+    <!-- Install the SitecoreShip content package -->
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(SitecoreShipPackagePath)&quot; $(TestWebsiteUrl)services/package/install/fileupload -F &quot;PackageId=00&quot; -F &quot;Description=Sitecore Ship package&quot;"  />
+
+    <!-- Show the last completed publish time (before publishing) -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted  "  />
+
+    <!-- Smart Publish -->
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/publish/smart --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot;" />
    
-    <NUnit
-      ToolPath="$(NunitPath)"
-      DisableShadowCopy="true"
-      Assemblies="@(TestAssembly)"
-      OutputXmlFile="$(OutputXmlFile)"
-      ExcludeCategory="Acceptance;Database;Integration;Smoke" />   
+    <!-- Package install via Form Path parameter -->
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/package/install -H &quot;Accept:application/json&quot; -F &quot;path=$(TestPackagePath)&quot;"  />
 
-  </Target>
+    <!-- Package install via File Upload -->
+    <Exec Command="$(CurlExePath) -i --form &quot;path=@$(TestPackagePath)&quot; $(TestWebsiteUrl)services/package/install/fileupload -F &quot;PackageId=02&quot; -F &quot;Description=File Upload&quot; -F &quot;DisableIndexing=true&quot;"  />
+    
+    <!-- Package latest version check -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/package/latestversion"  />
 
-  <Target Name="ReportUnitTests" DependsOnTargets="RunUnitTests">
-    <Message Text="##teamcity[importData type='nunit' path='$(OutputXmlFile)']" />    
-  </Target>          
-  
-  <Target Name="RunTests" DependsOnTargets="RunUnitTests; "> <!-- Add other test types as depends here -->
+    <!-- Show the last completed publish time (after publishing) -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted"  />
+    
+    <!-- Show the last completed publish time (after publishing) specifying source/target/language parameters -->
+    <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted/master/web/en"  />
+    
   </Target>
-
-  <Target Name="StdPackage">
-<!--    <CreateItem Include="$(PackagingPath)\*.nuspec">-->
-<!--      <Output TaskParameter="Include" ItemName="NuspecFile" />-->
-<!--    </CreateItem>-->
-
-    <Exec 
-        Command="$(NuGetExePath) pack $(PackagingPath)\Sitecore.Ship.nuspec -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
-  </Target>
-  
-  <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
-  </Target>
-
-  <Target Name="GoCI" DependsOnTargets="UpdateVersion; CopyLibs; Build">
-  </Target>
-  
+ 
 </Project>
