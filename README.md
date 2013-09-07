@@ -218,9 +218,9 @@ The `build.proj` file contains a set of smoke tests to verify that the Sitecore.
 
 In order to run these smoke tests you will need to:
 
-* Have a local install of Sitecore 6.6.
+* Have a local install of Sitecore.
 
-* Set the *TestWebsitePath* and *TestWebsiteUrl* in the **build\Ship.environment.props** to reference the local Sitecore 6.6 website.
+* Set the *TestWebsitePath* and *TestWebsiteUrl* in the **build\environment.props** to reference the local Sitecore website.
 
 * Ensure that the test website has the Ship package installed by running the following in the Package Manager Console:
 

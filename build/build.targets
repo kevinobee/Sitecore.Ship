@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildProjectDirectory)\build.props" />
+  <Import Project="$(MSBuildProjectDirectory)\build.tasks" />
+
+  <UsingTask
+    AssemblyFile="$(XunitPath)\xunit.runner.msbuild.dll"
+    TaskName="Xunit.Runner.MSBuild.xunit"/>
+  
+  <Target Name="CopyLibs">
+    <Copy
+        SourceFiles="@(LibFiles)"
+        DestinationFolder="$(LibsDestPath)"
+        />
+  </Target>
+
+  <Target Name="Clean">
+    <RemoveDir Directories="$(ArtifactsPath)"  />
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Clean; CopyLibs">
+    <MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
+    <MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
+    <MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />
+    <MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="Init">
+    <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
+             Targets="ReBuild"
+             Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
+  </Target>
+
+  <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
+    <ItemGroup>
+      <AnalysisProjects Include="$(ProjectRoot)\src\**\*.csproj" />
+    </ItemGroup>
+
+    <MSBuild Projects="%(AnalysisProjects.Identity)"
+             Targets="ReBuild"
+             Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
+
+    <!-- Remove the build artifacts -->
+    <ItemGroup>
+      <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
+    </ItemGroup>
+
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+
+  <ItemGroup>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
+      <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
+    </RegexTransform>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
+      <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
+    </RegexTransform>
+    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+      <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
+      <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
+    </RegexTransform>
+  </ItemGroup>
+
+  <Target Name="UpdateVersion">
+    <RegexTransform Items="@(RegexTransform)" />
+  </Target>
+
+  <Target Name="RunUnitTests" DependsOnTargets="Build">
+    <ItemGroup>
+      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" Exclude="$(BuildResultsPath)\*.Intg.Test.dll" />
+    </ItemGroup>
+
+    <xunit
+        Assemblies="@(TestAssemblies)"
+        WorkingFolder="$(XunitPath)"
+        Xml="$(OutputXmlFile)"
+        Html="$(OutputHtmlFile)"/>
+
+  </Target>
+
+  <Target Name="RunTests" DependsOnTargets="RunUnitTests; ">
+  </Target>
+
+  <Target Name="StdPackage" DependsOnTargets="Build">
+    <ItemGroup>
+      <NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+    </ItemGroup>
+    <Exec Command="$(NuGetExePath) pack  %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)"/>
+  </Target>
+
+  <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
+  </Target>
+
+  <Target Name="GoCI" DependsOnTargets="UpdateVersion; Build">
+  </Target>
+</Project>

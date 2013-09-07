@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+    <ProjectRoot>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..'))</ProjectRoot>
+    <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
+    <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
+    <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
+    <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
+    <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
+    <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
+    <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
+    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
+    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+    <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
+    <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
+    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
+    <XunitPath>$(ProjectRoot)\packages\xunit.1.9.1\lib\net20</XunitPath>
+    <CurlPath>$(ToolsPath)\curl</CurlPath>
+    <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Build number is of the format (CurrentYear - VersionStartYear + 1)(2 digit month)(2 digit day) -->
+    <BuildDate>$([MSBuild]::Add(1, $([MSBuild]::Subtract($([System.DateTime]::Now.Year), $(VersionStartYear)))))$([System.DateTime]::Now.ToString("MMdd"))</BuildDate>
+    <Revision Condition="$(BUILD_NUMBER) != ''">$(BUILD_NUMBER)</Revision>
+    <Revision Condition="$(BUILD_NUMBER) == ''">0</Revision>
+    <PrereleaseTagWithSeparator Condition="$(PRERELEASE) != ''">.$([System.DateTime]::Now.ToString("yyMMdd"))</PrereleaseTagWithSeparator>
+    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
+    <FileVersion>$(MajorVersion).$(MinorVersion).$(BuildDate).$(Revision)</FileVersion>
+    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(PrereleaseTagWithSeparator)</PackageVersion>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Uncomment any of the following settings if you wish to override the default locations provided
+    
+    ** DO NOT COMMIT changes made to this file back to GIT **
+    
+    <TestWebsitePath>C:\Websites\shiptest\Website</TestWebsitePath>
+    <TestWebsiteUrl>http://shiptest/</TestWebsiteUrl>
+    <LibsSrcPath>C:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
+    
+     -->
+  </PropertyGroup>
+</Project>

@@ -1,4 +1,4 @@
-## Building the Sitecore.Mvc.Contrib Project
+## Building the Project
 
 From the checkout directory just run `.\build`  to invoke an automated release build of the project.
 
@@ -14,7 +14,7 @@ The outputs from the automated build will be written to the `artifacts\Release` 
 
 *   Packages
 
-    NuGet package for `Sitecore.Mvc.Contrib`
+    NuGet package generated for the project
 
 *   TestResults
 
