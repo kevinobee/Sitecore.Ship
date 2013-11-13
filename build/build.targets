@@ -9,8 +9,11 @@
     TaskName="Xunit.Runner.MSBuild.xunit"/>
   
   <Target Name="CopyLibs">
+    <ItemGroup>
+      <CopyLibFiles Include="@(LibFiles -> '$(LibsSrcPath)\%(Identity)')" />
+    </ItemGroup>
     <Copy
-        SourceFiles="@(LibFiles)"
+        SourceFiles="@(CopyLibFiles)"
         DestinationFolder="$(LibsDestPath)"
         />
   </Target>

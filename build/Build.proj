@@ -17,11 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <LibFiles Include="$(LibsSrcPath)\Sitecore.Client.dll" />
-    <LibFiles Include="$(LibsSrcPath)\Sitecore.Kernel.dll" />
-    <LibFiles Include="$(LibsSrcPath)\Sitecore.Logging.dll" />
-    <LibFiles Include="$(LibsSrcPath)\Sitecore.Update.dll" />
-    <LibFiles Include="$(LibsSrcPath)\Sitecore.Zip.dll" />
+    <LibFiles Include="Sitecore.Client.dll" />
+    <LibFiles Include="Sitecore.Kernel.dll" />
+    <LibFiles Include="Sitecore.Logging.dll" />
+    <LibFiles Include="Sitecore.Update.dll" />
+    <LibFiles Include="Sitecore.Zip.dll" />
   </ItemGroup>
 
   <Target Name="RunSmokeTests" DependsOnTargets="Build">
@@ -30,7 +30,8 @@
       <TestPackagePath>$(ProjectRoot)\tests\acceptance-test\01-package.update</TestPackagePath>
     </PropertyGroup>
     <ItemGroup>
-      <ProjectSrcAssemblies Include="$(BuildResultsPath)\Sitecore*.dll; " Exclude="$(BuildResultsPath)\*.Test.dll" />
+      <ProjectSrcAssemblies Include="$(BuildResultsPath)\Sitecore*.dll; " 
+                            Exclude="@(LibFiles -> '$(BuildResultsPath)\%(Identity)'); $(BuildResultsPath)\*.Test.dll; " />
     </ItemGroup>
 
     <Copy
