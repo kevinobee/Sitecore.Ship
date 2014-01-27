@@ -148,7 +148,33 @@ Example:
 
 Issue a GET request to `/services/publish/lastcompleted/{source}/{target}/{language}` to review the timestamp of the last publish operation. The `{source}`, `{target}` and `{language}` parameters are optional and will default to `master`, `web` and `en` respectively if not specified in the request.
 
+To publish a list of items
 
+Issue a Post to '/services/publish/listofitems' with JSON  like the following:
+	
+	{
+    
+		"Items": [
+					 {
+						"itemId" : "{DEDCC8EB-F542-449C-9EFA-4F248EDB900B}",
+						"PublishChildren": "false"
+					},
+					 {
+						"itemId" : "{CE0A2933-AB9B-4131-ABD2-DE7C2A69FBB9}",
+						"PublishChildren": "false"
+					}
+				 ],
+			
+
+		"TargetDatabases": [
+							"#TargetDatabase#"
+						   ],
+		"TargetLanguages": [
+							"en"
+						   ]
+        
+   
+	}
 
 #### About
 

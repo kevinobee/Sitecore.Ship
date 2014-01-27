@@ -26,6 +26,24 @@ namespace Sitecore.Ship.Infrastructure
                 };
         }
 
+        public void Run(ItemsToPublish itemsToPublish)
+        {
+            using (new SecurityModel.SecurityDisabler())
+            {
+                var master = Sitecore.Configuration.Factory.GetDatabase("master");
+                var languages = itemsToPublish.TargetLanguages.Select(LanguageManager.GetLanguage).ToArray();
+
+                foreach (var itemToPublish in itemsToPublish.Items)
+                {
+                    var item = master.GetItem(new ID(itemToPublish));
+                    if (item != null)
+                    {
+                        Publishing.PublishManager.PublishItem(item, itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray(), languages, true, true);
+                    }
+                }
+            }
+        }
+
         public void Run(PublishParameters publishParameters)
         {
             var publishingMode = publishParameters.Mode.ToLower();

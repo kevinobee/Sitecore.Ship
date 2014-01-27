@@ -23,6 +23,7 @@ namespace Sitecore.Ship.Publish
             Before += AuthoriseRequest; 
 
             Post["/{mode}"] = InvokePublishing;
+            Post["/listofitems"] = InvokePublishingOfListOfItems;
             Get["/lastcompleted"] = LastCompleted;
             Get["/lastcompleted/{source}/{target}/{language}"] = LastCompleted;
         }
@@ -77,6 +78,18 @@ namespace Sitecore.Ship.Publish
             var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
             _publishService.Run(publishParameters);
+
+            return Response.AsJson(date, HttpStatusCode.Accepted);
+        }
+
+        private dynamic InvokePublishingOfListOfItems(dynamic o)
+        {
+            var itemsToPublish = this.Bind<ItemsToPublish>();
+
+            var now = DateTime.Now;
+            var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+            _publishService.Run(itemsToPublish);
 
             return Response.AsJson(date, HttpStatusCode.Accepted);
         }
