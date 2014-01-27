@@ -13,7 +13,7 @@
   <PropertyGroup>
     <TestWebsitePath Condition="$(TestWebsitePath) == ''">C:\Websites\shiptest\Website</TestWebsitePath>
     <TestWebsiteUrl Condition="$(TestWebsiteUrl) == ''">http://shiptest/</TestWebsiteUrl>
-    <LibsSrcPath Condition="$(LibsSrcPath) == ''">C:\LibsSrc\6\6.6\Update-5</LibsSrcPath>
+    <LibsSrcPath Condition="$(LibsSrcPath) == ''">C:\Projects\Sitecore.Ship\lib</LibsSrcPath>
   </PropertyGroup>
 
   <ItemGroup>

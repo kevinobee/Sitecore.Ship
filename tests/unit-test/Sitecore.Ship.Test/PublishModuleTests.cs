@@ -233,5 +233,17 @@ namespace Sitecore.Ship.Test
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(expected.ToLongTimeString(), date.ToLongTimeString());
         }
+
+        [Fact]
+        public void Should_return_http_accepted_when_listofitems_called()
+        {
+            // Arrange
+            _mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
+
+            //Act
+            var response = _browser.Post("/services/publish/listofitems");
+
+            Assert.Equal(HttpStatusCode.Accepted, response.StatusCode);
+        }
     }
 }
