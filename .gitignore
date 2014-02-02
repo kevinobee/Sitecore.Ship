@@ -29,6 +29,8 @@ TestResults
 build/environment.props
 lib/*.dll
 lib/*.pdb
+lib/*.xml
+lib/*.lic
 /packages
 
 # Build ignores
