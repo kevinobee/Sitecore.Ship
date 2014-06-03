@@ -4,6 +4,6 @@ namespace Sitecore.Ship.Core.Contracts
 {
     public interface IPackageRepository
     {
-        void AddPackage(InstallPackage package);
+        PackageManifest AddPackage(InstallPackage package);
     }
 }

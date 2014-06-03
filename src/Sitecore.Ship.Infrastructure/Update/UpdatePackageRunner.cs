@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
+using Sitecore.Ship.Core.Domain;
 using Sitecore.Update;
 using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
@@ -14,19 +15,32 @@ namespace Sitecore.Ship.Infrastructure.Update
 {
     public class UpdatePackageRunner : IPackageRunner
     {
-        public void Execute(string packagePath)
+        private readonly IPackageManifestRepository _manifestRepository;
+
+        public UpdatePackageRunner(IPackageManifestRepository manifestRepository)
+        {
+            _manifestRepository = manifestRepository;
+        }
+
+        public PackageManifest Execute(string packagePath, bool disableIndexing)
         {
             if (!File.Exists(packagePath)) throw new NotFoundException();
 
             using (new ShutdownGuard())
             {
+                if (disableIndexing)
+                {
+                    Sitecore.Configuration.Settings.Indexing.Enabled = false;
+                }
+
                 var installationInfo = GetInstallationInfo(packagePath);
                 string historyPath = null;
                 List<ContingencyEntry> entries = null;
                 try
                 {
-                    var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
+                    var logger = Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
                     entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
+                    return _manifestRepository.GetManifest(packagePath);
                 }
                 catch (PostStepInstallerException exception)
                 {
@@ -36,6 +50,11 @@ namespace Sitecore.Ship.Infrastructure.Update
                 }
                 finally
                 {
+                    if (disableIndexing)
+                    {
+                        Sitecore.Configuration.Settings.Indexing.Enabled = true;
+                    }
+
                     UpdateHelper.SaveInstallationMessages(entries, historyPath);
                 }
             }

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+
 using Nancy;
 using Nancy.ModelBinding;
+
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure.Web;
 
 namespace Sitecore.Ship.Package.Install
 {
@@ -14,15 +18,17 @@ namespace Sitecore.Ship.Package.Install
         private readonly IPackageRepository _repository;
         private readonly IAuthoriser _authoriser;
         private readonly ITempPackager _tempPackager;
+        private readonly IInstallationRecorder _installationRecorder;
 
         const string StartTime = "start_time";
 
-        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager)
+        public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager, IInstallationRecorder installationRecorder)
             : base("/services")
         {
             _repository = repository;
             _authoriser = authoriser;
             _tempPackager = tempPackager;
+            _installationRecorder = installationRecorder;
 
             Before += AuthoriseRequest; 
             
@@ -37,14 +43,15 @@ namespace Sitecore.Ship.Package.Install
             Post["/package/install/fileupload"] = InstallUploadPackage;
 
             Post["/package/install"] = InstallPackage;
+
+            Get["/package/latestversion"] = LatestVersion;
         }
 
         private Response AuthoriseRequest(NancyContext ctx)
         {
             if (!_authoriser.IsAllowed())
             {
-                ctx.Response = 
-                 new Response {StatusCode = HttpStatusCode.Unauthorized};
+                ctx.Response = new Response {StatusCode = HttpStatusCode.Unauthorized};
             }
             return null;
         }
@@ -52,7 +59,7 @@ namespace Sitecore.Ship.Package.Install
         private static void AddProcessingTimeToResponse(NancyContext ctx)
         {
             var processTime = (DateTime.UtcNow - (DateTime)ctx.Items[StartTime]).TotalMilliseconds;
-            System.Diagnostics.Debug.WriteLine("Processing Time: " + processTime);
+
             ctx.Response.WithHeader("x-processing-time", processTime.ToString(CultureInfo.InvariantCulture));
         }
 
@@ -61,8 +68,12 @@ namespace Sitecore.Ship.Package.Install
             try
             {
                 var package = this.Bind<InstallPackage>();
-                _repository.AddPackage(package);
-                return Response.AsNewPackage(package);
+                var manifest = _repository.AddPackage(package);
+                _installationRecorder.RecordInstall(package.Path, DateTime.Now);
+
+                return Response
+                            .AsJson(manifest, HttpStatusCode.Created)
+                            .WithHeader("Location", ShipServiceUrl.PackageLatestVersion);
             }
             catch (NotFoundException)
             {
@@ -79,22 +90,57 @@ namespace Sitecore.Ship.Package.Install
             {
                 var file = Request.Files.FirstOrDefault();
 
+                var uploadPackage = this.Bind<InstallUploadPackage>();
+
                 if (file == null)
                 {
                     return new Response {StatusCode = HttpStatusCode.BadRequest};
                 }
 
+                PackageManifest manifest;
                 try
                 {
-                    var package = new InstallPackage { Path = _tempPackager.GetPackageToInstall(file.Value) };
-                    _repository.AddPackage(package);
+                    var package = new InstallPackage
+                                      {
+                                          Path = _tempPackager.GetPackageToInstall(file.Value), 
+                                          DisableIndexing = uploadPackage.DisableIndexing
+                                      };
+                    manifest = _repository.AddPackage(package);
+                    _installationRecorder.RecordInstall(uploadPackage.PackageId, uploadPackage.Description, DateTime.Now);
                 }
                 finally 
                 {
                     _tempPackager.Dispose();
                 }
 
-                return Response.AsNewPackage(new InstallPackage {Path = file.Name});
+                return Response
+                            .AsJson(manifest, HttpStatusCode.Created)
+                            .WithHeader("Location", ShipServiceUrl.PackageLatestVersion);
+            }
+            catch (NotFoundException)
+            {
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+        }
+
+        private dynamic LatestVersion(dynamic o)
+        {
+            try
+            {
+                var installedPackage = _installationRecorder.GetLatestPackage();
+
+                if (installedPackage is InstalledPackageNotFound)
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.NoContent
+                    }; 
+                }
+
+                return Response.AsJson(installedPackage);
             }
             catch (NotFoundException)
             {

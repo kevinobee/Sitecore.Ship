@@ -1,5 +1,4 @@
-﻿using Sitecore.Ship.Core;
-using Sitecore.Ship.Core.Domain;
+﻿using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Test
 {
@@ -27,6 +26,12 @@ namespace Sitecore.Ship.Test
         public PackageInstallationSettingsBuilder WithPackageStreaming()
         {
             _packageInstallationSettings.AllowPackageStreaming = true;
+            return this;
+        }
+
+        public PackageInstallationSettingsBuilder WithInstallationHistory()
+        {
+            _packageInstallationSettings.RecordInstallationHistory = true;
             return this;
         }
 

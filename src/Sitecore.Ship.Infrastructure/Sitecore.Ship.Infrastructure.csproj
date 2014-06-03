@@ -31,15 +31,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sitecore.Client">
+      <HintPath>..\..\Lib\Sitecore.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Sitecore.Kernel">
-      <HintPath>..\..\lib\Sitecore.Kernel.dll</HintPath>
+      <HintPath>..\..\Lib\Sitecore.Kernel.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.Logging, Version=1.2.0.30715, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Sitecore.Logging.dll</HintPath>
+      <HintPath>..\..\Lib\Sitecore.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.Update">
-      <HintPath>..\..\lib\Sitecore.Update.dll</HintPath>
+      <HintPath>..\..\Lib\Sitecore.Update.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Zip, Version=6.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Sitecore.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -52,14 +59,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\CommonVersionInfo.cs">
+      <Link>Properties\CommonVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\GenericConfigurationElementCollection.cs" />
     <Compile Include="Configuration\PackageInstallationConfiguration.cs" />
     <Compile Include="Configuration\PackageInstallationConfigurationProvider.cs" />
+    <Compile Include="DataAccess\PackageHistoryRepository.cs" />
+    <Compile Include="Install\PackageManifestReader.cs" />
     <Compile Include="IO\TempPackager.cs" />
     <Compile Include="Web\HttpRequestChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishService.cs" />
     <Compile Include="Update\UpdatePackageRunner.cs" />
     <Compile Include="Web\ServerTempFile.cs" />
+    <Compile Include="Web\ShipServiceUrl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">

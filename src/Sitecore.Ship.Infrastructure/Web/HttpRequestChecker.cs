@@ -9,5 +9,10 @@ namespace Sitecore.Ship.Infrastructure.Web
         {
             get { return HttpContext.Current.Request.IsLocal; }
         }
+
+        public string UserHostAddress
+        {
+            get { return HttpContext.Current.Request.UserHostAddress; }
+        }
     }
 }

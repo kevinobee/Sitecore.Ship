@@ -17,13 +17,15 @@ namespace Sitecore.Ship.Test
 
         private readonly Mock<IPackageRepository> _mockPackageRepos;
         private readonly Mock<IAuthoriser> _mockAuthoriser;
-        private readonly Mock<ITempPackager> _mockTempPackager; 
+        private readonly Mock<ITempPackager> _mockTempPackager;
+        private readonly Mock<IInstallationRecorder> _mockInstallationRecorder;
 
         public InstallerModuleTests()
         {
             _mockPackageRepos = new Mock<IPackageRepository>();
             _mockAuthoriser = new Mock<IAuthoriser>();
             _mockTempPackager = new Mock<ITempPackager>();
+            _mockInstallationRecorder = new Mock<IInstallationRecorder>();
 
             var bootstrapper = new ConfigurableBootstrapper(with =>
             {
@@ -31,6 +33,7 @@ namespace Sitecore.Ship.Test
                 with.Dependency(_mockPackageRepos.Object);
                 with.Dependency(_mockAuthoriser.Object);
                 with.Dependency(_mockTempPackager.Object);
+                with.Dependency(_mockInstallationRecorder.Object);
             });
 
             _browser = new Browser(bootstrapper);
@@ -54,16 +57,16 @@ namespace Sitecore.Ship.Test
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal("application/x-www-form-urlencoded", response.Context.Request.Headers.ContentType);
-            Assert.True(response.Headers["Location"].Contains("/services/package/install/package.update"), "Location Header mismatch");
+            Assert.Equal("/services/package/latestversion", response.Headers["Location"]);
         }
 
         [Fact]
         public void Should_return_a_processing_time_header()
         {
             // Arrange
-            
+
             // Act
-            var response = _browser.Post("/services/package/install");
+            var response = _browser.Post("/services/package/install", with => with.HttpRequest());
 
             // Assert
             Assert.NotNull(response.Headers["x-processing-time"]);
@@ -116,6 +119,8 @@ namespace Sitecore.Ship.Test
 
             _mockTempPackager.Setup(x => x.GetPackageToInstall(It.IsAny<Stream>())).Returns("foo.update");
 
+            _mockPackageRepos.Setup(x => x.AddPackage(It.IsAny<InstallPackage>())).Returns(new PackageManifest());
+
             // Act
             var response = _browser.Post("/services/package/install/fileupload", with =>
             {
@@ -125,7 +130,7 @@ namespace Sitecore.Ship.Test
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.True(response.Headers["Location"].Contains("/services/package/install/fileupload/foo.update"), "Location Header mismatch");
+            Assert.Equal("/services/package/latestversion", response.Headers["Location"]);
         }
 
         private static Stream CreateFakeFileStream(string thisIsTheContentsOfAFile)
@@ -136,6 +141,58 @@ namespace Sitecore.Ship.Test
             writer.Flush();
             stream.Position = 0;
             return stream;
+        }
+
+        [Fact]
+        public void Should_return_status_no_content_when_package_recording_is_disabled()
+        {
+            _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackageNotFound());
+
+            // Act
+            var response = _browser.Get("/services/package/latestversion", with => with.HttpRequest());
+
+            // Assert
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
+        public void Should_return_valid_json_when_accessing_latestversion()
+        {
+            _mockInstallationRecorder.Setup(x => x.GetLatestPackage()).Returns(new InstalledPackage());
+
+            // Act
+            var response = _browser.Get("/services/package/latestversion", with => with.HttpRequest());
+
+            // Assert
+            var installedPackage = Newtonsoft.Json.JsonConvert.DeserializeObject<InstalledPackage>(response.Body.AsString());
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(installedPackage);
+        }
+
+        [Fact]
+        public void Should_return_json_containing_installed_package_details()
+        {
+            // Arrange
+            var stream = CreateFakeFileStream("This is the contents of a file");
+            var multipart = new BrowserContextMultipartFormData(x => x.AddFile("foo", "foo.update", "text/plain", stream));
+
+            _mockTempPackager.Setup(x => x.GetPackageToInstall(It.IsAny<Stream>())).Returns("foo.update");
+
+            _mockPackageRepos.Setup(x => x.AddPackage(It.IsAny<InstallPackage>())).Returns(new PackageManifest());
+
+            // Act
+            var response = _browser.Post("/services/package/install/fileupload", with =>
+            {
+                with.HttpRequest();
+                with.MultiPartFormData(multipart);
+            });
+
+            //Assert
+            var manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<PackageManifest>(response.Body.AsString());
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.NotNull(manifest.Entries);
         }
     }
 }

@@ -26,6 +26,24 @@ namespace Sitecore.Ship.Infrastructure
                 };
         }
 
+        public void Run(ItemsToPublish itemsToPublish)
+        {
+            using (new SecurityModel.SecurityDisabler())
+            {
+                var master = Sitecore.Configuration.Factory.GetDatabase("master");
+                var languages = itemsToPublish.TargetLanguages.Select(LanguageManager.GetLanguage).ToArray();
+
+                foreach (var itemToPublish in itemsToPublish.Items)
+                {
+                    var item = master.GetItem(new ID(itemToPublish));
+                    if (item != null)
+                    {
+                        Publishing.PublishManager.PublishItem(item, itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray(), languages, true, true);
+                    }
+                }
+            }
+        }
+
         public void Run(PublishParameters publishParameters)
         {
             var publishingMode = publishParameters.Mode.ToLower();
@@ -40,7 +58,6 @@ namespace Sitecore.Ship.Infrastructure
 
         public DateTime GetLastCompletedRun(PublishLastCompleted completeParameters)
         {
-
             // please note http://stackoverflow.com/questions/12416141/get-the-date-time-that-sitecore-last-published
 
             var source = Sitecore.Configuration.Factory.GetDatabase(completeParameters.Source);

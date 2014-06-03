@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
+
 using Nancy;
 using Nancy.ModelBinding;
-using Nancy.Serialization.JsonNet;
-using Sitecore.Ship.Core;
+
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
@@ -23,6 +23,7 @@ namespace Sitecore.Ship.Publish
             Before += AuthoriseRequest; 
 
             Post["/{mode}"] = InvokePublishing;
+            Post["/listofitems"] = InvokePublishingOfListOfItems;
             Get["/lastcompleted"] = LastCompleted;
             Get["/lastcompleted/{source}/{target}/{language}"] = LastCompleted;
         }
@@ -41,19 +42,16 @@ namespace Sitecore.Ship.Publish
         {
             var completedRequest = this.Bind<PublishLastCompletedRequest>();
 
-            var parameters = new PublishLastCompleted()
+            var parameters = new PublishLastCompleted
                 {
-                    Language = completedRequest.Language ?? "en",
+                    Source = completedRequest.Source ?? "master",
                     Target = completedRequest.Target ?? "web",
-                    Source = completedRequest.Source ?? "master"
+                    Language = completedRequest.Language ?? "en"
                 };
             
             var date = _publishService.GetLastCompletedRun(parameters);
 
-            return new Nancy.Responses.JsonResponse(date, new JsonNetSerializer())
-                {
-                    StatusCode = HttpStatusCode.OK
-                };
+            return Response.AsJson(date);
         }
 
         private dynamic InvokePublishing(dynamic o)
@@ -72,8 +70,8 @@ namespace Sitecore.Ship.Publish
                 {
                     Mode = publishRequest.Mode,
                     Source = publishRequest.Source ?? "master",
-                    Targets = DecodeCsvStringParam(publishRequest.Targets, new[] {"web"}),
-                    Languages = DecodeCsvStringParam(publishRequest.Languages, new[] {"en"}),
+                    Targets = publishRequest.Targets.CsvStringToStringArray(new[] {"web"}),
+                    Languages = publishRequest.Languages.CsvStringToStringArray(new[] {"en"}),
                 };
 
             var now = DateTime.Now;
@@ -81,18 +79,19 @@ namespace Sitecore.Ship.Publish
 
             _publishService.Run(publishParameters);
 
-
-            return new Nancy.Responses.JsonResponse(date, new JsonNetSerializer())
-                {
-                    StatusCode = HttpStatusCode.Accepted
-                };
+            return Response.AsJson(date, HttpStatusCode.Accepted);
         }
 
-        private static string[] DecodeCsvStringParam(string inputValue, string[] defaultValue)
+        private dynamic InvokePublishingOfListOfItems(dynamic o)
         {
-            if (string.IsNullOrWhiteSpace(inputValue)) return defaultValue;
+            var itemsToPublish = this.Bind<ItemsToPublish>();
 
-            return inputValue.Split(new[] { ',' }).Select(x => x.Trim()).ToArray();
+            var now = DateTime.Now;
+            var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+            _publishService.Run(itemsToPublish);
+
+            return Response.AsJson(date, HttpStatusCode.Accepted);
         }
 
         private static bool IsAllowedPublishingMode(string mode)

@@ -12,9 +12,9 @@ namespace Sitecore.Ship.Core
             _packageRunner = packageRunner;
         }
 
-        public void AddPackage(InstallPackage package)
+        public PackageManifest AddPackage(InstallPackage package)
         {
-            _packageRunner.Execute(package.Path);
+            return _packageRunner.Execute(package.Path, package.DisableIndexing);
         }
     }
 }

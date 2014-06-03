@@ -55,10 +55,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\CommonVersionInfo.cs">
+      <Link>Properties\CommonVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="About\AboutModule.cs" />
     <Compile Include="DefaultBootstrapper.cs" />
     <Compile Include="Package\Install\InstallerModule.cs" />
-    <Compile Include="Package\Install\PackageResponseExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publish\PublishLastCompletedRequest.cs" />
     <Compile Include="Publish\PublishModule.cs" />
