@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Sitecore.Diagnostics;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -9,7 +10,9 @@ using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
 using Sitecore.Update.Installer.Installer.Utils;
 using Sitecore.Update.Installer.Utils;
+using Sitecore.Update.Metadata;
 using Sitecore.Update.Utils;
+using Sitecore.Update.Wizard;
 
 namespace Sitecore.Ship.Infrastructure.Update
 {
@@ -38,9 +41,31 @@ namespace Sitecore.Ship.Infrastructure.Update
                 List<ContingencyEntry> entries = null;
                 try
                 {
-                    var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
+                    var logger = Diagnostics.LoggerFactory.GetLogger(this); // TODO abstractions
                     entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
+
+                    string error = string.Empty;
+
+                    logger.Info("Executing post installation actions.");
+
+                    MetadataView metadata = PreviewMetadataWizardPage.GetMetadata(packagePath, out error);
+
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        DiffInstaller diffInstaller = new DiffInstaller(UpgradeAction.Upgrade);
+                        diffInstaller.ExecutePostInstallationInstructions(packagePath, historyPath,
+                            installationInfo.Mode, metadata, logger, ref entries);
+                    }
+                    else
+                    {
+                        logger.Info("Post installation actions error.");
+                        logger.Error(error);
+                    }
+
+                    logger.Info("Executing post installation actions finished.");
+
                     return _manifestRepository.GetManifest(packagePath);
+
                 }
                 catch (PostStepInstallerException exception)
                 {
@@ -59,7 +84,7 @@ namespace Sitecore.Ship.Infrastructure.Update
                 }
             }
         }
-
+        
         private PackageInstallationInfo GetInstallationInfo(string packagePath)
         {
             var info = new PackageInstallationInfo
