@@ -38,7 +38,7 @@ namespace Sitecore.Ship.Infrastructure.Update
                 List<ContingencyEntry> entries = null;
                 try
                 {
-                    var logger = Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
+                    var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this);  // TODO abstractions
                     entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
                     return _manifestRepository.GetManifest(packagePath);
                 }

@@ -13,6 +13,7 @@ using Sitecore.Ship.Core.Services;
 using Sitecore.Ship.Infrastructure;
 using Sitecore.Ship.Infrastructure.Configuration;
 using Sitecore.Ship.Infrastructure.DataAccess;
+using Sitecore.Ship.Infrastructure.Diagnostics;
 using Sitecore.Ship.Infrastructure.IO;
 using Sitecore.Ship.Infrastructure.Install;
 using Sitecore.Ship.Infrastructure.Update;
@@ -33,23 +34,26 @@ namespace Sitecore.Ship
         {
             base.ConfigureApplicationContainer(container);
 
-            container.Register<IConfigurationProvider<PackageInstallationSettings>>(
-                new PackageInstallationConfigurationProvider());
-
-            container.Register<IPackageRepository>(
-                new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())));
-
-            container.Register<IAuthoriser>(
-                new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()));
-
-            container.Register<ITempPackager>(
-                new TempPackager(new ServerTempFile()));
-
-            container.Register<IPublishService>(
-                new PublishService());
-
-            container.Register<IInstallationRecorder>(
-                new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()));
+//            container.Register<IConfigurationProvider<PackageInstallationSettings>>(
+//                new PackageInstallationConfigurationProvider());
+//
+            container.AutoRegister();
+//            container.Register<IPackageRepository>(
+//                new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())));
+//
+//            container.Register<ILog, Logger>();
+//
+//            container.Register<IAuthoriser>(
+//                new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()));
+//
+//            container.Register<ITempPackager>(
+//                new TempPackager(new ServerTempFile()));
+//
+//            container.Register<IPublishService>(
+//                new PublishService());
+//
+//            container.Register<IInstallationRecorder>(
+//                new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()));
 
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider

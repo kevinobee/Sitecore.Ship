@@ -50,6 +50,7 @@
     <Compile Include="Contracts\ICheckRequests.cs" />
     <Compile Include="Contracts\IConfigurationProvider.cs" />
     <Compile Include="Contracts\IInstallationRecorder.cs" />
+    <Compile Include="Contracts\ILog.cs" />
     <Compile Include="Contracts\IPackageHistoryRepository.cs" />
     <Compile Include="Contracts\IPackageManifestRepository.cs" />
     <Compile Include="Contracts\IPackageRunner.cs" />

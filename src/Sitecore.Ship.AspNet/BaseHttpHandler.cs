@@ -5,6 +5,7 @@ using System.Web;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Infrastructure.Configuration;
+using Sitecore.Ship.Infrastructure.Diagnostics;
 using Sitecore.Ship.Infrastructure.Web;
 
 namespace Sitecore.Ship.AspNet
@@ -19,7 +20,7 @@ namespace Sitecore.Ship.AspNet
             _authoriser = authoriser;
         }
 
-        protected BaseHttpHandler() : this(new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()))
+        protected BaseHttpHandler() : this(new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider(), new Logger()))
         {
         }
 
