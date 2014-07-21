@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -11,17 +10,17 @@ namespace Sitecore.Ship.Core.Services
     public class InstallationRecorder : IInstallationRecorder
     {
         private readonly IPackageHistoryRepository _packageHistoryRepository;
-        private readonly IConfigurationProvider<PackageInstallationSettings> _configurationProvider;
+        private readonly PackageInstallationSettings _packageInstallationSettings;
 
-        public InstallationRecorder(IPackageHistoryRepository packageHistoryRepository, IConfigurationProvider<PackageInstallationSettings> configurationProvider)
+        public InstallationRecorder(IPackageHistoryRepository packageHistoryRepository, PackageInstallationSettings packageInstallationSettings)
         {
             _packageHistoryRepository = packageHistoryRepository;
-            _configurationProvider = configurationProvider;
+            _packageInstallationSettings = packageInstallationSettings;
         }
 
         public void RecordInstall(string packagePath, DateTime dateInstalled)
         {
-            if (!_configurationProvider.Settings.RecordInstallationHistory) return;
+            if (!_packageInstallationSettings.RecordInstallationHistory) return;
 
             var packageId = GetPackageIdFromName(packagePath);
             var description = GetDescription(packagePath);
@@ -38,7 +37,7 @@ namespace Sitecore.Ship.Core.Services
 
         public void RecordInstall(string packageId, string description, DateTime dateInstalled)
         {
-            if (!_configurationProvider.Settings.RecordInstallationHistory) return;
+            if (!_packageInstallationSettings.RecordInstallationHistory) return;
 
             const string formatString = "Missing {0} parameter, required as installation is being recorded";
 
@@ -57,10 +56,10 @@ namespace Sitecore.Ship.Core.Services
 
         public InstalledPackage GetLatestPackage()
         {
-            if (_configurationProvider.Settings.RecordInstallationHistory)
+            if (_packageInstallationSettings.RecordInstallationHistory)
             {
-                List<InstalledPackage> children = _packageHistoryRepository.GetAll();
-                InstalledPackage package = children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
+                var children = _packageHistoryRepository.GetAll();
+                var package = children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
 
                 if (package != null) return package;
             }

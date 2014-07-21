@@ -32,7 +32,7 @@ namespace Sitecore.Ship.AspNet.Package
         public InstallUploadPackageCommand()
             : this(new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())), 
                    new TempPackager(new ServerTempFile()), 
-                   new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()))
+                   new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider().Settings))
         {           
         }
 

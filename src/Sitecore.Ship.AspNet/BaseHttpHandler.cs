@@ -20,7 +20,7 @@ namespace Sitecore.Ship.AspNet
             _authoriser = authoriser;
         }
 
-        protected BaseHttpHandler() : this(new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider(), new Logger()))
+        protected BaseHttpHandler() : this(new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider().Settings, new Logger()))
         {
         }
 

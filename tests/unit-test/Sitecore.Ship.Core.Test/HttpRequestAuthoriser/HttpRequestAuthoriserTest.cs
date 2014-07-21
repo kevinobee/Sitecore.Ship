@@ -7,17 +7,22 @@ namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser
     public abstract class HttpRequestAuthoriserTest
     {
         protected readonly Mock<ICheckRequests> CheckRequests;
-        protected readonly Mock<IConfigurationProvider<PackageInstallationSettings>> ConfigurationProvider; 
         protected readonly Core.HttpRequestAuthoriser RequestAuthoriser;
         protected readonly Mock<ILog> Logger;
+        protected PackageInstallationSettings PackageInstallationSettings;
 
         protected HttpRequestAuthoriserTest()
         {
             CheckRequests = new Mock<ICheckRequests>();
-            ConfigurationProvider = new Mock<IConfigurationProvider<PackageInstallationSettings>>(); 
+
+            PackageInstallationSettings = new PackageInstallationSettings
+            {
+                IsEnabled = true
+            };
+
             Logger = new Mock<ILog>();
 
-            RequestAuthoriser = new Core.HttpRequestAuthoriser(CheckRequests.Object, ConfigurationProvider.Object, Logger.Object);            
+            RequestAuthoriser = new Core.HttpRequestAuthoriser(CheckRequests.Object, PackageInstallationSettings, Logger.Object);            
         }
     }
 }

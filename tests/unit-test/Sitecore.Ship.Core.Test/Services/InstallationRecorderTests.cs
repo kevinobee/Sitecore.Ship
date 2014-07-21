@@ -14,20 +14,20 @@ namespace Sitecore.Ship.Core.Test.Services
     {
         private readonly InstallationRecorder _recorder;
         private readonly Mock<IPackageHistoryRepository> _packageHistoryRepository;
-        private readonly Mock<IConfigurationProvider<PackageInstallationSettings>> _configurationProvider;
+        private readonly PackageInstallationSettings _packageInstallationSettings;
 
         public InstallationRecorderTests()
         {
             _packageHistoryRepository = new Mock<IPackageHistoryRepository>();
-            _configurationProvider = new Mock<IConfigurationProvider<PackageInstallationSettings>>();
+            _packageInstallationSettings = new PackageInstallationSettings();
 
-            _recorder = new InstallationRecorder(_packageHistoryRepository.Object, _configurationProvider.Object);
+            _recorder = new InstallationRecorder(_packageHistoryRepository.Object, _packageInstallationSettings);
         }
 
         [Fact]
         public void Should_return_installed_package_not_found_when_package_recording_is_disabled()
         {
-            _configurationProvider.Setup(x => x.Settings).Returns(new PackageInstallationSettings { RecordInstallationHistory = false});
+            _packageInstallationSettings.RecordInstallationHistory = false;
 
             // Act
             var response = _recorder.GetLatestPackage();
@@ -39,7 +39,7 @@ namespace Sitecore.Ship.Core.Test.Services
         [Fact]
         public void Should_return_installed_package_not_found_when_no_package_installations_are_recorded()
         {
-            _configurationProvider.Setup(x => x.Settings).Returns(new PackageInstallationSettings { RecordInstallationHistory = true });
+            _packageInstallationSettings.RecordInstallationHistory = true;
 
             _packageHistoryRepository.Setup(x => x.GetAll()).Returns(new List<InstalledPackage>());
 

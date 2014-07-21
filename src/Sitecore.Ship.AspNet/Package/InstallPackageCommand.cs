@@ -28,7 +28,7 @@ namespace Sitecore.Ship.AspNet.Package
 
         public InstallPackageCommand() 
             : this(new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())),
-                   new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()))
+                   new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider().Settings))
         {           
         }
 

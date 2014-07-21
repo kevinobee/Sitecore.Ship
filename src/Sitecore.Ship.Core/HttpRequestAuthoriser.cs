@@ -8,25 +8,25 @@ namespace Sitecore.Ship.Core
     public class HttpRequestAuthoriser : IAuthoriser
     {
         private readonly ICheckRequests _checkRequests;
-        private readonly IConfigurationProvider<PackageInstallationSettings> _configurationProvider;
+        private readonly PackageInstallationSettings _packageInstallationSettings;
         private readonly ILog _logger;
 
-        public HttpRequestAuthoriser(ICheckRequests checkRequests, IConfigurationProvider<PackageInstallationSettings> configurationProvider, ILog logger)
+        public HttpRequestAuthoriser(ICheckRequests checkRequests, PackageInstallationSettings packageInstallationSettings, ILog logger)
         {
             _checkRequests = checkRequests;
-            _configurationProvider = configurationProvider;
+            _packageInstallationSettings = packageInstallationSettings;
             _logger = logger;
         }
 
         public bool IsAllowed()
         {
-            if (! _configurationProvider.Settings.IsEnabled)
+            if (!_packageInstallationSettings.IsEnabled)
             {
                 LogAccessDenial("packageInstallation 'enabled' setting is false");
                 return false;
             }
 
-            if ((!_checkRequests.IsLocal) && (!_configurationProvider.Settings.AllowRemoteAccess))
+            if ((!_checkRequests.IsLocal) && (!_packageInstallationSettings.AllowRemoteAccess))
             {
                 LogAccessDenial("packageInstallation 'allowRemote' setting is false");
                 return false;
@@ -34,9 +34,9 @@ namespace Sitecore.Ship.Core
 
 //            if ((_context.Request.HttpMethod == "POST") && (!_configurationProvider.Settings.AllowPackageStreaming)) return false;
 
-            if (_configurationProvider.Settings.HasAddressWhitelist)
+            if (_packageInstallationSettings.HasAddressWhitelist)
             {
-                var foundAddress = _configurationProvider.Settings.AddressWhitelist.Any(
+                var foundAddress = _packageInstallationSettings.AddressWhitelist.Any(
                     x =>
                         string.Compare(x, _checkRequests.UserHostAddress, StringComparison.InvariantCultureIgnoreCase) == 0);
 
@@ -53,7 +53,7 @@ namespace Sitecore.Ship.Core
 
         private void LogAccessDenial(string diagnostic)
         {
-            if (! _configurationProvider.Settings.MuteAuthorisationFailureLogging)
+            if (!_packageInstallationSettings.MuteAuthorisationFailureLogging)
             {
                 _logger.Write(string.Format("Sitecore.Ship access denied: {0}", diagnostic));
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Text;
 using System.Web;
 using System.Web.Helpers;
 
@@ -23,7 +22,7 @@ namespace Sitecore.Ship.AspNet.Package
             _installationRecorder = installationRecorder;
         }
 
-        public LatestVersionCommand() : this(new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()))
+        public LatestVersionCommand() : this(new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider().Settings))
         {           
         }
 

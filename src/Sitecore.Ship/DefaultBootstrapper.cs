@@ -35,7 +35,7 @@ namespace Sitecore.Ship
                 typeof (PackageHistoryRepository).Assembly
             });
 
-            container.Register<IConfigurationProvider<PackageInstallationSettings>, PackageInstallationConfigurationProvider>();
+            container.Register(typeof(PackageInstallationSettings), new PackageInstallationConfigurationProvider().Settings);
 
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider
