@@ -4,12 +4,13 @@ namespace Sitecore.Ship.Infrastructure.Configuration
 {
     public class PackageInstallationConfiguration : ConfigurationSection
     {
-        private const string SectionName = "packageInstallation";
-        private const string EnabledKey = "enabled";
-        private const string AllowRemoteKey = "allowRemote";
-        private const string AllowPackageStreamingKey = "allowPackageStreaming";
-        private const string RecordInstallationHistoryKey = "recordInstallationHistory"; 
-        private const string WhitelistElementName = "Whitelist";
+        const string SectionName = "packageInstallation";
+        const string EnabledKey = "enabled";
+        const string AllowRemoteKey = "allowRemote";
+        const string AllowPackageStreamingKey = "allowPackageStreaming";
+        const string RecordInstallationHistoryKey = "recordInstallationHistory";
+        const string WhitelistElementName = "Whitelist";
+        const string MuteAuthorisationFailureLoggingKey = "muteAuthorisationFailureLogging";
 
         public static PackageInstallationConfiguration GetConfiguration()
         {
@@ -34,6 +35,9 @@ namespace Sitecore.Ship.Infrastructure.Configuration
         {
             get { return ((WhitelistCollection)(base[WhitelistElementName])); }
         }
+
+        [ConfigurationProperty(MuteAuthorisationFailureLoggingKey, IsRequired = false, DefaultValue = false)]
+        public bool MuteAuthorisationFailureLogging { get { return (bool)this[MuteAuthorisationFailureLoggingKey]; } }
     }
 
     [ConfigurationCollection(typeof(WhitelistElement))]

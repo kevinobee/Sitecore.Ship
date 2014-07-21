@@ -53,7 +53,10 @@ namespace Sitecore.Ship.Core
 
         private void LogAccessDenial(string diagnostic)
         {
-            _logger.Write(string.Format("Ship access denied: {0}", diagnostic));
+            if (! _configurationProvider.Settings.MuteAuthorisationFailureLogging)
+            {
+                _logger.Write(string.Format("Sitecore.Ship access denied: {0}", diagnostic));
+            }
         }
     }
 }

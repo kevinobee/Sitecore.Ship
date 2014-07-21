@@ -6,18 +6,11 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
-using Sitecore.Ship.Core;
+
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
-using Sitecore.Ship.Core.Services;
-using Sitecore.Ship.Infrastructure;
 using Sitecore.Ship.Infrastructure.Configuration;
 using Sitecore.Ship.Infrastructure.DataAccess;
-using Sitecore.Ship.Infrastructure.Diagnostics;
-using Sitecore.Ship.Infrastructure.IO;
-using Sitecore.Ship.Infrastructure.Install;
-using Sitecore.Ship.Infrastructure.Update;
-using Sitecore.Ship.Infrastructure.Web;
 using Sitecore.Ship.Package.Install;
 
 namespace Sitecore.Ship
@@ -39,28 +32,10 @@ namespace Sitecore.Ship
             {
                 typeof (IPackageRepository).Assembly, 
                 typeof (InstallerModule).Assembly,
-                typeof (PackageHistoryRepository).Assembly,
+                typeof (PackageHistoryRepository).Assembly
             });
 
             container.Register<IConfigurationProvider<PackageInstallationSettings>, PackageInstallationConfigurationProvider>();
-
-
-//            container.Register<IPackageRepository>(
-//                new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())));
-//
-//            container.Register<ILog, Logger>();
-//
-//            container.Register<IAuthoriser>(
-//                new HttpRequestAuthoriser(new HttpRequestChecker(), new PackageInstallationConfigurationProvider()));
-//
-//            container.Register<ITempPackager>(
-//                new TempPackager(new ServerTempFile()));
-//
-//            container.Register<IPublishService>(
-//                new PublishService());
-//
-//            container.Register<IInstallationRecorder>(
-//                new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()));
 
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider
@@ -82,7 +57,7 @@ namespace Sitecore.Ship
                         }
                     );
 
-                ignoredAssemblies.Remove(asm => asm.FullName.StartsWith("Sitecore.Ship", StringComparison.InvariantCulture));
+                ignoredAssemblies.Remove(asm => ! asm.FullName.StartsWith("Sitecore.Ship", StringComparison.InvariantCulture));
 
                 return ignoredAssemblies;
             }

@@ -4,7 +4,7 @@
     <section name="packageInstallation" type="Sitecore.Ship.Infrastructure.Configuration.PackageInstallationConfiguration, Sitecore.Ship.Infrastructure"/>
     <section name="nancyFx" type="Nancy.Hosting.Aspnet.NancyFxSection" />
   </configSections>
-  <packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" recordInstallationHistory="false" />
+  <packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" recordInstallationHistory="false" muteAuthorisationFailureLogging="false" />
   <nancyFx>
     <bootstrapper assembly="Sitecore.Ship" type="Sitecore.Ship.DefaultBootstrapper, Sitecore.Ship" />
   </nancyFx>
