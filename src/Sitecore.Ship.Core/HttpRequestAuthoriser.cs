@@ -53,7 +53,7 @@ namespace Sitecore.Ship.Core
 
         private void LogAccessDenial(string diagnostic)
         {
-            _logger.Write(diagnostic);
+            _logger.Write(string.Format("Ship access denied: {0}", diagnostic));
         }
     }
 }

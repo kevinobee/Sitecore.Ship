@@ -9,33 +9,19 @@ using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Publish
 {
-    public class PublishModule : NancyModule
+    public class PublishModule : ShipBaseModule
     {
         private readonly IPublishService _publishService;
-        private readonly IAuthoriser _authoriser;
 
         public PublishModule(IPublishService publishService, IAuthoriser authoriser)
-            : base("/services/publish")
+            : base(authoriser, "/services/publish")
         {
             _publishService = publishService;
-            _authoriser = authoriser;
-
-            Before += AuthoriseRequest; 
 
             Post["/{mode}"] = InvokePublishing;
             Post["/listofitems"] = InvokePublishingOfListOfItems;
             Get["/lastcompleted"] = LastCompleted;
             Get["/lastcompleted/{source}/{target}/{language}"] = LastCompleted;
-        }
-
-        private Response AuthoriseRequest(NancyContext ctx)
-        {
-            if (!_authoriser.IsAllowed())
-            {
-                ctx.Response =
-                 new Response { StatusCode = HttpStatusCode.Unauthorized };
-            }
-            return null;
         }
 
         private dynamic LastCompleted(dynamic o)

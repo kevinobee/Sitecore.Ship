@@ -1,11 +1,11 @@
-﻿using Nancy;
+﻿using Sitecore.Ship.Core.Contracts;
 
 namespace Sitecore.Ship.About
 {
-    public class AboutModule : NancyModule
+    public class AboutModule : ShipBaseModule
     {
-        public AboutModule()
-            : base("/services/about")
+        public AboutModule(IAuthoriser authoriser)
+            : base(authoriser, "/services/about")
         {
             Get["/"] = parameters => View["about.html"];
         }

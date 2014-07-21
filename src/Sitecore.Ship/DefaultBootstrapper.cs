@@ -18,6 +18,7 @@ using Sitecore.Ship.Infrastructure.IO;
 using Sitecore.Ship.Infrastructure.Install;
 using Sitecore.Ship.Infrastructure.Update;
 using Sitecore.Ship.Infrastructure.Web;
+using Sitecore.Ship.Package.Install;
 
 namespace Sitecore.Ship
 {
@@ -34,10 +35,16 @@ namespace Sitecore.Ship
         {
             base.ConfigureApplicationContainer(container);
 
-//            container.Register<IConfigurationProvider<PackageInstallationSettings>>(
-//                new PackageInstallationConfigurationProvider());
-//
-            container.AutoRegister();
+            container.AutoRegister(new[]
+            {
+                typeof (IPackageRepository).Assembly, 
+                typeof (InstallerModule).Assembly,
+                typeof (PackageHistoryRepository).Assembly,
+            });
+
+            container.Register<IConfigurationProvider<PackageInstallationSettings>, PackageInstallationConfigurationProvider>();
+
+
 //            container.Register<IPackageRepository>(
 //                new PackageRepository(new UpdatePackageRunner(new PackageManifestReader())));
 //
