@@ -39,8 +39,7 @@ namespace Sitecore.Ship.Test
         {
             var response = _browser.Get("/services/about");
 
-            response.Body["body"].ShouldExist();
-            response.Body["h1"].ShouldContain("Sitecore.Ship", StringComparison.InvariantCultureIgnoreCase);
+            response.Body["h1"].AllShouldContain("Sitecore.Ship", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
