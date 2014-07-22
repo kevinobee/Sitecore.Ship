@@ -1,5 +1,8 @@
 ﻿using System.Configuration;
+
 using Sitecore.Ship.Infrastructure.Configuration;
+
+using Should;
 using Xunit;
 
 namespace Sitecore.Ship.Infrastructure.Intg.Test
@@ -16,69 +19,41 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
         [Fact]
         public void PackageInstallation_section_can_be_loaded()
         {
-            // Arrange
-
-            // Act
             var section = (PackageInstallationConfiguration) ConfigurationManager.GetSection("packageInstallation");
 
-            // Assert
-            Assert.NotNull(section);
+
+            section.ShouldNotBeNull();
         }
 
         [Fact]
         public void PackageInstallation_enabled_can_be_set_true()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Assert.True(_section.Enabled);
+            _section.Enabled.ShouldBeTrue();
         }
 
         [Fact]
         public void PackageInstallation_allowRemoteAccess_can_be_set_true()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Assert.True(_section.AllowRemoteAccess);
+            _section.AllowRemoteAccess.ShouldBeTrue();
         }
 
         [Fact]
         public void PackageInstallation_allowPackageStreaming_can_be_set_true()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Assert.True(_section.AllowPackageStreaming);
+            _section.AllowPackageStreaming.ShouldBeTrue();
         }
 
         [Fact]
         public void PackageInstallation_whitelist_can_be_read()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Assert.NotNull(_section.Whitelist);
-            Assert.Equal(2, _section.Whitelist.Count);
+            _section.Whitelist.ShouldNotBeNull();
+            _section.Whitelist.Count.ShouldEqual(2);
         }
 
         [Fact]
         public void PackageInstallation_recordInstallationHistory_can_be_set_true()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Assert.True(_section.RecordInstallationHistory);
+            _section.RecordInstallationHistory.ShouldBeTrue();
         }
     }
 }

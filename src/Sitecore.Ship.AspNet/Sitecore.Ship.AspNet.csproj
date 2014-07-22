@@ -63,6 +63,7 @@
     <Compile Include="UnhandledCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="content\App_Config\Include\ship.config">
       <SubType>Designer</SubType>
     </None>

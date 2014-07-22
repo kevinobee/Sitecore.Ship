@@ -16,7 +16,7 @@
     <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
     <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
     <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-    <XunitPath>$(ProjectRoot)\packages\xunit.1.9.1\lib\net20</XunitPath>
+    <XunitPath>$(ProjectRoot)\packages\xunit.1.9.2\lib\net20</XunitPath>
     <CurlPath>$(ToolsPath)\curl</CurlPath>
     <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
   </PropertyGroup>

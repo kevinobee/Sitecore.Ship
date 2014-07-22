@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 
 using Nancy;
@@ -18,35 +17,18 @@ namespace Sitecore.Ship.Package.Install
         private readonly ITempPackager _tempPackager;
         private readonly IInstallationRecorder _installationRecorder;
 
-        const string StartTime = "start_time";
-
         public InstallerModule(IPackageRepository repository, IAuthoriser authoriser, ITempPackager tempPackager, IInstallationRecorder installationRecorder)
             : base(authoriser, "/services")
         {
             _repository = repository;
             _tempPackager = tempPackager;
             _installationRecorder = installationRecorder;
-            
-            Before += ctx =>
-            {
-                ctx.Items.Add(StartTime, DateTime.UtcNow);
-                return null;
-            };
-
-            After += AddProcessingTimeToResponse;
 
             Post["/package/install/fileupload"] = InstallUploadPackage;
 
             Post["/package/install"] = InstallPackage;
 
             Get["/package/latestversion"] = LatestVersion;
-        }
-
-        private static void AddProcessingTimeToResponse(NancyContext ctx)
-        {
-            var processTime = (DateTime.UtcNow - (DateTime)ctx.Items[StartTime]).TotalMilliseconds;
-
-            ctx.Response.WithHeader("x-processing-time", processTime.ToString(CultureInfo.InvariantCulture));
         }
 
         private dynamic InstallPackage(dynamic o)
