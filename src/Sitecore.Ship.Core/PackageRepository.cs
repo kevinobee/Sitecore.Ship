@@ -1,4 +1,5 @@
-﻿using Sitecore.Ship.Core.Contracts;
+﻿using System.Collections.Generic;
+using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Core
@@ -15,6 +16,11 @@ namespace Sitecore.Ship.Core
         public PackageManifest AddPackage(InstallPackage package)
         {
             return _packageRunner.Execute(package.Path, package.DisableIndexing);
+        }
+
+        public IEnumerable<PackageManifest> AddPackages(InstallPackages packages)
+        {
+            return _packageRunner.Execute(packages.Paths, packages.DisableIndexing);
         }
     }
 }

@@ -84,6 +84,84 @@ namespace Sitecore.Ship.Infrastructure.Update
                 }
             }
         }
+
+        public IEnumerable<PackageManifest> Execute(IEnumerable<string> packagePaths, bool disableIndexing)
+        {
+           
+            List<PackageManifest> manifests = new List<PackageManifest>();
+
+            using (new ShutdownGuard())
+            {
+                if (disableIndexing)
+                {
+                    Sitecore.Configuration.Settings.Indexing.Enabled = false;
+                }
+
+                try
+                {
+
+                    foreach (var packagePath in packagePaths)
+                    {
+                        string historyPath = null;
+                        List<ContingencyEntry> entries = null;
+
+                        try
+                        {
+                            if (!File.Exists(packagePath)) throw new NotFoundException();
+
+                            var installationInfo = GetInstallationInfo(packagePath);
+                          
+
+                            var logger = Diagnostics.LoggerFactory.GetLogger(this); // TODO abstractions
+                            entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
+
+                            string error = string.Empty;
+
+                            logger.Info("Executing post installation actions.");
+
+                            MetadataView metadata = PreviewMetadataWizardPage.GetMetadata(packagePath, out error);
+
+                            if (string.IsNullOrEmpty(error))
+                            {
+                                DiffInstaller diffInstaller = new DiffInstaller(UpgradeAction.Upgrade);
+                                diffInstaller.ExecutePostInstallationInstructions(packagePath, historyPath,
+                                    installationInfo.Mode, metadata, logger, ref entries);
+                            }
+                            else
+                            {
+                                logger.Info("Post installation actions error.");
+                                logger.Error(error);
+                            }
+
+                            logger.Info("Executing post installation actions finished.");
+                            var manifest = _manifestRepository.GetManifest(packagePath);
+                            manifests.Add(manifest);
+                        }
+                        catch (PostStepInstallerException exception)
+                        {
+                            entries = exception.Entries;
+                            historyPath = exception.HistoryPath;
+                            throw;
+                        }
+                        finally
+                        {
+                            UpdateHelper.SaveInstallationMessages(entries, historyPath);
+                        }
+                    }//foreach
+
+                }
+                finally
+                {
+                    if (disableIndexing)
+                    {
+                        Sitecore.Configuration.Settings.Indexing.Enabled = true;
+                    }
+                   
+                }
+
+                return manifests;
+            }//using
+        }
         
         private PackageInstallationInfo GetInstallationInfo(string packagePath)
         {

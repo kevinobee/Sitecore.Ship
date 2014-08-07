@@ -59,6 +59,7 @@
     <Compile Include="Domain\InstallPackage.cs" />
     <Compile Include="Contracts\IPackageRepository.cs" />
     <Compile Include="Contracts\IPublishService.cs" />
+    <Compile Include="Domain\InstallPackages.cs" />
     <Compile Include="Domain\InstallUploadPackage.cs" />
     <Compile Include="Domain\ItemsToPublish.cs" />
     <Compile Include="Domain\PackageManifest.cs" />
