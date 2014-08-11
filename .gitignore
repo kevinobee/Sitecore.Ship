@@ -36,3 +36,6 @@ lib/*.lic
 # Build ignores
 /msbuild.log
 /artifacts
+*.ncrunchsolution
+*.ncrunchproject
+_NCrunch_*
