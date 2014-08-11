@@ -55,7 +55,6 @@
     <Compile Include="AboutCommand.cs" />
     <Compile Include="BaseHttpHandler.cs" />
     <Compile Include="CommandHandler.cs" />
-    <Compile Include="Package\InstallUploadPackagesCommand.cs" />
     <Compile Include="Package\InstallPackageCommand.cs" />
     <Compile Include="Package\InstallUploadPackageCommand.cs" />
     <Compile Include="Publish\InvokePublishingCommand.cs" />

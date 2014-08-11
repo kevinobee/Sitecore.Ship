@@ -18,7 +18,6 @@ namespace Sitecore.Ship.AspNet
 
             var installUploadPackageCommand = new InstallUploadPackageCommand();
            
-            var installUploadPackagesCommand = new InstallUploadPackagesCommand();
 
             var latestVersionCommand = new LatestVersionCommand();
 
@@ -30,9 +29,8 @@ namespace Sitecore.Ship.AspNet
 
             aboutCommand.SetSuccessor(installPackageCommand);
 
-            installPackageCommand.SetSuccessor(installUploadPackagesCommand);
+            installPackageCommand.SetSuccessor(installUploadPackageCommand);
 
-            installUploadPackagesCommand.SetSuccessor(installUploadPackageCommand);
 
             installUploadPackageCommand.SetSuccessor(latestVersionCommand);
 

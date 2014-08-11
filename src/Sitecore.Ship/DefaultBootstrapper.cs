@@ -51,6 +51,12 @@ namespace Sitecore.Ship
             container.Register<IInstallationRecorder>(
                 new InstallationRecorder(new PackageHistoryRepository(), new PackageInstallationConfigurationProvider()));
 
+            container.Register<IEnumerable<IPostPackageInstall>>(new IPostPackageInstall[]
+            {
+                new PostInstallConfigFix(), 
+            });
+
+
             var assembly = GetType().Assembly;
             ResourceViewLocationProvider
                 .RootNamespaces

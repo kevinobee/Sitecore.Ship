@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,7 @@
     <Compile Include="Contracts\IPackageHistoryRepository.cs" />
     <Compile Include="Contracts\IPackageManifestRepository.cs" />
     <Compile Include="Contracts\IPackageRunner.cs" />
+    <Compile Include="Contracts\IPostPackageInstall.cs" />
     <Compile Include="Contracts\ITempFile.cs" />
     <Compile Include="Contracts\ITempPackager.cs" />
     <Compile Include="Domain\InstalledPackage.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Domain\ItemsToPublish.cs" />
     <Compile Include="Domain\PackageManifest.cs" />
     <Compile Include="Domain\PackageManifestEntry.cs" />
+    <Compile Include="Domain\PostInstallConfigFix.cs" />
     <Compile Include="Domain\PublishLastCompleted.cs" />
     <Compile Include="NotFoundException.cs" />
     <Compile Include="Domain\PackageInstallationSettings.cs">
