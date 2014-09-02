@@ -17,6 +17,13 @@ namespace Sitecore.Ship
 {
     public class DefaultBootstrapper : DefaultNancyBootstrapper
     {
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+        {
+            base.ApplicationStartup(container, pipelines);
+
+            Nancy.Json.JsonSettings.MaxJsonLength = int.MaxValue;
+        }
+
         protected override void ConfigureConventions(Nancy.Conventions.NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
