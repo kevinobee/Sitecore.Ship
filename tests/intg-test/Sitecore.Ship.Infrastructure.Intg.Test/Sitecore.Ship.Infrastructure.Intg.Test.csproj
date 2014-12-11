@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sitecore.Ship.Infrastructure.Intg.Test</RootNamespace>
     <AssemblyName>Sitecore.Ship.Infrastructure.Intg.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Should">
@@ -55,14 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">
-      <Project>{F9CC137C-E000-4D1E-9997-B8E3D20F7E36}</Project>
-      <Name>Sitecore.Ship.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
-      <Project>{A0ED41C4-D292-47BD-8457-A40267B4EA8C}</Project>
-      <Name>Sitecore.Ship.Infrastructure</Name>
-    </ProjectReference>
     <Compile Include="PackageInstallationConfigurationTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +67,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">
+      <Project>{f9cc137c-e000-4d1e-9997-b8e3d20f7e36}</Project>
+      <Name>Sitecore.Ship.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
+      <Project>{a0ed41c4-d292-47bd-8457-a40267b4ea8c}</Project>
+      <Name>Sitecore.Ship.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj">
       <Project>{a0ed41c4-d292-47bd-8457-a40267b4ea8c}</Project>
       <Name>Sitecore.Ship.Infrastructure</Name>
