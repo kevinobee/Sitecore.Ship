@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Sitecore.Diagnostics;
+using Sitecore.IO;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+using Sitecore.Ship.Infrastructure.Diagnostics;
 using Sitecore.Update;
 using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
@@ -39,9 +42,10 @@ namespace Sitecore.Ship.Infrastructure.Update
                 var installationInfo = GetInstallationInfo(packagePath);
                 string historyPath = null;
                 List<ContingencyEntry> entries = null;
+
+                var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this); // TODO abstractions
                 try
                 {
-                    var logger = Diagnostics.LoggerFactory.GetLogger(this); // TODO abstractions
                     entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
 
                     string error = string.Empty;
@@ -80,7 +84,31 @@ namespace Sitecore.Ship.Infrastructure.Update
                         Sitecore.Configuration.Settings.Indexing.Enabled = true;
                     }
 
-                    UpdateHelper.SaveInstallationMessages(entries, historyPath);
+                    try
+                    {
+                        this.SaveInstallationMessages(entries, historyPath);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error("Failed to record installation messages");
+                        foreach (var entry in entries ?? Enumerable.Empty<ContingencyEntry>())
+                        {
+                            logger.Info(string.Format("Entry [{0}]-[{1}]-[{2}]-[{3}]-[{4}]-[{5}]-[{6}]-[{7}]-[{8}]-[{9}]-[{10}]-[{11}]",
+                                entry.Action,
+                                entry.Behavior,
+                                entry.CommandKey,
+                                entry.Database,
+                                entry.Level,
+                                entry.LongDescription,
+                                entry.MessageGroup,
+                                entry.MessageGroupDescription,
+                                entry.MessageID,
+                                entry.MessageType,
+                                entry.Number,
+                                entry.ShortDescription));
+                        }
+                        throw;
+                    }
                 }
             }
         }
@@ -99,5 +127,18 @@ namespace Sitecore.Ship.Infrastructure.Update
             }
             return info;
         }
+
+        private void SaveInstallationMessages(List<ContingencyEntry> entries, string historyPath)
+        {
+            string path = Path.Combine(historyPath, "messages.xml");
+
+            FileUtil.EnsureFolder(path);
+
+            using (FileStream fileStream = File.Create(path))
+            {
+                new XmlEntrySerializer().Serialize(entries, (Stream)fileStream);
+            }
+        }
+
     }
 }
