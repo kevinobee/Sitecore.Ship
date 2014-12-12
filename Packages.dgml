@@ -24,14 +24,14 @@
     <Node Id="Moq 4.2.1402.2112" Label="Moq 4.2.1402.2112" Category="Package" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Testing 0.23.2" Label="Nancy.Testing 0.23.2" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
+    <Node Id="Newtonsoft.Json 6.0.6" Label="Newtonsoft.Json 6.0.6" Category="Package" />
     <Node Id="Should 1.1.20" Label="Should 1.1.20" Category="Package" />
     <Node Id="xunit 1.9.2" Label="xunit 1.9.2" Category="Package" />
     <Node Id="src\Sitecore.Ship" Label="Sitecore.Ship" Category="Project" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Hosting.Aspnet 0.23.2" Label="Nancy.Hosting.Aspnet 0.23.2" Category="Package" />
     <Node Id="Nancy.Serialization.JsonNet 0.23.2" Label="Nancy.Serialization.JsonNet 0.23.2" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
+    <Node Id="Newtonsoft.Json 6.0.6" Label="Newtonsoft.Json 6.0.6" Category="Package" />
   </Nodes>
   <Links>
     <Link Source="tests\acceptance test\Sitecore.Ship.AspNet.Web.Accept.Test" Target="Sitecore.Ship.AspNet 0.3.4" Category="Installed Package" />
@@ -52,12 +52,12 @@
     <Link Source="Nancy.Testing 0.23.2" Target="CsQuery 1.3.4" Category="Package Dependency" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Moq 4.2.1402.2112" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Nancy.Testing 0.23.2" Category="Installed Package" />
-    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Newtonsoft.Json 6.0.6" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Should 1.1.20" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="xunit 1.9.2" Category="Installed Package" />
     <Link Source="Nancy.Hosting.Aspnet 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Serialization.JsonNet 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
-    <Link Source="Nancy.Serialization.JsonNet 0.23.2" Target="Newtonsoft.Json 5.0.6" Category="Package Dependency" />
+    <Link Source="Nancy.Serialization.JsonNet 0.23.2" Target="Newtonsoft.Json 6.0.6" Category="Package Dependency" />
     <Link Source="src\Sitecore.Ship" Target="Nancy.Hosting.Aspnet 0.23.2" Category="Installed Package" />
     <Link Source="src\Sitecore.Ship" Target="Nancy.Serialization.JsonNet 0.23.2" Category="Installed Package" />
   </Links>
