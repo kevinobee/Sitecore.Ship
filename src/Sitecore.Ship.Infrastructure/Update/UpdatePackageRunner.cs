@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Sitecore.Diagnostics;
 using Sitecore.IO;
+using Sitecore.SecurityModel;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
@@ -57,8 +58,10 @@ namespace Sitecore.Ship.Infrastructure.Update
                     if (string.IsNullOrEmpty(error))
                     {
                         DiffInstaller diffInstaller = new DiffInstaller(UpgradeAction.Upgrade);
-                        diffInstaller.ExecutePostInstallationInstructions(packagePath, historyPath,
-                            installationInfo.Mode, metadata, logger, ref entries);
+                        using (new SecurityDisabler())
+                        {
+                            diffInstaller.ExecutePostInstallationInstructions(packagePath, historyPath, installationInfo.Mode, metadata, logger, ref entries);
+                        }
                     }
                     else
                     {
