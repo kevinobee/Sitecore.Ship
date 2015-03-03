@@ -30,7 +30,7 @@ namespace Sitecore.Ship.Core.Services
                     };
             }
 
-            const string filesPrefix = "files";
+            const string filesPrefix = "addedfiles";
             if (dataKey.StartsWith(filesPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return new FileManifestEntry(dataKey.Substring(filesPrefix.Length));
