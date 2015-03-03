@@ -54,7 +54,7 @@ namespace Sitecore.Ship.Core.Test.Services
         public void File_key_can_be_parsed_into_path_and_empty_guid()
         {
             // Arrange
-            const string dataKey = "files/xsl/system/WebEdit/Hidden Rendering.xslt";
+            const string dataKey = "addedfiles/xsl/system/WebEdit/Hidden Rendering.xslt";
 
             // Act
             var manifestEntry = ZipEntryDataParser.GetManifestEntry(dataKey);

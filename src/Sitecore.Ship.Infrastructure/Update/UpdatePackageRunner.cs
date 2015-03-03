@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Sitecore.Diagnostics;
 using Sitecore.IO;
 using Sitecore.SecurityModel;
 using Sitecore.Ship.Core;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
-using Sitecore.Ship.Infrastructure.Diagnostics;
 using Sitecore.Update;
 using Sitecore.Update.Installer;
 using Sitecore.Update.Installer.Exceptions;
@@ -89,9 +87,9 @@ namespace Sitecore.Ship.Infrastructure.Update
 
                     try
                     {
-                        this.SaveInstallationMessages(entries, historyPath);
+                        SaveInstallationMessages(entries, historyPath);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         logger.Error("Failed to record installation messages");
                         foreach (var entry in entries ?? Enumerable.Empty<ContingencyEntry>())
@@ -139,9 +137,8 @@ namespace Sitecore.Ship.Infrastructure.Update
 
             using (FileStream fileStream = File.Create(path))
             {
-                new XmlEntrySerializer().Serialize(entries, (Stream)fileStream);
+                new XmlEntrySerializer().Serialize(entries, fileStream);
             }
         }
-
     }
 }
