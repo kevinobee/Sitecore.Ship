@@ -48,6 +48,14 @@ namespace Sitecore.Ship.Core
                 }
             }
 
+            if (_packageInstallationSettings.TokenRequired)
+            {
+                var tokenAuthorizer = new AccessTokenAuthoriser(_checkRequests, _packageInstallationSettings, _logger);
+                var authorized = tokenAuthorizer.IsAllowed();
+                if (!authorized)
+                    return false;
+            }
+
             return true;
         }
 

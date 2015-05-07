@@ -22,5 +22,8 @@ namespace Sitecore.Ship.Core.Domain
         public bool MuteAuthorisationFailureLogging { get; set; }
 
         public bool HasAddressWhitelist { get { return AddressWhitelist.Count > 0; } }
+
+        public string AccessToken { get; set; }
+        public bool TokenRequired { get { return !string.IsNullOrWhiteSpace(AccessToken); } }
     }
 }
