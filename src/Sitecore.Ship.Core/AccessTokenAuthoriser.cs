@@ -8,7 +8,7 @@ using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Core
 {
-    public class AccessTokenAuthoriser : IAuthoriser
+    public class AccessTokenAuthoriser// : IAuthoriser - do not inherit from Interface to make sure that IoC dependencies resolution is not affected
     {
         private readonly ICheckRequests _checkRequests;
         private readonly PackageInstallationSettings _packageInstallationSettings;
