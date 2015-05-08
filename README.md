@@ -226,7 +226,7 @@ Service can be protected by secure access token. Every request without correct a
 
 Token transmition: 
 
-    `curl -i -H "Authorization: Bearer some-key" https://mysite/services/about`
+    curl -i -H "Authorization: Bearer some-key" https://mysite/services/about	
 
 
 ### Tools
