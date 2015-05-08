@@ -185,9 +185,9 @@ Issue a GET request to `/services/about`
 
 Shown below is a fully specified configuration section for Sitecore.Ship:
 
-    <packageInstallation enabled="true" allowRemote="true" allowPackageStreaming="true" recordInstallationHistory="true">
+    <packageInstallation enabled="true" allowRemote="true" allowPackageStreaming="true" recordInstallationHistory="true" accessToken="some-key">
       <Whitelist>
-        <add name="local loopback" IP="127.0.01" />
+        <add name="local loopback" IP="127.0.0.1" />
         <add name="Allowed machine 1" IP="10.20.3.4" />
         <add name="Allowed machine 2" IP="10.40.4.5" />
       </Whitelist>
@@ -201,6 +201,7 @@ Default configuration:
 * allowPackageStreaming = false
 * recordInstallationHistory = false
 * IP address whitelisting is disabled if no elements are specified below the `<Whitelist>` element or if the element is omited.
+* access token is not specified and service can be used without `Authorization` HTTP header
 
 When `recordInstallationHistory` has been set to true packages should follow the naming conventions set out below:
 
@@ -218,6 +219,15 @@ For example:
     01-AboutPage.update
 
     02-HomePage.zip
+
+### Tocken based security
+
+Service can be protected by secure access token. Every request without correct access token in its header will get `401 Unauthorized` HTTP error code.
+
+Token transmition: 
+
+    `curl -i -H "Authorization: Bearer some-key" https://mysite/services/about`
+
 
 ### Tools
 
