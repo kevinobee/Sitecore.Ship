@@ -220,9 +220,11 @@ For example:
 
     02-HomePage.zip
 
-### Tocken based security
+### Token based security
 
 Service can be protected by secure access token. Every request without correct access token in its header will get `401 Unauthorized` HTTP error code.
+
+**Important:** Token cannot protect your service without transport level security. Do not forget to use `https` when you call APIs. 
 
 Token transmition: 
 
