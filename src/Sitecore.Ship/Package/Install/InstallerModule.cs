@@ -39,6 +39,12 @@ namespace Sitecore.Ship.Package.Install
                 var manifest = _repository.AddPackage(package);
                 _installationRecorder.RecordInstall(package.Path, DateTime.Now);
 
+                if (package.DisableManifest)
+                {
+                    // Skip manifest reporting. Nancy will return an empty message body.
+                    manifest = null;
+                }
+
                 return Response
                             .AsJson(manifest, HttpStatusCode.Created)
                             .WithHeader("Location", ShipServiceUrl.PackageLatestVersion);
@@ -79,6 +85,12 @@ namespace Sitecore.Ship.Package.Install
                 finally 
                 {
                     _tempPackager.Dispose();
+                }
+
+                if (uploadPackage.DisableManifest)
+                {
+                    // Skip manifest reporting. Nancy will return an empty message body.
+                    manifest = null;
                 }
 
                 return Response
