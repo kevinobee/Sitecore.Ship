@@ -21,7 +21,7 @@ The latest release versions of the Sitecore.Ship packages can be found on the Nu
 
 ### Installing the Package
 
-Ensure that the website project is set to run with .NET Framework 4.0
+Ensure that the website project is set to run with .NET Framework 4.5
 
 Run the following powershell command in the package manager console of the Visual Studio solution for the target website:
 
@@ -33,7 +33,7 @@ Installing the package will do the following:
 
 * Add a new `packageInstallation` section to your `web.config` file. You can set configuration options in this section to enable remote access to the installer and to enable the package streaming functionality. These options are safe by default, that is, no remote access and package streaming disabled. **Note:** the configuration settings are ignored in this branch of Sitecore.Ship.
 
-* Register a single new HTTP handler section in `<system.web>` and `<system.webserver>`
+* Register a single new HTTP handler section in `<system.webserver>`. Support for classic mode in IIS has been removed.
 
 * Add a `ship.config` Sitecore include file to the `App_Config\include` folder.
 
