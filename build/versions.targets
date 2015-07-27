@@ -8,7 +8,7 @@
    
   <!-- Change PRERELEASE to an empty value or comment out the tag to prevent package names being generated with a -->
   <!-- build quality and YYMMDD suffix, eg. Package.Name.0.1.0.130207.nupkg -->
-    <PRERELEASE></PRERELEASE>
+    <PRERELEASE>Alpha 1</PRERELEASE>
     
     <!-- Ensure that we come up with a new version every 65535 years -->
     <VersionStartYear>2013</VersionStartYear>
