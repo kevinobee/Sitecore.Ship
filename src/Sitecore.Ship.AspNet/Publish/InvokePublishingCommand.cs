@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,8 +20,8 @@ namespace Sitecore.Ship.AspNet.Publish
             _publishService = publishService;
         }
 
-        public InvokePublishingCommand() : this(new PublishService())
-        {            
+        public InvokePublishingCommand() : this(new PublishService()) 
+        {
         }
 
         public override void HandleRequest(HttpContextBase context)
@@ -32,7 +33,19 @@ namespace Sitecore.Ship.AspNet.Publish
                 var now = DateTime.Now;
                 var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
-                _publishService.Run(publishParameters);
+                if (publishParameters.Mode.ToLowerInvariant() == "listofitems")
+                {
+                    using (var reader = new StreamReader(context.Request.InputStream))
+                    {
+                        string values = reader.ReadToEnd();
+                        var itemsToPublish = Json.Decode<ItemsToPublish>(values);
+                        _publishService.Run(itemsToPublish);
+                    }
+                }
+                else
+                {
+                    _publishService.Run(publishParameters);
+                }
 
                 var json = Json.Encode(new { date });
 
@@ -47,15 +60,16 @@ namespace Sitecore.Ship.AspNet.Publish
         private static bool CanHandle(HttpContextBase context)
         {
             return context.Request.Url != null &&
-                   IsPublishModeUrl(context.Request.Url.PathAndQuery.ToLowerInvariant()) && 
+                   IsPublishModeUrl(context.Request.Url.PathAndQuery.ToLowerInvariant()) &&
                    context.Request.HttpMethod == "POST";
         }
 
         private static bool IsPublishModeUrl(string urlPath)
         {
-            return urlPath.EndsWith("/services/publish/full") ||  
-                   urlPath.EndsWith("/services/publish/smart") ||  
-                   urlPath.EndsWith("/services/publish/incremental");
+            return urlPath.EndsWith("/services/publish/full") ||
+                   urlPath.EndsWith("/services/publish/smart") ||
+                   urlPath.EndsWith("/services/publish/incremental") ||
+                   urlPath.EndsWith("/services/publish/listofitems");
         }
 
         private static PublishParameters GetRequest(HttpRequestBase request)
