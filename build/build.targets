@@ -97,6 +97,6 @@
   <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
   </Target>
 
-  <Target Name="GoCI" DependsOnTargets="UpdateVersion; Build">
+  <Target Name="GoCI" DependsOnTargets="UpdateVersion; RunCodeAnalysis; Build; RunTests; StdPackage">
   </Target>
 </Project>
