@@ -4,11 +4,6 @@
     <section name="packageInstallation" type="Sitecore.Ship.Infrastructure.Configuration.PackageInstallationConfiguration, Sitecore.Ship.Infrastructure"/>
   </configSections>
   <packageInstallation enabled="true" allowRemote="false" allowPackageStreaming="false" recordInstallationHistory="false" />
-  <system.web>
-    <httpHandlers>
-      <add verb="*" type="Sitecore.Ship.AspNet.SitecoreShipHttpHandler, Sitecore.Ship.AspNet" path="/services/*" />
-    </httpHandlers>
-  </system.web>
   <system.webServer>
     <modules runAllManagedModulesForAllRequests="true"/>
     <validation validateIntegratedModeConfiguration="false"/>
