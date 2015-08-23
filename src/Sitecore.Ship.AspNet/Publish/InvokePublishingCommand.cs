@@ -54,6 +54,9 @@ namespace Sitecore.Ship.AspNet.Publish
 							else
 							{
 								_publishService.Run(itemsToPublish);
+								var json = Json.Encode(new { date });
+
+								JsonResponse(json, HttpStatusCode.Accepted, context);
 							}							
 						}
                     }
@@ -61,11 +64,10 @@ namespace Sitecore.Ship.AspNet.Publish
                 else
                 {
                     _publishService.Run(publishParameters);
+					var json = Json.Encode(new { date });
+
+					JsonResponse(json, HttpStatusCode.Accepted, context);
                 }
-
-                var json = Json.Encode(new { date });
-
-                JsonResponse(json, HttpStatusCode.Accepted, context);
             }
             else if (Successor != null)
             {
