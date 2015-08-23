@@ -68,7 +68,8 @@
     
     <!-- Show the last completed publish time (after publishing) specifying source/target/language parameters -->
     <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted/master/web/en"  />
-    
+
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/publish/listofitems --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot;" />
   </Target>
  
 </Project>
