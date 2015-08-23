@@ -37,9 +37,25 @@ namespace Sitecore.Ship.AspNet.Publish
                 {
                     using (var reader = new StreamReader(context.Request.InputStream))
                     {
-                        string values = reader.ReadToEnd();
-                        var itemsToPublish = Json.Decode<ItemsToPublish>(values);
-                        _publishService.Run(itemsToPublish);
+                        var values = reader.ReadToEnd();
+
+						if (string.IsNullOrEmpty(values))
+	                    {
+							JsonResponse(string.Empty, HttpStatusCode.NoContent, context);
+						}
+						else
+						{
+							var itemsToPublish = Json.Decode<ItemsToPublish>(values);
+
+							if (itemsToPublish == null)
+							{
+								JsonResponse(string.Empty, HttpStatusCode.BadRequest, context);
+							}
+							else
+							{
+								_publishService.Run(itemsToPublish);
+							}							
+						}
                     }
                 }
                 else

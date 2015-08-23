@@ -8,5 +8,10 @@ namespace Sitecore.Ship.Core.Domain
         public List<Guid> Items { get; set; }
         public string[] TargetDatabases { get; set; }
         public string[] TargetLanguages { get; set; }
+
+        public ItemsToPublish()
+        {
+          Items = new List<Guid>();
+        }
     }
 }
