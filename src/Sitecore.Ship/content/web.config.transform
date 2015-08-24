@@ -8,11 +8,6 @@
   <nancyFx>
     <bootstrapper assembly="Sitecore.Ship" type="Sitecore.Ship.DefaultBootstrapper, Sitecore.Ship" />
   </nancyFx>
-  <system.web>
-    <httpHandlers>
-      <add verb="*" type="Nancy.Hosting.Aspnet.NancyHttpRequestHandler" path="/services/*" />
-    </httpHandlers>
-  </system.web>
   <system.webServer>
     <modules runAllManagedModulesForAllRequests="true"/>
     <validation validateIntegratedModeConfiguration="false"/>
