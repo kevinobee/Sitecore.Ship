@@ -13,11 +13,10 @@ using Sitecore.Ship.Publish;
 
 namespace Sitecore.Ship.Test
 {
-    public class PublishModuleBehaviour
+	public class PublishModuleBehaviour
     {
-        private const string ValidListOfItems = "{\"Items\":[{\"itemId\":\"662a3670-2671-414c-97e5-f9b30473cdd7\",\"PublishChildren\":\"false\"},{\"itemId\":\"a49599a5-1b25-4efe-82aa-fa1af0993919\",\"PublishChildren\":\"false\"},{\"itemId\":\"377cb37e-2b00-417ebbec-872b4ef9e9a0\",\"PublishChildren\":\"false\"},{\"itemId\":\"9502a1e1-7bdd-4b3e-a234-a488ba871889\",\"PublishChildren\":\"false\"}],\"TargetDatabases\":[\"web\"],\"TargetLanguages\":[\"en\"]}";
-
-        private const string ApplicationJson = "application/json";
+		// TODO consider using ModuleTester as the SUT here...
+		private const string ApplicationJson = "application/json";
 
         private readonly Browser _browser;
 
@@ -25,8 +24,10 @@ namespace Sitecore.Ship.Test
         private readonly Mock<IAuthoriser> _mockAuthoriser; 
         
         private PublishParameters _publishParameters;
-            
-        public PublishModuleBehaviour()
+
+		private string _serialisedItemsToPublish;
+
+		public PublishModuleBehaviour()
         {
             _mockPublishService = new Mock<IPublishService>();
 
@@ -230,20 +231,19 @@ namespace Sitecore.Ship.Test
         {
             _mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
 
-            var body = ValidListOfItems.Substring(1);
+			var body = SerialisedItemsToPublish.Substring(0, 10);
 
             var response = _browser.Post("/services/publish/listofitems", with =>
             {
                 with.HttpRequest();
                 with.Header("Content-Type", ApplicationJson);
-                with.Body(body, ApplicationJson);
-                
+	            with.Body(body, ApplicationJson);
             });
 
-            response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
+	        response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
         }
 
-        [Fact(Skip="TODO failing test in commandline only")]
+		[Fact]
         public void Should_return_http_accepted_when_populated_listofitems_requested()
         {
             _mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
@@ -253,10 +253,30 @@ namespace Sitecore.Ship.Test
                 with.HttpRequest();
                 with.Header("Pragma", "no-cache");
                 with.Header("Content-Type", ApplicationJson);
-                with.Body(ValidListOfItems, ApplicationJson);
+				with.Body(SerialisedItemsToPublish, ApplicationJson);
             });
 
             response.StatusCode.ShouldEqual(HttpStatusCode.Accepted);
         }
+
+		private string SerialisedItemsToPublish
+		{
+			get
+			{
+				if (_serialisedItemsToPublish == null)
+				{
+					var itemsToPublish = new ItemsToPublish();
+
+					for (var i = 0; i < 1000; i++)
+					{
+						itemsToPublish.Items.Add(Guid.NewGuid());
+					}
+
+					_serialisedItemsToPublish = Newtonsoft.Json.JsonConvert.SerializeObject(itemsToPublish);
+				}
+
+				return _serialisedItemsToPublish;
+			}
+		}
     }
 }

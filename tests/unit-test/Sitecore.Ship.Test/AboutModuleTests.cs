@@ -1,45 +1,67 @@
 ﻿using System;
-using Moq;
+
 using Nancy.Testing;
 using Nancy.ViewEngines;
 using Sitecore.Ship.About;
+
+using Nancy;
+using Should;
 using Sitecore.Ship.Core.Contracts;
 using Xunit;
 
 namespace Sitecore.Ship.Test
 {
-    public class AboutModuleTests
+	public class AboutModuleTests
     {
-        private readonly Mock<IAuthoriser> _mockAuthoriser;
-        private readonly Browser _browser;
+		private readonly Browser browser;
 
-        public AboutModuleTests()
+		public AboutModuleTests()
         {
-            var assembly = typeof(AboutModule).Assembly;
-            ResourceViewLocationProvider
-                    .RootNamespaces
-                    .Add(assembly, "Sitecore.Ship.About.Views");
+			var assembly = typeof(DefaultBootstrapper).Assembly;
 
-            _mockAuthoriser = new Mock<IAuthoriser>();
+			const string sitecoreShipAboutViews = "Sitecore.Ship.About.Views";
 
-            var bootstrapper = new ConfigurableBootstrapper(with =>
-            {
-                with.Module<AboutModule>();
-                with.ViewLocationProvider<ResourceViewLocationProvider>();
-                with.Dependency(_mockAuthoriser.Object);
-            });
+			if (!ResourceViewLocationProvider.RootNamespaces.ContainsKey(assembly))
+			{
+				ResourceViewLocationProvider
+					.RootNamespaces
+					.Add(assembly, sitecoreShipAboutViews);
+			}
 
-            _browser = new Browser(bootstrapper);
-
-            _mockAuthoriser.Setup(x => x.IsAllowed()).Returns(true);
+			var bootstrapper = new ConfigurableBootstrapper(with =>
+			{
+				with.Module<AboutModule>();
+				with.ViewLocationProvider(new ResourceViewLocationProvider());
+				with.Dependency<IAuthoriser>(new FakeRequestAuthoriser());
+			}); 
+			
+			browser = new Browser(bootstrapper);
         }
 
         [Fact]
-        public void Should_return_about_page_as_view()
+        public void About_page_is_returned_successfully()
         {
-            var response = _browser.Get("/services/about");
-
-            response.Body["h1"].AllShouldContain("Sitecore.Ship", StringComparison.InvariantCultureIgnoreCase);
+			browser
+				.Get("/services/about")
+				.StatusCode
+				.ShouldEqual(HttpStatusCode.OK);
         }
+
+		[Fact]
+		public void About_page_is_returned_as_a_view()
+		{
+			browser
+				.Get("/services/about")
+				.Body["h1"]
+				.AllShouldContain("Sitecore.Ship", StringComparison.InvariantCultureIgnoreCase);
+		}
     }
+
+	public class FakeRequestAuthoriser : IAuthoriser
+	{
+		public bool IsAllowed()
+		{
+			return true;
+		}
+	}
 }

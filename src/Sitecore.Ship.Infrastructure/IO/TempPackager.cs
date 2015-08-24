@@ -35,7 +35,10 @@ namespace Sitecore.Ship.Infrastructure.IO
 
         public void Dispose()
         {
-            File.Delete(_tempPackageFile);
+	        if (File.Exists(_tempPackageFile))
+	        {
+				File.Delete(_tempPackageFile);
+	        }
         }
     }
 }

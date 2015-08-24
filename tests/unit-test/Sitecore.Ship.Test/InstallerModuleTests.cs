@@ -13,6 +13,7 @@ namespace Sitecore.Ship.Test
 {
     public class InstallerModuleTests
     {
+		// TODO consider using ModuleTester as the SUT here...
         private readonly Browser _browser;
 
         private readonly Mock<IPackageRepository> _mockPackageRepos;

@@ -6,7 +6,6 @@ using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
 using Nancy.ViewEngines;
-
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 using Sitecore.Ship.Infrastructure.Configuration;
@@ -43,9 +42,15 @@ namespace Sitecore.Ship
             container.Register(typeof(PackageInstallationSettings), new PackageInstallationConfigurationProvider().Settings);
 
             var assembly = GetType().Assembly;
-            ResourceViewLocationProvider
-                .RootNamespaces
-                .Add(assembly, "Sitecore.Ship.About.Views");
+
+	        const string sitecoreShipAboutViews = "Sitecore.Ship.About.Views";
+
+	        if (!ResourceViewLocationProvider.RootNamespaces.ContainsKey(assembly))
+	        {
+		        ResourceViewLocationProvider
+			        .RootNamespaces
+			        .Add(assembly, sitecoreShipAboutViews);
+	        }
         }
 
         protected override IEnumerable<Func<Assembly, bool>> AutoRegisterIgnoredAssemblies
@@ -62,7 +67,7 @@ namespace Sitecore.Ship
                         }
                     );
 
-                ignoredAssemblies.Remove(asm => ! asm.FullName.StartsWith("Sitecore.Ship", StringComparison.InvariantCulture));
+                ignoredAssemblies.Remove(asm => !asm.FullName.StartsWith("Sitecore.Ship", StringComparison.InvariantCulture));
 
                 return ignoredAssemblies;
             }
@@ -72,13 +77,11 @@ namespace Sitecore.Ship
         {
             get
             {
-                return NancyInternalConfiguration.WithOverrides(OnConfigurationBuilder);
-            }
-        }
+				var result = NancyInternalConfiguration
+									.WithOverrides(nic => nic.ViewLocationProvider = typeof(ResourceViewLocationProvider));
 
-        void OnConfigurationBuilder(NancyInternalConfiguration x)
-        {
-            x.ViewLocationProvider = typeof(ResourceViewLocationProvider);
+				return result;
+            }
         }
     }
 }

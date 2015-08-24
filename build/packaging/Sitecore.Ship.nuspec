@@ -14,7 +14,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Nancy.Hosting.Aspnet" version="0.17.1" />
+      <dependency id="Nancy.Hosting.Aspnet" version="1.2.0" />
     </dependencies>
   </metadata>
   <files>
