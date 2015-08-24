@@ -3,30 +3,52 @@
   <Nodes>
     <Node Id="tests\acceptance test\Sitecore.Ship.AspNet.Web.Accept.Test" Label="Sitecore.Ship.AspNet.Web.Accept.Test" Category="Project" />
     <Node Id="Sitecore.Ship.AspNet 0.3.4" Label="Sitecore.Ship.AspNet 0.3.4" Category="Package" />
+    <Node Id="xunit.runner.msbuild 2.0.0" Label="xunit.runner.msbuild 2.0.0" Category="Package" />
+    <Node Id="xunit.runner.visualstudio 2.0.1" Label="xunit.runner.visualstudio 2.0.1" Category="Package" />
     <Node Id="tests\integration test\Sitecore.Ship.Infrastructure.Intg.Test" Label="Sitecore.Ship.Infrastructure.Intg.Test" Category="Project" />
     <Node Id="Should 1.1.20" Label="Should 1.1.20" Category="Package" />
-    <Node Id="xunit 1.9.2" Label="xunit 1.9.2" Category="Package" />
+    <Node Id="xunit 2.0.0" Label="xunit 2.0.0" Category="Package" />
+    <Node Id="xunit.abstractions 2.0.0" Label="xunit.abstractions 2.0.0" Category="Package" />
+    <Node Id="xunit.assert 2.0.0" Label="xunit.assert 2.0.0" Category="Package" />
+    <Node Id="xunit.core 2.0.0" Label="xunit.core 2.0.0" Category="Package" />
+    <Node Id="xunit.extensibility.core 2.0.0" Label="xunit.extensibility.core 2.0.0" Category="Package" />
+    <Node Id="xunit.runner.visualstudio 2.0.1" Label="xunit.runner.visualstudio 2.0.1" Category="Package" />
     <Node Id="tests\unit test\Sitecore.Ship.AspNet.Test" Label="Sitecore.Ship.AspNet.Test" Category="Project" />
     <Node Id="CsQuery 1.3.4" Label="CsQuery 1.3.4" Category="Package" />
-    <Node Id="Moq 4.2.1402.2112" Label="Moq 4.2.1402.2112" Category="Package" />
+    <Node Id="Moq 4.2.1507.0118" Label="Moq 4.2.1507.0118" Category="Package" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Testing 0.23.2" Label="Nancy.Testing 0.23.2" Category="Package" />
-    <Node Id="xunit 1.9.2" Label="xunit 1.9.2" Category="Package" />
+    <Node Id="xunit 2.0.0" Label="xunit 2.0.0" Category="Package" />
+    <Node Id="xunit.abstractions 2.0.0" Label="xunit.abstractions 2.0.0" Category="Package" />
+    <Node Id="xunit.assert 2.0.0" Label="xunit.assert 2.0.0" Category="Package" />
+    <Node Id="xunit.core 2.0.0" Label="xunit.core 2.0.0" Category="Package" />
+    <Node Id="xunit.extensibility.core 2.0.0" Label="xunit.extensibility.core 2.0.0" Category="Package" />
+    <Node Id="xunit.runner.visualstudio 2.0.1" Label="xunit.runner.visualstudio 2.0.1" Category="Package" />
     <Node Id="tests\unit test\Sitecore.Ship.Core.Test" Label="Sitecore.Ship.Core.Test" Category="Project" />
     <Node Id="CsQuery 1.3.4" Label="CsQuery 1.3.4" Category="Package" />
-    <Node Id="Moq 4.2.1402.2112" Label="Moq 4.2.1402.2112" Category="Package" />
+    <Node Id="Moq 4.2.1507.0118" Label="Moq 4.2.1507.0118" Category="Package" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Testing 0.23.2" Label="Nancy.Testing 0.23.2" Category="Package" />
     <Node Id="Should 1.1.20" Label="Should 1.1.20" Category="Package" />
-    <Node Id="xunit 1.9.2" Label="xunit 1.9.2" Category="Package" />
+    <Node Id="xunit 2.0.0" Label="xunit 2.0.0" Category="Package" />
+    <Node Id="xunit.abstractions 2.0.0" Label="xunit.abstractions 2.0.0" Category="Package" />
+    <Node Id="xunit.assert 2.0.0" Label="xunit.assert 2.0.0" Category="Package" />
+    <Node Id="xunit.core 2.0.0" Label="xunit.core 2.0.0" Category="Package" />
+    <Node Id="xunit.extensibility.core 2.0.0" Label="xunit.extensibility.core 2.0.0" Category="Package" />
+    <Node Id="xunit.runner.visualstudio 2.0.1" Label="xunit.runner.visualstudio 2.0.1" Category="Package" />
     <Node Id="tests\unit test\Sitecore.Ship.Test" Label="Sitecore.Ship.Test" Category="Project" />
     <Node Id="CsQuery 1.3.4" Label="CsQuery 1.3.4" Category="Package" />
-    <Node Id="Moq 4.2.1402.2112" Label="Moq 4.2.1402.2112" Category="Package" />
+    <Node Id="Moq 4.2.1507.0118" Label="Moq 4.2.1507.0118" Category="Package" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Testing 0.23.2" Label="Nancy.Testing 0.23.2" Category="Package" />
     <Node Id="Newtonsoft.Json 6.0.6" Label="Newtonsoft.Json 6.0.6" Category="Package" />
     <Node Id="Should 1.1.20" Label="Should 1.1.20" Category="Package" />
-    <Node Id="xunit 1.9.2" Label="xunit 1.9.2" Category="Package" />
+    <Node Id="xunit 2.0.0" Label="xunit 2.0.0" Category="Package" />
+    <Node Id="xunit.abstractions 2.0.0" Label="xunit.abstractions 2.0.0" Category="Package" />
+    <Node Id="xunit.assert 2.0.0" Label="xunit.assert 2.0.0" Category="Package" />
+    <Node Id="xunit.core 2.0.0" Label="xunit.core 2.0.0" Category="Package" />
+    <Node Id="xunit.extensibility.core 2.0.0" Label="xunit.extensibility.core 2.0.0" Category="Package" />
+    <Node Id="xunit.runner.visualstudio 2.0.1" Label="xunit.runner.visualstudio 2.0.1" Category="Package" />
     <Node Id="src\Sitecore.Ship" Label="Sitecore.Ship" Category="Project" />
     <Node Id="Nancy 0.23.2" Label="Nancy 0.23.2" Category="Package" />
     <Node Id="Nancy.Hosting.Aspnet 0.23.2" Label="Nancy.Hosting.Aspnet 0.23.2" Category="Package" />
@@ -35,26 +57,48 @@
   </Nodes>
   <Links>
     <Link Source="tests\acceptance test\Sitecore.Ship.AspNet.Web.Accept.Test" Target="Sitecore.Ship.AspNet 0.3.4" Category="Installed Package" />
+    <Link Source="tests\acceptance test\Sitecore.Ship.AspNet.Web.Accept.Test" Target="xunit.runner.msbuild 2.0.0" Category="Installed Package" />
+    <Link Source="tests\acceptance test\Sitecore.Ship.AspNet.Web.Accept.Test" Target="xunit.runner.visualstudio 2.0.1" Category="Installed Package" />
+    <Link Source="xunit 2.0.0" Target="xunit.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit 2.0.0" Target="xunit.assert 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.core 2.0.0" Target="xunit.extensibility.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.extensibility.core 2.0.0" Target="xunit.abstractions 2.0.0" Category="Package Dependency" />
     <Link Source="tests\integration test\Sitecore.Ship.Infrastructure.Intg.Test" Target="Should 1.1.20" Category="Installed Package" />
-    <Link Source="tests\integration test\Sitecore.Ship.Infrastructure.Intg.Test" Target="xunit 1.9.2" Category="Installed Package" />
+    <Link Source="tests\integration test\Sitecore.Ship.Infrastructure.Intg.Test" Target="xunit 2.0.0" Category="Installed Package" />
+    <Link Source="tests\integration test\Sitecore.Ship.Infrastructure.Intg.Test" Target="xunit.runner.visualstudio 2.0.1" Category="Installed Package" />
     <Link Source="Nancy.Testing 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Testing 0.23.2" Target="CsQuery 1.3.4" Category="Package Dependency" />
-    <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="Moq 4.2.1402.2112" Category="Installed Package" />
+    <Link Source="xunit 2.0.0" Target="xunit.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit 2.0.0" Target="xunit.assert 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.core 2.0.0" Target="xunit.extensibility.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.extensibility.core 2.0.0" Target="xunit.abstractions 2.0.0" Category="Package Dependency" />
+    <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="Moq 4.2.1507.0118" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="Nancy.Testing 0.23.2" Category="Installed Package" />
-    <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="xunit 1.9.2" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="xunit 2.0.0" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.AspNet.Test" Target="xunit.runner.visualstudio 2.0.1" Category="Installed Package" />
     <Link Source="Nancy.Testing 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Testing 0.23.2" Target="CsQuery 1.3.4" Category="Package Dependency" />
-    <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="Moq 4.2.1402.2112" Category="Installed Package" />
+    <Link Source="xunit 2.0.0" Target="xunit.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit 2.0.0" Target="xunit.assert 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.core 2.0.0" Target="xunit.extensibility.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.extensibility.core 2.0.0" Target="xunit.abstractions 2.0.0" Category="Package Dependency" />
+    <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="Moq 4.2.1507.0118" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="Nancy.Testing 0.23.2" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="Should 1.1.20" Category="Installed Package" />
-    <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="xunit 1.9.2" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="xunit 2.0.0" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.Core.Test" Target="xunit.runner.visualstudio 2.0.1" Category="Installed Package" />
     <Link Source="Nancy.Testing 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Testing 0.23.2" Target="CsQuery 1.3.4" Category="Package Dependency" />
-    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Moq 4.2.1402.2112" Category="Installed Package" />
+    <Link Source="xunit 2.0.0" Target="xunit.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit 2.0.0" Target="xunit.assert 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.core 2.0.0" Target="xunit.extensibility.core 2.0.0" Category="Package Dependency" />
+    <Link Source="xunit.extensibility.core 2.0.0" Target="xunit.abstractions 2.0.0" Category="Package Dependency" />
+    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Moq 4.2.1507.0118" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Nancy.Testing 0.23.2" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Newtonsoft.Json 6.0.6" Category="Installed Package" />
     <Link Source="tests\unit test\Sitecore.Ship.Test" Target="Should 1.1.20" Category="Installed Package" />
-    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="xunit 1.9.2" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="xunit 2.0.0" Category="Installed Package" />
+    <Link Source="tests\unit test\Sitecore.Ship.Test" Target="xunit.runner.visualstudio 2.0.1" Category="Installed Package" />
     <Link Source="Nancy.Hosting.Aspnet 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Serialization.JsonNet 0.23.2" Target="Nancy 0.23.2" Category="Package Dependency" />
     <Link Source="Nancy.Serialization.JsonNet 0.23.2" Target="Newtonsoft.Json 6.0.6" Category="Package Dependency" />
