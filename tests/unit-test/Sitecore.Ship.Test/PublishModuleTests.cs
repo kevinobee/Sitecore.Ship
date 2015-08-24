@@ -15,6 +15,10 @@ namespace Sitecore.Ship.Test
 {
     public class PublishModuleBehaviour
     {
+		private const string ValidListOfItems = "{\"Items\":[{\"itemId\":\"662a3670-2671-414c-97e5-f9b30473cdd7\",\"PublishChildren\":\"false\"},{\"itemId\":\"a49599a5-1b25-4efe-82aa-fa1af0993919\",\"PublishChildren\":\"false\"},{\"itemId\":\"377cb37e-2b00-417ebbec-872b4ef9e9a0\",\"PublishChildren\":\"false\"},{\"itemId\":\"9502a1e1-7bdd-4b3e-a234-a488ba871889\",\"PublishChildren\":\"false\"}],\"TargetDatabases\":[\"web\"],\"TargetLanguages\":[\"en\"]}";
+
+		private const string ApplicationJson = "application/json";
+
         private readonly Browser _browser;
 
         private readonly Mock<IPublishService> _mockPublishService;
@@ -212,13 +216,47 @@ namespace Sitecore.Ship.Test
         }
 
         [Fact]
-        public void Should_return_http_accepted_when_listofitems_called()
+        public void Should_return_http_no_content_when_listofitems_called()
         {
             _mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
 
             var response = _browser.Post("/services/publish/listofitems");
 
-            response.StatusCode.ShouldEqual(HttpStatusCode.Accepted);
+            response.StatusCode.ShouldEqual(HttpStatusCode.NoContent);
         }
+
+		[Fact]
+		public void Should_return_http_bad_request_when_invalid_listofitems_requested()
+		{
+			_mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
+
+			var body = ValidListOfItems.Substring(1);
+
+			var response = _browser.Post("/services/publish/listofitems", with =>
+            {
+                with.HttpRequest();
+	            with.Header("Content-Type", ApplicationJson);
+	            with.Body(body, ApplicationJson);
+				
+            });
+
+			response.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
+		}
+
+		[Fact(Skip="TODO failing test in commandline only")]
+		public void Should_return_http_accepted_when_populated_listofitems_requested()
+		{
+			_mockPublishService.Setup(x => x.Run(It.IsAny<ItemsToPublish>()));
+
+			var response = _browser.Post("/services/publish/listofitems", with =>
+			{
+				with.HttpRequest();
+				with.Header("Pragma", "no-cache");
+				with.Header("Content-Type", ApplicationJson);
+				with.Body(ValidListOfItems, ApplicationJson);
+			});
+
+			response.StatusCode.ShouldEqual(HttpStatusCode.Accepted);
+		}
     }
 }

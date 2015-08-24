@@ -70,10 +70,29 @@ namespace Sitecore.Ship.Publish
 
         private dynamic InvokePublishingOfListOfItems(dynamic o)
         {
-            var itemsToPublish = this.Bind<ItemsToPublish>();
+			ItemsToPublish itemsToPublish;
+
+	        try
+	        {
+				itemsToPublish = this.Bind<ItemsToPublish>();
+	        }
+	        catch (Exception exception)
+	        {
+				return Response.AsJson(exception.Message, HttpStatusCode.BadRequest);
+	        }
 
             var now = DateTime.Now;
             var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+			
+			if (itemsToPublish == null)
+	        {
+				return Response.AsJson(date, HttpStatusCode.BadRequest);
+	        }
+
+			if (itemsToPublish.Items.Count == 0)
+			{
+				return Response.AsJson(date, HttpStatusCode.NoContent);
+			}
 
             _publishService.Run(itemsToPublish);
 
