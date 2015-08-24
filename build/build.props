@@ -11,8 +11,7 @@
     <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
     <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
     <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
-    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
-    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+    <NuGetExePath>$(ProjectRoot)\packages\NuGet.CommandLine.2.8.6\tools\nuget.exe</NuGetExePath>
     <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
     <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
     <ToolsPath>$(ProjectRoot)\tools</ToolsPath>

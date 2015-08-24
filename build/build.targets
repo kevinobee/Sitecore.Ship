@@ -5,81 +5,85 @@
   <Import Project="$(MSBuildProjectDirectory)\build.tasks" />
 
   <UsingTask
-    AssemblyFile="$(XunitExePath)"
-    TaskName="Xunit.Runner.MSBuild.xunit"/>
+	AssemblyFile="$(XunitExePath)"
+	TaskName="Xunit.Runner.MSBuild.xunit"/>
   
   <Target Name="CopyLibs">
-    <ItemGroup>
-      <CopyLibFiles Include="@(LibFiles -> '$(LibsSrcPath)\%(Identity)')" />
-    </ItemGroup>
-    <Copy
-        SourceFiles="@(CopyLibFiles)"
-        DestinationFolder="$(LibsDestPath)"
-        />
+	<ItemGroup>
+	  <CopyLibFiles Include="@(LibFiles -> '$(LibsSrcPath)\%(Identity)')" />
+	</ItemGroup>
+	<Copy
+		SourceFiles="@(CopyLibFiles)"
+		DestinationFolder="$(LibsDestPath)"
+		/>
   </Target>
 
   <Target Name="Clean">
-    <RemoveDir Directories="$(ArtifactsPath)"  />
+	<RemoveDir Directories="$(ArtifactsPath)"  />
   </Target>
 
   <Target Name="Init" DependsOnTargets="Clean; CopyLibs">
-    <MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
-    <MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
-    <MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />
-    <MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
+	<MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
+	<MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
+	<MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />
+	<MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
   </Target>
 
-  <Target Name="Build" DependsOnTargets="Init">
-    <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
-             Targets="ReBuild"
-             Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
+	<Target Name="PackageRestore" DependsOnTargets="Init">
+		<Exec Command="$(ProjectRoot)\packages\NuGet.CommandLine.2.8.6\tools\NuGet.exe restore $(ProjectRoot)\$(ProjectName).sln" />
+	</Target>
+	
+  <Target Name="Build" DependsOnTargets="PackageRestore">
+	<MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
+			 Targets="ReBuild"
+			 Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
   </Target>
 
   <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
-    <ItemGroup>
-      <AnalysisProjects Include="$(ProjectRoot)\src\**\*.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+	  <AnalysisProjects Include="$(ProjectRoot)\src\**\*.csproj" />
+	</ItemGroup>
 
-    <MSBuild Projects="%(AnalysisProjects.Identity)"
-             Targets="ReBuild"
-             Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
+	<MSBuild Projects="%(AnalysisProjects.Identity)"
+			 Targets="ReBuild"
+			 Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
 
-    <!-- Remove the build artifacts -->
-    <ItemGroup>
-      <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
-    </ItemGroup>
+	<!-- Remove the build artifacts -->
+	<ItemGroup>
+	  <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
+	</ItemGroup>
 
-    <Delete Files="@(FilesToDelete)" />
+	<Delete Files="@(FilesToDelete)" />
   </Target>
 
   <ItemGroup>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
-      <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
-    </RegexTransform>
+	<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+	  <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
+	  <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
+	</RegexTransform>
+	<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+	  <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
+	  <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
+	</RegexTransform>
+	<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+	  <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
+	  <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
+	</RegexTransform>
   </ItemGroup>
 
   <Target Name="UpdateVersion">
-    <RegexTransform Items="@(RegexTransform)" />
+	<RegexTransform Items="@(RegexTransform)" />
   </Target>
 
   <Target Name="RunUnitTests" DependsOnTargets="Build">
-    <ItemGroup>
-      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" Exclude="$(BuildResultsPath)\*.Intg.Test.dll" />
-    </ItemGroup>
+	<ItemGroup>
+	  <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" Exclude="$(BuildResultsPath)\*.Intg.Test.dll" />
+	</ItemGroup>
 
-    <xunit
-        Assemblies="@(TestAssemblies)"
-        Xml="$(OutputXmlFile)"
-        Html="$(OutputHtmlFile)"/>
+	<xunit
+		Assemblies="@(TestAssemblies)"
+		Xml="$(OutputXmlFile)"
+		Html="$(OutputHtmlFile)"/>
 
   </Target>
 
@@ -87,10 +91,10 @@
   </Target>
 
   <Target Name="StdPackage" DependsOnTargets="Build">
-    <ItemGroup>
-      <NuspecFiles Include="$(PackagingPath)\*.nuspec" />
-    </ItemGroup>
-    <Exec Command="$(NuGetExePath) pack  %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)"/>
+	<ItemGroup>
+	  <NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+	</ItemGroup>
+	<Exec Command="$(NuGetExePath) pack  %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)"/>
   </Target>
 
   <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
