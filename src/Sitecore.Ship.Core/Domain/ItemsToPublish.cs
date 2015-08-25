@@ -17,6 +17,9 @@ namespace Sitecore.Ship.Core.Domain
 			Items = new List<Guid>();
 			TargetDatabases = new string[] { };
 			TargetLanguages = new string[] { };
+		    SmartPublish = true;
+		    DeepPublish = true;
+		    PublishRelatedItems = false;
 		}
     }
 }
