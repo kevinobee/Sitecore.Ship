@@ -38,7 +38,7 @@ namespace Sitecore.Ship.Infrastructure
                     var item = master.GetItem(new ID(itemToPublish));
                     if (item != null)
                     {
-                        Publishing.PublishManager.PublishItem(item, itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray(), languages, true, true);
+                        Publishing.PublishManager.PublishItem(item, itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray(), languages, itemsToPublish.DeepPublish, itemsToPublish.SmartPublish, itemsToPublish.PublishRelatedItems);
                     }
                 }
             }
