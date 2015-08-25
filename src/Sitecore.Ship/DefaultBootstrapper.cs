@@ -33,8 +33,6 @@ namespace Sitecore.Ship
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
-            base.ConfigureApplicationContainer(container);
-
             container.AutoRegister(new[]
             {
                 typeof (IPackageRepository).Assembly, 

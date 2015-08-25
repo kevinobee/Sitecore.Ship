@@ -11,5 +11,12 @@ namespace Sitecore.Ship.Core.Domain
         public bool SmartPublish { get; set; }
         public bool DeepPublish { get; set; }
         public bool PublishRelatedItems { get; set; }
+
+		public ItemsToPublish()
+		{
+			Items = new List<Guid>();
+			TargetDatabases = new string[] { };
+			TargetLanguages = new string[] { };
+		}
     }
 }

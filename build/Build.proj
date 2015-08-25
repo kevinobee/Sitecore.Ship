@@ -24,7 +24,7 @@
     <LibFiles Include="Sitecore.Zip.dll" />
   </ItemGroup>
 
-  <Target Name="RunSmokeTests" DependsOnTargets="Build">
+  <Target Name="RunSmokeTests" >
     <PropertyGroup>
       <SitecoreShipPackagePath>$(ProjectRoot)\build\sitecore packages\SitecoreShip.zip</SitecoreShipPackagePath>
       <TestPackagePath>$(ProjectRoot)\tests\acceptance-test\01-package.update</TestPackagePath>
@@ -68,7 +68,11 @@
     
     <!-- Show the last completed publish time (after publishing) specifying source/target/language parameters -->
     <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/publish/lastcompleted/master/web/en"  />
-    
+
+    <Exec Command="$(CurlExePath) -i -X POST $(TestWebsiteUrl)services/publish/listofitems --header &quot;Content-Type: application/x-www-form-urlencoded&quot; --header &quot;Content-Length: 0&quot; -H &quot;Accept:application/json&quot;" />
+  
+	<!-- Issue #44 - 404, when trying to publish a list of items github.com/kevinobee/Sitecore.Ship/issues/44 -->
+	<Exec Command="$(CurlExePath) -i -H &quot;Content-Type: application/json&quot; -X POST -d &quot;{\&quot;Items\&quot;:[{\&quot;itemId\&quot;:\&quot;662a3670-2671-414c-97e5-f9b30473cdd7\&quot;,\&quot;PublishChildren\&quot;:\&quot;false\&quot;},{\&quot;itemId\&quot;:\&quot;a49599a5-1b25-4efe-82aa-fa1af0993919\&quot;,\&quot;PublishChildren\&quot;:\&quot;false\&quot;},{\&quot;itemId\&quot;:\&quot;377cb37e-2b00-417e-bbec-872b4ef9e9a0\&quot;,\&quot;PublishChildren\&quot;:\&quot;false\&quot;},{\&quot;itemId\&quot;:\&quot;9502a1e1-7bdd-4b3e-a234-a488ba871889\&quot;,\&quot;PublishChildren\&quot;:\&quot;false\&quot;}],\&quot;TargetDatabases\&quot;:[\&quot;web\&quot;],\&quot;TargetLanguages\&quot;:[\&quot;en\&quot;]}&quot; http://ship/services/publish/listofitems" />
   </Target>
  
 </Project>

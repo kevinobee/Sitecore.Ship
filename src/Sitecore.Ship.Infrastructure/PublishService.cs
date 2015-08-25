@@ -28,6 +28,16 @@ namespace Sitecore.Ship.Infrastructure
 
         public void Run(ItemsToPublish itemsToPublish)
         {
+			if (itemsToPublish == null)
+			{
+				throw new ArgumentNullException("itemsToPublish");
+			}
+
+			if (itemsToPublish.Items.Count == 0)
+			{
+				return;
+			}
+
             using (new SecurityModel.SecurityDisabler())
             {
                 var master = Sitecore.Configuration.Factory.GetDatabase("master");

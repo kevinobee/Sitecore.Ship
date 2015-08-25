@@ -23,6 +23,8 @@ The latest release versions of the Sitecore.Ship packages can be found on the Nu
 
 Ensure that the website project is set to run with .NET Framework 4.5
 
+Ensure that the web.config file for the target project if already existing is included into your project.
+
 Run the following powershell command in the package manager console of the Visual Studio solution for the target website:
 
     install-package Sitecore.Ship -Source <path>
