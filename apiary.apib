@@ -1,59 +1,22 @@
 ﻿FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://docs.sitecoreship.apiary.io/
 
 # Sitecore.Ship
 
 Package is a simple API allowing consumers to install packages into a Sitecore instance.
 
-# Package API Root [/services/package]
+# Sitecore.Ship API Root [/services]
 
-This resource does not have any attributes. Instead it offers the initial
-API affordances in the form of the links in the JSON body.
+Returns information on the currently installed Sitecore.Ship.
 
-It is recommend to follow the “url” link values,
-[Link](https://tools.ietf.org/html/rfc5988) or Location headers where
-applicable to retrieve resources. Instead of constructing your own URLs,
-to keep your client decoupled from implementation details.
-
-## Retrieve the Entry Point [GET]
+## Retrieve information on the installed Sitecore.Ship [GET]
 
 + Response 200 (application/json)
 
         {
-            "questions_url": "/questions" // TODO
+            "sitecore.ship.version": "0.4.0" 
         }
 
-## Group Install Package
 
-Resources related to installing packages using the API.
 
-## Install Package [/services/package/install]
 
-TODO
-
-### Install Package - Specify Server File Path [POST]
-
-+ Request (multipart/form-data)
-
-    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
-    Content-Disposition: form-data; name="path"
-    
-    d:\package.update
-    ----WebKitFormBoundaryE19zNvXGzXaLvS5C
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /services/package/latestversion
-
-+ Response 201 (application/json)
-
-	{
-	    "Entries": [
-            {
-                "ID": "110d559f-dea5-42ea-9c1c-8a5df7e70ef9",
-                "Path": "addeditems/master/sitecore/content/home"
-	    }
-        ]
-        }
