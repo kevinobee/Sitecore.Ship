@@ -10,11 +10,14 @@ namespace Sitecore.Ship.AspNet
         {
             if (CanHandle(context))
             {
-                var version = GetType().Assembly.GetName().Version;
+                var assemblyName = GetType().Assembly.GetName();
+                var applicationName = assemblyName.Name;
+                var version = assemblyName.Version;
 
                 var builder = new StringBuilder();
-                builder.AppendFormat("Sitecore.Ship - version {0}", version);
+                builder.AppendFormat("{0} - version {1}", applicationName, version);
 
+                context.Response.ContentType = "text/plain";
                 context.Response.Write(builder.ToString());
             }
             else if (Successor != null)

@@ -39,3 +39,4 @@ lib/*.lic
 /artifacts
 *.ncrunchproject
 *.ncrunchsolution
+.vs/

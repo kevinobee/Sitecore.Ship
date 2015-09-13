@@ -1,18 +1,181 @@
-FORMAT: 1A
+﻿FORMAT: 1A
 HOST: http://docs.sitecoreship.apiary.io/
 
 # Sitecore.Ship
 
-The package offers a simple API to help consumers install their packages into Sitecore over an internet connection.
+The package offers a simple API to help consumers install their packages into Sitecore over HTTP.
 
-## Sitecore.Ship API Root [/services]
+## Discovery [/services/about]
 
-Returns information on the currently installed Sitecore.Ship.
+### About [GET]
+Returns information on the installed version of Sitecore.Ship.
 
-### Retrieve information on the installed Sitecore.Ship [GET]
++ Response 200 (text/plain)
+
+    + Body
+
+            Sitecore.Ship - version 0.4.0.0
+
+
+## Package Installation [/services/package]
+
+### Install Package [POST /services/package/install]
+Install a package by specifying a package available on the server.
+
+Specify the package file path into the command as a parameter in the x-www-form-urlencoded form-data.
+
+The request also takes an optional `DisableIndexing` parameter in the x-www-form-urlencoded form-data which defaults to *false*. When the parameter is set to *true* updating of search indexes during the package installation will be suspended. Disabling the search index updates will increase the speed at which packages are installed into the CMS. You can read more about this approach on Alex Shyba's 
+[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard – disable search index update during install")
+
++ Request (multipart/form-data;boundary=----WebKitFormBoundary8M3sSU13ul5lXSJm)
+
+    + Body
+
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            Content-Disposition: form-data; name="path"
+    
+            d:\package.update
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /services/package/latestversion
+
+    + Body
+
+            { "Entries" : [ {  "ID" : "110d559f-dea5-42ea-9c1c-8a5df7e70ef9", "Path" : "addeditems/master/sitecore/content/home" } ] }
+
+
+
+### Upload and Install Package [POST /services/package/install/fileupload]
+Upload and install a package by specifying a package to upload to the server and install into the Sitecore instance.
+
+Specify the package file path into the command as a parameter in the x-www-form-urlencoded form-data.
+
+The request also accepts an optional `DisableIndexing` parameter. For details of this and information on the command's response format refer to the `Install Package - Specify Server File Path` above.
+
+*Note* that if you have `recordInstallationHistory` enabled you will need to provide `PackageId` and `Description` form parameters in the request that you make.
+
++ Request (multipart/form-data;boundary=----WebKitFormBoundary8M3sSU13ul5lXSJm)
+
+    + Headers
+
+            Accept: application/json, text/javascript, */*
+
+    + Body
+
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            Content-Disposition: form-data; name="path"; filename="package.update"
+            Content-Type: 
+            
+            
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /services/package/latestversion
+
+    + Body
+
+            { "Entries" : [ {  "ID" : "110d559f-dea5-42ea-9c1c-8a5df7e70ef9", "Path" : "addeditems/master/sitecore/content/home" } ] }
+
+
+### Package Installation Report [GET /services/package/latestversion]
+
+Reports the details of the last package to have been installed by the Sitecore.Ship.
+
+Note that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the **Configuration Options** section of the project [README](README.md) file.
+
++ Response 200
+
+
+## Publishing [/services/publish]
+
+### Sitecore Content Publish [POST /services/publish/{mode}]
+
++ Parameters
+
+    + mode: full (required, string) - Sitecore publishing mode. Valid values are `full`, `smart` and `incremental`.
+    
+
++ Request (multipart/form-data;boundary=----WebKitFormBoundary8M3sSU13ul5lXSJm)
+
+    + Headers
+
+            Accept: application/json, text/javascript, */*
+            
+    + Attributes (object)
+
+        + source: master (string, optional) - The publishing source.
+        
+        + targets: web (string, optional) - The publishing targets.
+
+        + languages: en (string, optional) - The publishing languages.
+
+    + Body
+
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            Content-Disposition: form-data; name="source"
+            
+            master
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            Content-Disposition: form-data; name="targets"
+            
+            web, target2
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+            Content-Disposition: form-data; name="languages"
+            
+            en, da, de-DE
+            ----WebKitFormBoundaryE19zNvXGzXaLvS5C
+
++ Response 204
+
+
+
+### Publish Specified Items [POST /services/publish/listofitems]
+
+To publish a list of items
+
++ Request (application/json)
+
+        {
+            "Items": [
+                      {
+                          "itemId" : "{DEDCC8EB-F542-449C-9EFA-4F248EDB900B}",
+                          "PublishChildren": "false"
+                      },
+                      {
+                          "itemId" : "{CE0A2933-AB9B-4131-ABD2-DE7C2A69FBB9}",
+                          "PublishChildren": "false"
+                      }
+                     ],
+            "TargetDatabases": [ "#TargetDatabase#" ],
+            "TargetLanguages": [ "en" ]
+        }
 
 + Response 200 (application/json)
 
+### Last Completed [GET /services/publish/lastcompleted/{source}/{target}/{language}]
+
+Reports the timestamp of the last publish operation.
+
++ Parameters
+
+    + source: `master` (optional, string) - The publishing source.
+        + Default: `master`
+        
+    + target: `web` (optional, string) - The publishing target.
+        + Default: `web`
+      
+    + language: `en` (optional, string) - The publishing language.
+        + Default: `en`
+      
++ Response 200 (application/json)
+
         {
-            "sitecore.ship.version": "0.4.0" 
+            "date": "\/Date(-62135596800000)\/"
         }
