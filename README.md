@@ -1,5 +1,7 @@
 # Sitecore.Ship
 
+[![Join the chat at https://gitter.im/kevinobee/Sitecore.Ship](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kevinobee/Sitecore.Ship?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Sitecore.Ship is a lightweight means to install Sitecore Update packages via HTTP requests.
 
 
@@ -81,7 +83,7 @@ The body of a successfull request will contain details of the package contents i
      {"Entries":[{"ID":"110d559f-dea5-42ea-9c1c-8a5df7e70ef9","Path":"addeditems/master/sitecore/content/home"}]}
 
 The request also takes an optional `DisableIndexing` parameter in the x-www-form-urlencoded form-data which defaults to *false*. When the parameter is set to *true* updating of search indexes during the package installation will be suspended. Disabling the search index updates will increase the speed at which packages are installed into the CMS. You can read more about this approach on Alex Shyba's 
-[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard – disable search index update during install")
+[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard ï¿½ disable search index update during install")
  
 
 
