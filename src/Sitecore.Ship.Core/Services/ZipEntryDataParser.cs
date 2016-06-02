@@ -13,21 +13,24 @@ namespace Sitecore.Ship.Core.Services
                 var elements = dataKey.Split(new[] { "_{" }, 2, StringSplitOptions.None);
 
                 return new PackageManifestEntry
-                    {
-                        ID = new Guid(elements[1].Trim(new[] { '{', '}' })),
-                        Path = elements[0]
-                    };
+                {
+                    ID = new Guid(elements[1].Trim(new[] { '{', '}' })),
+                    Path = elements[0]
+                };
             }
 
             if (dataKey.EndsWith("/xml", StringComparison.InvariantCultureIgnoreCase))
             {
                 var elements = dataKey.Split(new[] { "/{" }, 2, StringSplitOptions.None);
-                
-                return new PackageManifestEntry
+                // fix - support XML folders
+                if (elements.Length > 1)
+                {
+                    return new PackageManifestEntry
                     {
                         ID = new Guid(elements[1].Split(new[] { '}' })[0]),
                         Path = elements[0]
                     };
+                }
             }
 
             const string filesPrefix = "addedfiles";
@@ -35,7 +38,7 @@ namespace Sitecore.Ship.Core.Services
             {
                 return new FileManifestEntry(dataKey.Substring(filesPrefix.Length));
             }
-            
+
             return new PackageManifestEntryNotFound();
         }
     }
