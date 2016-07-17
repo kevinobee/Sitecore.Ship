@@ -1,35 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+    
+    <!-- Define paths relative to MSBuildProjectDirectory -->
     <ProjectRoot>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..'))</ProjectRoot>
-    <LibsDestPath>$(ProjectRoot)\lib</LibsDestPath>
     <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
     <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
     <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
     <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
+    <BuildDestinationDir>$(BuildResultsPath)\lib\net45</BuildDestinationDir>
     <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
     <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
-    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
-    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
     <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
     <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
+    <PackagesPath>$(ProjectRoot)\packages</PackagesPath>
     <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-    <XunitPath>$(ProjectRoot)\packages\xunit.1.9.2\lib\net20</XunitPath>
-    <CurlPath>$(ToolsPath)\curl</CurlPath>
+    
+    <!-- Optionally override tooling paths with CI server Enrinorment variables -->
+    <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.2.8.6\tools\nuget.exe</NugetExe>
+    
+    <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
+    <FxCopDir>$(PackagesPath)\FxCop.BuildTools.1.0.1\tools\FxCop</FxCopDir> 
+    <CurlPath>$(PackagesPath)\curl.7.30.0.2\tools\native\v110\x64\Release\ltcg</CurlPath>
     <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
+    <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
+    <CourierPath>$(ToolsPath)\Sitecore.Courier\</CourierPath>
+    <XunitExePath>@(Xunit->'%(relativedir)%(filename)%(extension)')</XunitExePath>   
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- Build number is of the format (CurrentYear - VersionStartYear + 1)(2 digit month)(2 digit day) -->
-    <BuildDate>$([MSBuild]::Add(1, $([MSBuild]::Subtract($([System.DateTime]::Now.Year), $(VersionStartYear)))))$([System.DateTime]::Now.ToString("MMdd"))</BuildDate>
-    <Revision Condition="$(BUILD_NUMBER) != ''">$(BUILD_NUMBER)</Revision>
-    <Revision Condition="$(BUILD_NUMBER) == ''">0</Revision>
-    <PrereleaseTagWithSeparator Condition="$(PRERELEASE) != ''">.$([System.DateTime]::Now.ToString("yyMMdd"))</PrereleaseTagWithSeparator>
-    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
-    <FileVersion>$(MajorVersion).$(MinorVersion).$(BuildDate).$(Revision)</FileVersion>
-    <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(PrereleaseTagWithSeparator)</PackageVersion>
+
+    <!-- Provide defaults for build Environment variables - documented in build\readme.md -->
+    <MajorVersion Condition="$(MajorVersion) == ''">0</MajorVersion>
+    <MinorVersion Condition="$(MinorVersion) == ''">0</MinorVersion>
+    <PatchVersion Condition="$(PatchVersion) == ''">0</PatchVersion>
+    <Revision Condition="$(Revision) == ''">0000</Revision>
+    <Revision Condition="$(SHA) == ''">0000000</Revision>
+    <PRERELEASE Condition="$(PRERELEASE) == ''">true</PRERELEASE>
+    
+    <IsRunningOnTeamCity Condition="$(IsRunningOnTeamCity) == ''">false</IsRunningOnTeamCity>
+    <Configuration Condition="$(Configuration) == ''">Release</Configuration>
+    
+    <!-- Define build version values from Environment variables -->
+    <BuildNumber>-r$(Revision)</BuildNumber>
+    <SHA Condition="'$(SHA.Length)' > 7" >$(SHA.Substring(0,7))</SHA>
+    <CommitSHA>-$(SHA)</CommitSHA>
+    <MajorMinorPatch>$(MajorVersion).$(MinorVersion).$(PatchVersion)</MajorMinorPatch>
+    <Version>$(MajorVersion).0.0.0</Version>
+    <FileVersion>$(MajorMinorPatch).0</FileVersion>
+
+    <!--PackageVersion format example 4.10.3-r0022 -->
+    <PackageVersion>$(MajorMinorPatch)$(BuildNumber)</PackageVersion>
+
+    <!-- ProductVersion format example 4 4.10.3-r0022-381ba93 -->
+    <ProductVersion>$(MajorMinorPatch)$(BuildNumber)$(CommitSHA)</ProductVersion>
+    
   </PropertyGroup>
+    
+  <ItemGroup>
+    <Xunit Include="$(PackagesPath)\xunit.runner.msbuild.2.1.0\build\**\xunit.runner.msbuild.dll" />
+  </ItemGroup>
 
 </Project>

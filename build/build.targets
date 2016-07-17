@@ -1,102 +1,276 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" 
+			encoding="utf-8"?>
+			
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="$(MSBuildProjectDirectory)\build.props" />
-  <Import Project="$(MSBuildProjectDirectory)\build.tasks" />
+		<Import Project="$(MSBuildProjectDirectory)\build.props" />
+		<Import Project="$(MSBuildProjectDirectory)\build.tasks" />
 
-  <UsingTask
-    AssemblyFile="$(XunitPath)\xunit.runner.msbuild.dll"
-    TaskName="Xunit.Runner.MSBuild.xunit"/>
-  
-  <Target Name="CopyLibs">
-    <ItemGroup>
-      <CopyLibFiles Include="@(LibFiles -> '$(LibsSrcPath)\%(Identity)')" />
-    </ItemGroup>
-    <Copy
-        SourceFiles="@(CopyLibFiles)"
-        DestinationFolder="$(LibsDestPath)"
-        />
-  </Target>
+    <Import Project="$(MSBuildProjectDirectory)\smokeTests.targets" />
+    <Import Project="$(MSBuildProjectDirectory)\elapsed-time.targets" />
 
-  <Target Name="Clean">
-    <RemoveDir Directories="$(ArtifactsPath)"  />
-  </Target>
+    <UsingTask AssemblyFile="$(XunitExePath)"
+               TaskName="Xunit.Runner.MSBuild.xunit" />
 
-  <Target Name="Init" DependsOnTargets="Clean; CopyLibs">
-    <MakeDir Directories="$(ArtifactsPath)" Condition="!Exists('$(ArtifactsPath)')" />
-    <MakeDir Directories="$(AnalysisResultsPath)" Condition="!Exists('$(AnalysisResultsPath)')" />
-    <MakeDir Directories="$(PackageResultsPath)" Condition="!Exists('$(PackageResultsPath)')" />
-    <MakeDir Directories="$(TestResultsPath)" Condition="!Exists('$(TestResultsPath)')" />
-  </Target>
+		<Target Name="Clean"
+						BeforeTargets="Init">
+		
+				<RemoveDir Directories="$(ArtifactsPath)" />
+	
+		</Target>
 
-  <Target Name="Build" DependsOnTargets="Init">
-    <MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
-             Targets="ReBuild"
-             Properties="Configuration=$(Configuration);OutDir=$(BuildResultsPath)\" />
-  </Target>
+		<Target Name="Init">
+						
+				<MakeDir Directories="$(ArtifactsPath)" 
+								 Condition="!Exists('$(ArtifactsPath)')" />
+								 
+				<MakeDir Directories="$(AnalysisResultsPath)" 
+								 Condition="!Exists('$(AnalysisResultsPath)')" />
+								 
+				<MakeDir Directories="$(PackageResultsPath)" 
+								 Condition="!Exists('$(PackageResultsPath)')" />
+								 
+				<MakeDir Directories="$(TestResultsPath)" 
+								 Condition="!Exists('$(TestResultsPath)')" />
+				
+		</Target>
 
-  <Target Name="RunCodeAnalysis" DependsOnTargets="Init" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v11.0\CodeAnalysis\fxcoptask.dll')">
-    <ItemGroup>
-      <AnalysisProjects Include="$(ProjectRoot)\src\**\*.csproj" />
-    </ItemGroup>
+		<Target Name="PackageRestore" 
+            BeforeTargets="Build">
+            
+        <Exec Command="$(NugetExe) restore $(ProjectRoot)\$(ProjectName).sln" />
+        
+    </Target>
 
-    <MSBuild Projects="%(AnalysisProjects.Identity)"
-             Targets="ReBuild"
-             Properties="RunCodeAnalysis=true;Configuration=$(Configuration);OutDir=$(AnalysisResultsPath)\" />
+    <Target Name="EnsureDependencies" 
+            BeforeTargets="PackageRestore">
+        
+        <Error
+            Text="NugetExe environment variable is not set"
+            Condition="'$(NugetExe)' == ''" />
+<!-- TODO					
+				<Error
+						Text="NugetExe '$(NugetExe)' does not exist on the file system"
+						Condition="! Exists('$(NugetExe)')" /> 
+	-->			
+		</Target>
 
-    <!-- Remove the build artifacts -->
-    <ItemGroup>
-      <FilesToDelete Include="$(AnalysisResultsPath)\*.dll;$(AnalysisResultsPath)\*.pdb"/>
-    </ItemGroup>
+		<Target Name="FxCop"
+						Condition="Exists('$(FxCopDir)') And '$(IsRunningOnTeamCity)' != 'true'">
+				
+				<PropertyGroup>
+						<BuildAnalysisPath>$(ProjectRoot)\build\analysis</BuildAnalysisPath>
+						<FxCopCustomDictionaryFile>$(BuildAnalysisPath)\FxCop.CustomDictionary.xml</FxCopCustomDictionaryFile>
+						<FxCopExe>$(FxCopDir)\FxCopCmd.exe</FxCopExe>
+						<PlatformDir Condition="'$(PlatformDir)' == ''">c:\Windows\Microsoft.NET\Framework\v4.0.30319</PlatformDir>
+						<FxCopOptions>/summary /successfile /searchgac</FxCopOptions>
+						<FxCopReportFormat>$(FxCopDir)\Xml\FxCopReport.xsl</FxCopReportFormat>
+						<FxCopAnalysisLogFile>$(AnalysisResultsPath)\FxCopReport.html</FxCopAnalysisLogFile>
+						<AssemblyFiles>$(BuildDestinationDir)\Sitecore.Ship*.dll</AssemblyFiles>
+				</PropertyGroup>
 
-    <Delete Files="@(FilesToDelete)" />
-  </Target>
+				<Message Text="FxCopDir is $(FxCopDir)" />
+				
+				<Exec 
+						Command="$(FxCopExe) /dictionary:$(FxCopCustomDictionaryFile) /out:$(FxCopAnalysisLogFile) /outxsl:$(FxCopReportFormat) $(FxCopOptions) /platform:$(PlatformDir) /file:$(AssemblyFiles) /rulesetdirectory:&quot;$(FxCopDir)\..\Rule Sets&quot; /rule:+$(FxCopDir)\Rules"
+						WorkingDirectory="$(FxCopDir)"/> 
 
-  <ItemGroup>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
-      <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
-    </RegexTransform>
-    <RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-      <Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+(-\w+\d*(-\d+)?)?"\)</Find>
-      <ReplaceWith>AssemblyInformationalVersion("$(PackageVersion)")</ReplaceWith>
-    </RegexTransform>
-  </ItemGroup>
+		</Target>
 
-  <Target Name="UpdateVersion">
-    <RegexTransform Items="@(RegexTransform)" />
-  </Target>
+		<Target Name="ReportCodeAnalysisResults"
+						AfterTargets="FxCop"
+						Condition="Exists('$(FxCopAnalysisLogFile)')">
+						
+				<Message
+						Text="##teamcity[importData type='FxCop' path='$(FxCopAnalysisLogFile)']"
+						Importance="High" />
+						
+		</Target>
 
-  <Target Name="RunUnitTests" DependsOnTargets="Build">
-    <ItemGroup>
-      <TestAssemblies Include="$(BuildResultsPath)\*.Test.dll" Exclude="$(BuildResultsPath)\*.Intg.Test.dll" />
-    </ItemGroup>
+		<ItemGroup>
+				<!-- Apply versioning to src\Common\*.cs files - should only be applied on CI server -->
+		
+				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+						<Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
+						<ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
+				</RegexTransform>
+				
+				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+						<Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
+						<ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
+				</RegexTransform>
+				
+				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
+						<Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+"\)</Find>
+						<ReplaceWith>AssemblyInformationalVersion("$(ProductVersion)")</ReplaceWith>
+				</RegexTransform>
+				
+		</ItemGroup>
 
-    <xunit
-        Assemblies="@(TestAssemblies)"
-        WorkingFolder="$(XunitPath)"
-        Xml="$(OutputXmlFile)"
-        Html="$(OutputHtmlFile)"/>
+		<Target Name="UpdateVersion"
+						BeforeTargets="Build">
+				
+				<RegexTransform Items="@(RegexTransform)" />
+				
+		</Target>
 
-  </Target>
+		<Target Name="ValidateVersionInfo"
+						BeforeTargets="ReportVersionInfo">
 
-  <Target Name="RunTests" DependsOnTargets="RunUnitTests; ">
-  </Target>
+			<Error Text="MajorVersion environment variable is not set"
+						 Condition="$(MajorVersion) == ''" />
 
-  <Target Name="StdPackage" DependsOnTargets="Build">
-    <ItemGroup>
-      <NuspecFiles Include="$(PackagingPath)\*.nuspec" />
-    </ItemGroup>
-    <Exec Command="$(NuGetExePath) pack  %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)"/>
-  </Target>
+			<Error Text="MinorVersion environment variable is not set"
+						 Condition="$(MinorVersion) == ''" />
 
-  <Target Name="Go" DependsOnTargets="RunCodeAnalysis; Build; RunTests; StdPackage">
-  </Target>
+			<Error Text="PatchVersion environment variable is not set"
+						 Condition="$(PatchVersion) == ''" />
 
-  <Target Name="GoCI" DependsOnTargets="UpdateVersion; RunCodeAnalysis; Build; RunTests; StdPackage">
-  </Target>
+			<Error Text="Revision environment variable is not set"
+						 Condition="$(Revision) == ''" />
+
+			<Error Text="SHA environment variable is not set"
+						 Condition="$(SHA) == ''" />
+		
+		</Target>
+		
+		<Target Name="ReportVersionInfo">
+		
+			<Message Text="Build Version" 
+							 Importance="High" />
+
+			<Message Text="MajorVersion   : '$(MajorVersion)'" />
+			<Message Text="MinorVersion   : '$(MinorVersion)'" />
+			<Message Text="PatchVersion   : '$(PatchVersion)'" />
+			<Message Text="Revision       : '$(Revision)'" />
+			<Message Text="SHA            : '$(SHA)'" />
+			<Message Text="PRERELEASE     : '$(PRERELEASE)'" />
+
+			<Message Text="Assembly Versioning" 
+							 Importance="High" />
+			
+			<Message Text="ProductVersion : '$(ProductVersion)' -  AssemblyInformationalVersion" />
+			<Message Text="FileVersion    : '$(FileVersion)' - AssemblyFileVersion" />
+			<Message Text="Version        : '$(Version)' - AssemblyVersion" />
+
+			<Message Text="NuGet Package Versioning" 
+							 Importance="High" />
+			
+			<Message Text="PackageVersion : '$(PackageVersion)'" />
+
+			<Message Text="Build Environment" 
+							 Importance="High" />
+			
+			<Message Text="IsRunningOnTeamCity : '$(IsRunningOnTeamCity)'" />           
+      <Message Text="TestWebsiteUrl           : '$(TestWebsiteUrl)'" />      
+      <Message Text="TestWebsitePath          : '$(TestWebsitePath)'" />      
+		</Target>
+
+		<Target Name="RunUnitTests">
+
+				<ItemGroup>
+						<TestAssemblies Include="$(ProjectRoot)\test\unit-test\**\bin\$(Configuration)\*.Test.dll" />
+				</ItemGroup>
+
+        <!-- TODO ensure test assemblies count > 0 -->
+				<xunit Assemblies="@(TestAssemblies)" 
+							 Xml="$(OutputXmlFile)" 
+							 NoLogo="true" />
+
+		</Target>
+
+		<Target Name="ReportCodeCoverage"
+						AfterTargets="RunUnitTests"
+						Condition="Exists('$(OutputXmlFile)')">
+
+				<Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='$(OutputXmlFile)']"
+								 Importance="High" />
+
+		</Target>
+
+		<Target Name="StdPackage">
+				
+				<ItemGroup>
+						<NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+				</ItemGroup>
+				
+				<Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+				
+		</Target>
+
+		<Target Name="IntegrationTests"
+						AfterTargets="StdPackage">
+				
+				<ItemGroup>
+						<IntegrationTestAssemblies 
+							Include="$(ProjectRoot)\test\integration-test\**\bin\$(Configuration)\*Integration.Test.dll"
+							Exclude="$(ProjectRoot)\test\unit-test\**\*.Test.dll"/>
+				</ItemGroup>
+				
+				<PropertyGroup>
+						<IntegrationTestResults>$(TestResultsPath)\TestResults.Integration.xml</IntegrationTestResults>
+				</PropertyGroup>
+
+				<xunit Assemblies="@(IntegrationTestAssemblies)"
+							 Xml="$(IntegrationTestResults)"
+							 NoLogo="true" />
+				
+        <Message Text="##teamcity[importData type='nunit' path='$(IntegrationTestResults)']"
+                 Importance="High" />
+        
+    </Target>
+    
+    <!-- CI Build Integration Targets - Version, Build, Test, Analyze, Package -->
+    
+    <Target Name="Version"
+            BeforeTargets="Init">
+        
+        <CallTarget Targets="ReportVersionInfo" />
+    
+    </Target> 
+    
+    <Target Name="Build"
+            DependsOnTargets="Init" >
+            
+        <Message Text="Project Root = $(ProjectRoot)" />
+
+				<MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
+								 Targets="Build"
+								 Properties="Configuration=$(Configuration)" />
+
+				<ItemGroup>
+						<Net45Libs Include="$(ProjectRoot)\src\*\bin\$(Configuration)\*.dll; $(ProjectRoot)\src\*\bin\$(Configuration)\*.pdb;" />
+				</ItemGroup>
+
+				<Copy SourceFiles="@(Net45Libs)"
+							DestinationFolder="$(BuildDestinationDir)"
+							SkipUnchangedFiles="True" />
+				
+		</Target>
+
+		<Target Name="Test">
+				
+				<CallTarget Targets="RunUnitTests" />
+		
+		</Target>   
+				
+		<Target Name="Analyze">
+		
+				<CallTarget Targets="FxCop" />
+				
+		</Target>
+		
+		<Target Name="Package">
+				
+				<CallTarget Targets="StdPackage" />
+		
+		</Target>
+
+		<Target Name="Full" 
+						DependsOnTargets="Build; Test; Analyze; Package">
+						
+						<!-- Fire dependencies to initiate a full -->
+						
+		</Target>
+
 </Project>

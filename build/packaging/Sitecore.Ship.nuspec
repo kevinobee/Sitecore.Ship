@@ -9,20 +9,21 @@
     <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Sitecore package installer and remote publishing over HTTP</description>
-    <releaseNotes>0.3.5 - support for Sitecore 7 added</releaseNotes>
-    <tags>Sitecore Update Package Deploy</tags>
+    <releaseNotes>0.5.0 pre-release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Sitecore Package HTTP</tags>
     <language>en-GB</language>
     <dependencies>
       <dependency id="Nancy.Hosting.Aspnet" version="0.17.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\artifacts\Build\Sitecore.Ship.dll" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Sitecore.Ship.pdb" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Sitecore.Ship.Core.dll" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Sitecore.Ship.Core.pdb" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.dll" target="lib\net40" />
-    <file src="..\..\artifacts\Build\Sitecore.Ship.Infrastructure.pdb" target="lib\net40" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.dll" target="lib\net45" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.pdb" target="lib\net45" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Core.dll" target="lib\net45" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Core.pdb" target="lib\net45" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Infrastructure.dll" target="lib\net45" />
+    <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Infrastructure.pdb" target="lib\net45" />
     
     <file src="..\..\src\Sitecore.Ship\content\**\*" target="content" />
   </files>

@@ -1,10 +1,10 @@
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 bin
 obj
-distr
 
 #ignore thumbnails created by windows
 Thumbs.db
+
 #Ignore files build by Visual Studio
 *.user
 *.aps
@@ -27,16 +27,33 @@ _ReSharper*/
 TestResults
 
 #Project specific ignores
-build/environment.props
 lib/*.dll
 lib/*.pdb
-lib/*.xml
-lib/*.lic
-/packages
+
+# NuGet ignores
+.nuget/
+
+# Ignore NuGet Packages
+*.nupkg
+# Ignore the packages folder
+packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+!**/packages/repositories.config
 
 # Build ignores
 /msbuild.log
 /artifacts
-*.ncrunchproject
+build/environment.props
+Packages.dgml
+sha.txt
+
+# NCrunch files
 *.ncrunchsolution
+*.ncrunchproject
+nCrunchTemp_*
+*NCrunch*
+# Visual Studio 2015 files
 .vs/
+

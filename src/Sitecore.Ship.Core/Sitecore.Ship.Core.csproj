@@ -49,6 +49,9 @@
     <Compile Include="..\Common\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Common\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
     <Compile Include="Contracts\IAuthoriser.cs" />
     <Compile Include="Contracts\ICheckRequests.cs" />
     <Compile Include="Contracts\IConfigurationProvider.cs" />

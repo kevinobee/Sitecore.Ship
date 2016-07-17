@@ -5,10 +5,9 @@ HOST: http://docs.sitecoreship.apiary.io/
 
 The package offers a simple API to help consumers install their packages into Sitecore over HTTP.
 
-## Discovery [/services/about]
+## Sitecore.Ship Information [/services/about]
 
 ### About [GET]
-Returns information on the installed version of Sitecore.Ship.
 
 + Response 200 (text/plain)
 
@@ -20,14 +19,24 @@ Returns information on the installed version of Sitecore.Ship.
 ## Package Installation [/services/package]
 
 ### Install Package [POST /services/package/install]
-Install a package by specifying a package available on the server.
-
-Specify the package file path into the command as a parameter in the x-www-form-urlencoded form-data.
-
-The request also takes an optional `DisableIndexing` parameter in the x-www-form-urlencoded form-data which defaults to *false*. When the parameter is set to *true* updating of search indexes during the package installation will be suspended. Disabling the search index updates will increase the speed at which packages are installed into the CMS. You can read more about this approach on Alex Shyba's 
-[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard – disable search index update during install")
 
 + Request (multipart/form-data;boundary=----WebKitFormBoundary8M3sSU13ul5lXSJm)
+
+        Install a package by specifying a package available on the server.
+
+        Specify the request parameters in x-www-form-urlencoded form-data.
+
+    + Headers
+
+            Accept: application/json
+            
+    + Attributes (object)
+
+        + path: d:\package.update (string, required) - The path to the package file.
+        
+        + DisableIndexing: false (boolean, optional) - Disables Indexing during publish operation. Value is `false` by default. When the parameter is set to *true* updating of search indexes during the package installation will be suspended. Disabling the search index updates will increase the speed at which packages are installed into the CMS. You can read more about this approach on Alex Shyba's 
+[blog](http://sitecoreblog.alexshyba.com/2010/04/sitecore-installation-wizard-disable.html "Sitecore Installation Wizard – disable search index update during install")
+
 
     + Body
 
@@ -50,19 +59,24 @@ The request also takes an optional `DisableIndexing` parameter in the x-www-form
 
 
 ### Upload and Install Package [POST /services/package/install/fileupload]
-Upload and install a package by specifying a package to upload to the server and install into the Sitecore instance.
-
-Specify the package file path into the command as a parameter in the x-www-form-urlencoded form-data.
-
-The request also accepts an optional `DisableIndexing` parameter. For details of this and information on the command's response format refer to the `Install Package - Specify Server File Path` above.
-
-*Note* that if you have `recordInstallationHistory` enabled you will need to provide `PackageId` and `Description` form parameters in the request that you make.
 
 + Request (multipart/form-data;boundary=----WebKitFormBoundary8M3sSU13ul5lXSJm)
 
+        Upload and install a package by specifying a package to upload to the server and install into the Sitecore instance.
+
+        Specify the request parameters in x-www-form-urlencoded form-data.
+
+        *Note* that if you have `recordInstallationHistory` enabled you will need to provide `PackageId` and `Description` form parameters in the request that you make.
+
     + Headers
 
-            Accept: application/json, text/javascript, */*
+            Accept: application/json
+            
+    + Attributes (object)
+
+        + path: package.update (string, required) - The path to the package file.
+        
+        + DisableIndexing: false (boolean, optional) - Disables Indexing during publish operation. Value is `false` by default.
 
     + Body
 
@@ -78,17 +92,36 @@ The request also accepts an optional `DisableIndexing` parameter. For details of
     + Headers
 
             Location: /services/package/latestversion
+            x-processing-time: 9984.2635
 
     + Body
 
-            { "Entries" : [ {  "ID" : "110d559f-dea5-42ea-9c1c-8a5df7e70ef9", "Path" : "addeditems/master/sitecore/content/home" } ] }
-
+            { "Entries": 
+               [
+                   {"ID":"4717ac43-bb10-4673-92bf-5e9e2a191147","Path":"items/master/sitecore/templates/SitecoreShip"},
+                   {"ID":"4717ac43-bb10-4673-92bf-5e9e2a191147","Path":"properties/items/master/sitecore/templates/SitecoreShip"},
+                   {"ID":"c2b9b6c7-5f2f-4638-9a1c-244557be959e","Path":"items/master/sitecore/templates/SitecoreShip/InstalledPackage"},
+                   {"ID":"c2b9b6c7-5f2f-4638-9a1c-244557be959e","Path":"properties/items/master/sitecore/templates/SitecoreShip/InstalledPackage"},
+                   {"ID":"8bbbddb4-d98c-42e7-b555-1467c84aca6d","Path":"items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data"},
+                   {"ID":"8bbbddb4-d98c-42e7-b555-1467c84aca6d","Path":"properties/items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data"},
+                   {"ID":"463b0ac2-b6d3-42f1-8082-86f56ab2d7d7","Path":"items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/DateInstalled"},
+                   {"ID":"463b0ac2-b6d3-42f1-8082-86f56ab2d7d7","Path":"properties/items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/DateInstalled"},{"ID":"c00c438e-a5ab-4098-8107-1c59cd667404","Path":"items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/Description"},
+                   {"ID":"c00c438e-a5ab-4098-8107-1c59cd667404","Path":"properties/items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/Description"},
+                   {"ID":"d26968d3-dcee-449f-857a-d3253785761b","Path":"items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/PackageId"},
+                   {"ID":"d26968d3-dcee-449f-857a-d3253785761b","Path":"properties/items/master/sitecore/templates/SitecoreShip/InstalledPackage/Data/PackageId"},
+                   {"ID":"ce433442-9cee-4626-860a-17a19de19810","Path":"items/master/sitecore/content/PackageHistory"},
+                   {"ID":"ce433442-9cee-4626-860a-17a19de19810","Path":"properties/items/master/sitecore/content/PackageHistory"}
+                ]   
+            }
 
 ### Package Installation Report [GET /services/package/latestversion]
 
-Reports the details of the last package to have been installed by the Sitecore.Ship.
++ Request
 
-Note that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the **Configuration Options** section of the project [README](README.md) file.
+        Reports the details of the last package to have been installed by the Sitecore.Ship.
+
+        Note that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the **Configuration Options** section of the project [README](README.md) file.
+
 
 + Response 200
 
@@ -106,7 +139,7 @@ Note that latest version reporting is disabled by default. Refer to the `recordI
 
     + Headers
 
-            Accept: application/json, text/javascript, */*
+            Accept: application/json
             
     + Attributes (object)
 
@@ -132,13 +165,20 @@ Note that latest version reporting is disabled by default. Refer to the `recordI
             en, da, de-DE
             ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
-+ Response 204
++ Response 202 (application/json)
+
+    + Headers
+    
+             x-processing-time: 7.9582
+
+    + Body
+
+            {
+                "date": "\/Date(1468830267000)\/"
+            }
 
 
-
-### Publish Specified Items [POST /services/publish/listofitems]
-
-To publish a list of items
+### Publish Specified Items [POST /services/publish/listofitems] 
 
 + Request (application/json)
 
@@ -159,23 +199,27 @@ To publish a list of items
 
 + Response 200 (application/json)
 
-### Last Completed [GET /services/publish/lastcompleted/{source}/{target}/{language}]
-
-Reports the timestamp of the last publish operation.
+### Last Publish Operation [GET /services/publish/lastcompleted/{source}/{target}/{language}]
 
 + Parameters
 
     + source: `master` (optional, string) - The publishing source.
         + Default: `master`
         
-    + target: `web` (optional, string) - The publishing target.
+    + target: `web` (optional, string) - The publishing targets.
         + Default: `web`
       
     + language: `en` (optional, string) - The publishing language.
         + Default: `en`
       
-+ Response 200 (application/json)
++ Response 202 (application/json)
 
-        {
-            "date": "\/Date(-62135596800000)\/"
-        }
+    + Headers
+    
+            x-processing-time: 1.4947
+            
+    + Body
+
+            {
+                "date": "\/Date(-62135596800000)\/"
+            }
