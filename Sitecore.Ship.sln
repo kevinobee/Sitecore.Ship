@@ -68,6 +68,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{16F176
 		src\Common\GlobalSuppressions.cs = src\Common\GlobalSuppressions.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{7684F283-CC34-455B-BC75-BA436AE7B32C}"
+	ProjectSection(SolutionItems) = preProject
+		tests\acceptance-test\Postman\Sitecore.Ship.postman_collection.json = tests\acceptance-test\Postman\Sitecore.Ship.postman_collection.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,5 +216,6 @@ Global
 		{E24C421E-4CF0-40B8-AD95-FF35BBE890D2} = {923D9377-9025-425B-9698-1A38947CA973}
 		{FB70597F-145D-4B5B-8401-171A843F1CBB} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{16F17633-E78E-4D1A-8A07-2BFBF2CB85D9} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
+		{7684F283-CC34-455B-BC75-BA436AE7B32C} = {9BF13B7F-07E4-43B3-9B90-E06EBB39CC53}
 	EndGlobalSection
 EndGlobal

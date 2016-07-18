@@ -1,0 +1,43 @@
+{
+	"id": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
+	"name": "Sitecore.Ship",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"id": "a4341cbd-5737-a820-4b33-f74b3f882552",
+			"name": "Information",
+			"description": "Sitecore.Ship Information",
+			"order": [
+				"5dd13b73-7739-db42-fa5b-6567a6b98c96"
+			],
+			"owner": "245236"
+		}
+	],
+	"timestamp": 1455545347723,
+	"owner": "245236",
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "5dd13b73-7739-db42-fa5b-6567a6b98c96",
+			"headers": "",
+			"url": "http://{{host}}/services/about",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is OK\"] = responseCode.code === 200;\n\ntests[\"Body contains Sitecore.Ship\"] = responseBody.has(\"Sitecore.Ship\");\n\ntests[\"Body contains Version\"] = responseBody.has(\" - version \");\n\ntests[\"Content-Type is text/plain\"] = postman.getResponseHeader(\"Content-Type\").has(\"text/plain\");\n\ntests[\"Response contain x-processing-time header\"] = postman.getResponseHeader(\"x-processing-time\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468835808045,
+			"name": "Ship About",
+			"description": "Show Sitecore.Ship version",
+			"collectionId": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
+			"responses": []
+		}
+	]
+}
