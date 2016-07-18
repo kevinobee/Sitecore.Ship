@@ -11,10 +11,6 @@ The package offers a simple API to help consumers install their packages into Si
 
 + Response 200 (text/plain)
 
-    + Headers
-
-            x-processing-time: 0
-
     + Body
 
             Sitecore.Ship - version 0.4.0.0
@@ -91,6 +87,12 @@ The package offers a simple API to help consumers install their packages into Si
             
             ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 
++ Response 404
+
+    + Headers
+
+            x-processing-time: 0
+
 + Response 201 (application/json)
 
     + Headers
@@ -126,9 +128,28 @@ The package offers a simple API to help consumers install their packages into Si
 
         Note that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the **Configuration Options** section of the project [README](README.md) file.
 
++ Response 204
 
-+ Response 200
+    + Headers
 
+            x-processing-time: 42.3033
+
++ Response 200 (application/json)
+
+    + Headers
+
+            x-processing-time: 10.0345
+
+    + Body
+    
+            {
+                "installedPackage": 
+                {
+                       "PackageId": "01",
+                       "DateInstalled": "\/Date(1468839035000)\/",
+                       "Description":"package"
+                }
+            }
 
 ## Publishing [/services/publish]
 

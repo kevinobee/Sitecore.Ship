@@ -12,6 +12,25 @@
 				"5dd13b73-7739-db42-fa5b-6567a6b98c96"
 			],
 			"owner": "245236"
+		},
+		{
+			"id": "45aa7cb8-9c6b-3abd-2336-f5bd55c0f1c3",
+			"name": "Package Installation",
+			"description": "Package installations tests",
+			"order": [
+				"49255a2c-6adf-c082-bbb4-9e1396ea1770",
+				"b8f37ec2-f5b3-82f2-6ab1-50556d7409a2"
+			],
+			"owner": "245236"
+		},
+		{
+			"id": "48a2960d-d384-9b1b-be51-30879242ee32",
+			"name": "Publishing",
+			"description": "",
+			"order": [
+				"c7c3e5c8-e854-09d0-9a6b-3e69d542a25d"
+			],
+			"owner": "245236"
 		}
 	],
 	"timestamp": 1455545347723,
@@ -20,6 +39,25 @@
 	"public": false,
 	"published": false,
 	"requests": [
+		{
+			"id": "49255a2c-6adf-c082-bbb4-9e1396ea1770",
+			"headers": "",
+			"url": "http://{{host}}/services/package/latestversion",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is No Content\"] = responseCode.code === 204;\n\n\n// TODO no content type being returned\n// tests[\"Content-Type is text/plain\"] = postman.getResponseHeader(\"Content-Type\").has(\"text/plain\");\n\ntests[\"Response contain x-processing-time header\"] = postman.getResponseHeader(\"x-processing-time\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468838398002,
+			"name": "Package Installation Report",
+			"description": "Reports the details of the last package to have been installed by the Sitecore.Ship.\n\nNote that latest version reporting is disabled by default. Refer to the `recordInstallationHistory` setting in the **Configuration Options** section of the project [README](README.md) file.\n",
+			"collectionId": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
+			"responses": []
+		},
 		{
 			"id": "5dd13b73-7739-db42-fa5b-6567a6b98c96",
 			"headers": "",
@@ -36,6 +74,63 @@
 			"time": 1468835808045,
 			"name": "Ship About",
 			"description": "Show Sitecore.Ship version",
+			"collectionId": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
+			"responses": []
+		},
+		{
+			"id": "b8f37ec2-f5b3-82f2-6ab1-50556d7409a2",
+			"headers": "",
+			"url": "http://{{host}}/services/package/install/fileupload",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "path",
+					"value": "01-package.update",
+					"type": "file",
+					"enabled": true
+				},
+				{
+					"key": "PackageId",
+					"value": "01",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Description",
+					"value": "Acceptance Test Package",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is Created\"] = responseCode.code === 201;\n\n\n// TODO no content type being returned\n// tests[\"Content-Type is text/plain\"] = postman.getResponseHeader(\"Content-Type\").has(\"text/plain\");\n\ntests[\"Response contain x-processing-time header\"] = postman.getResponseHeader(\"x-processing-time\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468839889542,
+			"name": "File upload and Install - Success",
+			"description": "Verifies the outcome of a successful file upload operation",
+			"collectionId": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
+			"responses": []
+		},
+		{
+			"id": "c7c3e5c8-e854-09d0-9a6b-3e69d542a25d",
+			"headers": "",
+			"url": "http://{{host}}/services/publish/lastcompleted/master/web/en",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "tests[\"Status code is No Content\"] = responseCode.code === 202;\n\ntests[\"Response contain x-processing-time header\"] = postman.getResponseHeader(\"x-processing-time\");\n\ntests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\").has(\"application/json\");\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"date is returned in the JSON response\"] = jsonData.date !== null;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468838216489,
+			"name": "Last Publish Operation",
+			"description": "Reports the details of the last Sitecore publish operation.\n",
 			"collectionId": "c10d0a3e-86f2-5fa0-78a9-08ec9903ce27",
 			"responses": []
 		}
