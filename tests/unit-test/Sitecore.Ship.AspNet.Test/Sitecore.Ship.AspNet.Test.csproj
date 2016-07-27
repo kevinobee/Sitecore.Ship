@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseHttpHandlerUnauthorisedTests.cs" />
     <Compile Include="AboutCommandBehaviour.cs" />
     <Compile Include="CouplingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.AspNet\Sitecore.Ship.AspNet.csproj">
       <Project>{d8d5e56c-6e0a-4a70-aa85-e0f6ddd97b38}</Project>
       <Name>Sitecore.Ship.AspNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj">
+      <Project>{F9CC137C-E000-4D1E-9997-B8E3D20F7E36}</Project>
+      <Name>Sitecore.Ship.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TestUtils\TestUtils.csproj">
       <Project>{6121509c-0554-4fd7-974b-97a81b9df0f3}</Project>
