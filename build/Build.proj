@@ -16,6 +16,6 @@
         Condition="$(TestWebsitePath) == ''">C:\Websites\ship\Website</TestWebsitePath>
     <TestWebsiteUrl 
         Condition="$(TestWebsiteUrl) == ''">http://ship/</TestWebsiteUrl>
-  </PropertyGroup>
+    </PropertyGroup>
  
 </Project>
