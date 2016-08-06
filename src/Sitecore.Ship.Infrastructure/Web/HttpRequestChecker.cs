@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Specialized;
+using System.Web;
 using Sitecore.Ship.Core.Contracts;
 
 namespace Sitecore.Ship.Infrastructure.Web
@@ -13,6 +14,11 @@ namespace Sitecore.Ship.Infrastructure.Web
         public string UserHostAddress
         {
             get { return HttpContext.Current.Request.UserHostAddress; }
+        }
+
+        public NameValueCollection Headers 
+        {
+            get { return HttpContext.Current.Request.Headers; } 
         }
     }
 }

@@ -55,5 +55,11 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
         {
             _section.RecordInstallationHistory.ShouldBeTrue();
         }
+
+        [Fact]
+        public void PackageInstallation_accessKey_can_be_set()
+        {
+            _section.AccessToken.ShouldEqual("some-key");
+        }
     }
 }

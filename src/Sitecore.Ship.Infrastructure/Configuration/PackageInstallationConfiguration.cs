@@ -11,6 +11,7 @@ namespace Sitecore.Ship.Infrastructure.Configuration
         const string RecordInstallationHistoryKey = "recordInstallationHistory";
         const string WhitelistElementName = "Whitelist";
         const string MuteAuthorisationFailureLoggingKey = "muteAuthorisationFailureLogging";
+        const string AccessTokenKey = "accessToken";
 
         public static PackageInstallationConfiguration GetConfiguration()
         {
@@ -38,6 +39,9 @@ namespace Sitecore.Ship.Infrastructure.Configuration
 
         [ConfigurationProperty(MuteAuthorisationFailureLoggingKey, IsRequired = false, DefaultValue = false)]
         public bool MuteAuthorisationFailureLogging { get { return (bool)this[MuteAuthorisationFailureLoggingKey]; } }
+
+        [ConfigurationProperty(AccessTokenKey, IsRequired = false, DefaultValue = "")]
+        public string AccessToken { get { return (string)this[AccessTokenKey]; } }
     }
 
     [ConfigurationCollection(typeof(WhitelistElement))]

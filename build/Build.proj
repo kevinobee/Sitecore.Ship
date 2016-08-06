@@ -45,6 +45,9 @@
     <!-- Ship About page -->
     <Exec Command="$(CurlExePath) -i $(TestWebsiteUrl)services/about" />
 
+    <!-- Test for Secure Token Authorization - add accessToken="some-key" to <packageInstallation> web.config section-->
+    <!-- <Exec Command="$(CurlExePath) -i -H &quot;Authorization: Bearer some-key&quot; $(TestWebsiteUrl)services/about" />-->	
+
     <!-- Install the SitecoreShip content package -->
     <Exec Command="$(CurlExePath) -i --form &quot;path=@$(SitecoreShipPackagePath)&quot; $(TestWebsiteUrl)services/package/install/fileupload -F &quot;PackageId=00&quot; -F &quot;Description=Sitecore Ship package&quot;"  />
 
