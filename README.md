@@ -12,10 +12,15 @@ Sitecore.Ship is a lightweight means to install Sitecore Update packages via HTT
 
 ## Instructions for Use
 
-The latest release versions of the Sitecore.Ship packages can be found on the NuGet gallery:
+The latest release versions of the Sitecore.Ship packages can be found in the [NuGet package gallery](https://www.nuget.org/packages/)
 
 * [Sitecore.Ship](http://www.nuget.org/packages/Sitecore.Ship/) 
 * [Sitecore.Ship.AspNet](http://www.nuget.org/packages/Sitecore.Ship.AspNet/) 
+ 
+Early releases of the Sitecore.Ship packages can be found on a public feed from [MyGet](https://www.myget.org/)
+
+* [NuGet V3 feed - Visual Studio 2015+](https://www.myget.org/F/sitecore-ship-prerelease/api/v3/index.json)
+* [NuGet V2 feed - Visual Studio 2012+](https://www.myget.org/F/sitecore-ship-prerelease/api/v2)
 
 ### Installing Sitecore.Ship via NuGet
 
