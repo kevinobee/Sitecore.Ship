@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -41,6 +41,9 @@
   <ItemGroup>
     <Reference Include="Should">
       <HintPath>..\..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Update">
+      <HintPath>..\..\..\lib\Sitecore.Update.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System" />
@@ -69,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\PackageInstallationInfoExtensionsTests.cs" />
     <Compile Include="PackageReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
