@@ -42,14 +42,16 @@ namespace Sitecore.Ship.Infrastructure
 			{
 				var master = Sitecore.Configuration.Factory.GetDatabase("master");
 				var languages = itemsToPublish.TargetLanguages.Select(LanguageManager.GetLanguage).ToArray();
+                var databases = itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray();
 
-				foreach (var itemToPublish in itemsToPublish.Items)
+
+                foreach (var itemToPublish in itemsToPublish.Items)
 				{
-					var item = master.GetItem(new ID(itemToPublish));
-					if (item != null)
+                    var item = master.GetItem(new ID(itemToPublish.ItemId));
+                    if (item != null)
 					{
-						Publishing.PublishManager.PublishItem(item, itemsToPublish.TargetDatabases.Select(Sitecore.Configuration.Factory.GetDatabase).ToArray(), languages, true, true);
-					}
+                        Publishing.PublishManager.PublishItem(item, databases, languages, itemToPublish.PublishChildren, true, itemToPublish.PublishRelatedItems);
+                    }
 				}
 			}
 		}
