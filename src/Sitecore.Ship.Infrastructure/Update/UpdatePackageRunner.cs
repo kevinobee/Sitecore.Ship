@@ -120,6 +120,7 @@ namespace Sitecore.Ship.Infrastructure.Update
             {
                 Mode = InstallMode.Install,
                 Action = UpgradeAction.Upgrade,
+                ProcessingMode = ProcessingMode.All,
                 Path = packagePath
             };
             if (string.IsNullOrEmpty(info.Path))

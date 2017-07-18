@@ -6,6 +6,7 @@ The following files need to be placed in the folder:
 * Sitecore.Logging.dll
 * Sitecore.Update.dll
 * Sitecore.Zip.dll
+* System.Web.Helpers.dll
 
 These files should be from a 8.x solution.
 
