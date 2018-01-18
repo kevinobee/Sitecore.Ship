@@ -52,7 +52,7 @@ Shown below is a fully specified configuration section for Sitecore.Ship:
 
     <packageInstallation enabled="true" allowRemote="true" allowPackageStreaming="true" recordInstallationHistory="true">
       <Whitelist>
-        <add name="local loopback" IP="127.0.01" />
+        <add name="local loopback" IP="127.0.0.1" />
         <add name="Allowed machine 1" IP="10.20.3.4" />
         <add name="Allowed machine 2" IP="10.40.4.5" />
       </Whitelist>
