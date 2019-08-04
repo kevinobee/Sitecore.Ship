@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SitecoreShipIt</id>
+    <version>0.1.0</version>
+    <authors>Alexander Doroshenko</authors>
+    <owners>adoprog</owners>
+    <projectUrl>https://github.com/adoprog/Sitecore.ShipIt</projectUrl>
+    <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
+    <description>Sitecore package installer and remote publishing over HTTP.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Sitecore Package HTTP ShipIt Ship</tags>
+    <language>en-GB</language>
+    <licenseUrl>https://github.com/adoprog/Sitecore.ShipIt/blob/develop/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="..\..\artifacts\Sitecore.Ship.AspNet.dll" target="lib\net471" />
+    <file src="..\..\artifacts\Sitecore.Ship.AspNet.pdb" target="lib\net471" />
+    <file src="..\..\artifacts\Sitecore.Ship.Core.dll" target="lib\net471" />
+    <file src="..\..\artifacts\Sitecore.Ship.Core.pdb" target="lib\net471" />
+    <file src="..\..\artifacts\Sitecore.Ship.Infrastructure.dll" target="lib\net471" />
+    <file src="..\..\artifacts\Sitecore.Ship.Infrastructure.pdb" target="lib\net471" />
+    <file src="..\..\src\Sitecore.Ship.AspNet\content\**\*" target="content" />
+  </files>
+</package>
