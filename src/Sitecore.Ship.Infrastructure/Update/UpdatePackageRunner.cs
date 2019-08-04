@@ -33,11 +33,6 @@ namespace Sitecore.Ship.Infrastructure.Update
 
             using (new ShutdownGuard())
             {
-                if (disableIndexing)
-                {
-                    Sitecore.Configuration.Settings.Indexing.Enabled = false;
-                }
-
                 var installationInfo = GetInstallationInfo(packagePath);
                 string historyPath = null;
                 List<ContingencyEntry> entries = null;
@@ -45,12 +40,15 @@ namespace Sitecore.Ship.Infrastructure.Update
                 var logger = Sitecore.Diagnostics.LoggerFactory.GetLogger(this); // TODO abstractions
                 try
                 {
-                    entries = UpdateHelper.Install(installationInfo, logger, out historyPath);
+                    var installer = new DiffInstaller(UpgradeAction.Upgrade);
+                    using (new SecurityDisabler())
+                    {
+                      bool flag;
+                      entries = installer.InstallPackage(installationInfo.Path, installationInfo.Mode, logger, new List<ContingencyEntry>(), string.Empty, out flag, ref historyPath);
+                    }
 
                     string error = string.Empty;
-
                     logger.Info("Executing post installation actions.");
-
                     MetadataView metadata = PreviewMetadataWizardPage.GetMetadata(packagePath, out error);
 
                     if (string.IsNullOrEmpty(error))
@@ -80,11 +78,6 @@ namespace Sitecore.Ship.Infrastructure.Update
                 }
                 finally
                 {
-                    if (disableIndexing)
-                    {
-                        Sitecore.Configuration.Settings.Indexing.Enabled = true;
-                    }
-
                     try
                     {
                         SaveInstallationMessages(entries, historyPath);
