@@ -12,7 +12,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>Sitecore Package HTTP</tags>
     <language>en-GB</language>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <license type="expression">MIT</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <dependencies>
       <dependency id="Nancy.Hosting.Aspnet" version="0.17.1" />
