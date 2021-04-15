@@ -13,6 +13,9 @@
     <language>en-GB</language>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.AspNet.dll" target="lib\net45" />
