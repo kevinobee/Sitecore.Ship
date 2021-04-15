@@ -6,7 +6,6 @@
     <authors>Kevin Obee</authors>
     <owners>kevinobee</owners>
     <projectUrl>https://github.com/kevinobee/Sitecore.Ship</projectUrl>
-    <iconUrl>https://secure.gravatar.com/avatar/dd3d0f6dd07cbf52325c74c293866410</iconUrl>
     <description>Sitecore package installer and remote publishing over HTTP</description>
     <releaseNotes>0.4.0 pre-release</releaseNotes>
     <copyright>Copyright 2016</copyright>
