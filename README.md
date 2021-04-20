@@ -20,7 +20,7 @@ Early releases of the Sitecore.Ship packages can be found on a public feed from 
 * [NuGet V3 feed - Visual Studio 2015+](https://www.myget.org/F/sitecore-ship-prerelease/api/v3/index.json)
 * [NuGet V2 feed - Visual Studio 2012+](https://www.myget.org/F/sitecore-ship-prerelease/api/v2)
 
-### Installing SitecoreShip via NuGet
+### Installing Sitecore.Ship via NuGet
 
 * Ensure that the website project is set to run with `.NET Framework 4.5`
 
@@ -47,7 +47,6 @@ Installing the package will do the following:
 * Register a single new HTTP handler section in `<system.webserver>`. Support for classic mode in IIS has been removed.
 
 * Add a `ship.config` Sitecore include file to the `App_Config\include` folder.
-
 ### Configuration Options
 
 Shown below is a fully specified configuration section for Sitecore.Ship:
@@ -57,7 +56,7 @@ Shown below is a fully specified configuration section for Sitecore.Ship:
   allowRemote="true" allowPackageStreaming="true"
   recordInstallationHistory="true">
     <Whitelist>
-        <add name="local loopback" IP="127.0.01" />
+        <add name="local loopback" IP="127.0.0.1" />
         <add name="Allowed machine 1" IP="10.20.3.4" />
         <add name="Allowed machine 2" IP="10.40.4.5" />
     </Whitelist>
