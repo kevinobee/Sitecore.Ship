@@ -2,7 +2,7 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    
+
     <!-- Define paths relative to MSBuildProjectDirectory -->
     <ProjectRoot>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..'))</ProjectRoot>
     <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
@@ -16,17 +16,17 @@
     <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
     <PackagesPath>$(ProjectRoot)\packages</PackagesPath>
     <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-    
+
     <!-- Optionally override tooling paths with CI server Enrinorment variables -->
     <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.2.8.6\tools\nuget.exe</NugetExe>
-    
+
     <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
-    <FxCopDir>$(PackagesPath)\FxCop.BuildTools.1.0.1\tools\FxCop</FxCopDir> 
+    <FxCopDir>$(PackagesPath)\FxCop.BuildTools.1.0.1\tools\FxCop</FxCopDir>
     <CurlPath>$(PackagesPath)\curl.7.30.0.2\tools\native\v110\x64\Release\ltcg</CurlPath>
     <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
     <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
     <CourierPath>$(ToolsPath)\Sitecore.Courier\</CourierPath>
-    <XunitExePath>@(Xunit->'%(relativedir)%(filename)%(extension)')</XunitExePath>   
+    <XunitExePath>@(Xunit->'%(relativedir)%(filename)%(extension)')</XunitExePath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -38,10 +38,9 @@
     <Revision Condition="$(Revision) == ''">0000</Revision>
     <Revision Condition="$(SHA) == ''">0000000</Revision>
     <PRERELEASE Condition="$(PRERELEASE) == ''">true</PRERELEASE>
-    
-    <IsRunningOnTeamCity Condition="$(IsRunningOnTeamCity) == ''">false</IsRunningOnTeamCity>
+
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
-    
+
     <!-- Define build version values from Environment variables -->
     <BuildNumber>-r$(Revision)</BuildNumber>
     <SHA Condition="'$(SHA.Length)' > 7" >$(SHA.Substring(0,7))</SHA>
@@ -55,9 +54,9 @@
 
     <!-- ProductVersion format example 4 4.10.3-r0022-381ba93 -->
     <ProductVersion>$(MajorMinorPatch)$(BuildNumber)$(CommitSHA)</ProductVersion>
-    
+
   </PropertyGroup>
-    
+
   <ItemGroup>
     <Xunit Include="$(PackagesPath)\xunit.runner.msbuild.2.1.0\build\**\xunit.runner.msbuild.dll" />
   </ItemGroup>
