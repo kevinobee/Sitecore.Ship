@@ -68,6 +68,7 @@
     <Compile Include="Contracts\IPublishService.cs" />
     <Compile Include="Domain\InstallUploadPackage.cs" />
     <Compile Include="Domain\ItemsToPublish.cs" />
+    <Compile Include="Domain\ItemToPublishProperties.cs" />
     <Compile Include="Domain\PackageManifest.cs" />
     <Compile Include="Domain\PackageManifestEntry.cs" />
     <Compile Include="Domain\PublishLastCompleted.cs" />
