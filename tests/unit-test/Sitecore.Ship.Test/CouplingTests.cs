@@ -17,7 +17,7 @@ namespace Sitecore.Ship.Test
             var containsReference = assemblyType.AssemblyContainsReferencesTo(unwantedAssemblyName);
 
             // Assert
-            Assert.False(containsReference, string.Format("{0} should not be referenced by Sitecore.Ship", unwantedAssemblyName));
+            Assert.False(containsReference, $"{unwantedAssemblyName} should not be referenced by Sitecore.Ship");
         }
     }
 }

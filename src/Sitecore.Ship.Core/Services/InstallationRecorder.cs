@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -41,8 +42,8 @@ namespace Sitecore.Ship.Core.Services
 
             const string formatString = "Missing {0} parameter, required as installation is being recorded";
 
-            if (string.IsNullOrEmpty(packageId)) throw new ArgumentException(string.Format(formatString, "PackageId"));
-            if (string.IsNullOrEmpty(description)) throw new ArgumentException(string.Format(formatString, "Description"));
+            if (string.IsNullOrEmpty(packageId)) throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, formatString, "PackageId"));
+            if (string.IsNullOrEmpty(description)) throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, formatString, "Description"));
 
             var record = new InstalledPackage
                 {

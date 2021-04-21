@@ -61,7 +61,7 @@ namespace Sitecore.Ship.Infrastructure
 
 			if (!_publishingActions.ContainsKey(publishingMode))
 			{
-				throw new InvalidOperationException(string.Format("Invalid publishing mode ({0})", publishingMode));
+				throw new InvalidOperationException($"Invalid publishing mode ({publishingMode})");
 			}
 
 			PublishingTask(_publishingActions[publishingMode], publishParameters);

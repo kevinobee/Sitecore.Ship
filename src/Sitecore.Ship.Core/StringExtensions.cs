@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 
 namespace Sitecore.Ship
 {
@@ -6,7 +7,7 @@ namespace Sitecore.Ship
     {
         public static string Formatted(this string target, params object[] args)
         {
-            return string.Format(target, args);
+            return string.Format(CultureInfo.CurrentCulture, target, args);
         }
 
         public static string[] CsvStringToStringArray(this string inputValue, string[] defaultValue)

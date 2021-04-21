@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Sitecore.IO;
@@ -94,7 +95,8 @@ namespace Sitecore.Ship.Infrastructure.Update
                         logger.Error("Failed to record installation messages");
                         foreach (var entry in entries ?? Enumerable.Empty<ContingencyEntry>())
                         {
-                            logger.Info(string.Format("Entry [{0}]-[{1}]-[{2}]-[{3}]-[{4}]-[{5}]-[{6}]-[{7}]-[{8}]-[{9}]-[{10}]-[{11}]",
+                            logger.Info(string.Format(CultureInfo.CurrentCulture, 
+                                "Entry [{0}]-[{1}]-[{2}]-[{3}]-[{4}]-[{5}]-[{6}]-[{7}]-[{8}]-[{9}]-[{10}]-[{11}]",
                                 entry.Action,
                                 entry.Behavior,
                                 entry.CommandKey,

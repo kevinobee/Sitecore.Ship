@@ -42,7 +42,7 @@ namespace Sitecore.Ship.Core
 
                 if (!foundAddress)
                 {
-                    LogAccessDenial(string.Format("packageInstallation whitelist is denying access to {0}", _checkRequests.UserHostAddress));
+                    LogAccessDenial($"packageInstallation whitelist is denying access to {_checkRequests.UserHostAddress}");
 
                     return false;
                 }
@@ -55,7 +55,7 @@ namespace Sitecore.Ship.Core
         {
             if (!_packageInstallationSettings.MuteAuthorisationFailureLogging)
             {
-                _logger.Write(string.Format("Sitecore.Ship access denied: {0}", diagnostic));
+                _logger.Write($"Sitecore.Ship access denied: {diagnostic}");
             }
         }
     }
