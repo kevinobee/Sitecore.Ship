@@ -70,7 +70,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman", "Postman", "{7684
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{9D9A6592-0C4F-44C4-BB41-AFAAD6D44497}"
 	ProjectSection(SolutionItems) = preProject
-		DirectoryBuild.props = DirectoryBuild.props
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Global
