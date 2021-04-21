@@ -25,7 +25,7 @@ jobs:
       run: nuget restore Sitecore.Ship.sln
 
     - name: Run CLI Build
-      run: build.cmd
+      run: cmd.exe /c .\build.cmd
 
     # - name: Build and Publish Web App
     #   run: msbuild Sitecore.Ship.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
