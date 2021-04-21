@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
 using System.Web;
 using System.Web.Helpers;
@@ -59,7 +60,7 @@ namespace Sitecore.Ship.AspNet.Publish
         private static bool CanHandle(HttpContextBase context)
         {
             return context.Request.Url != null &&
-                   context.Request.Url.PathAndQuery.ToLowerInvariant().Contains("/services/publish/lastcompleted");
+                   context.Request.Url.PathAndQuery.ToUpperInvariant().Contains("/services/publish/lastcompleted".ToUpperInvariant());
         }
     }
 }

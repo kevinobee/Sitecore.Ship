@@ -35,7 +35,7 @@ namespace Sitecore.Ship.AspNet.Publish
 				var now = DateTime.Now;
 				var date = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
-				if (publishParameters.Mode.ToLowerInvariant() == "listofitems")
+				if (publishParameters.Mode.ToUpperInvariant() == "listofitems".ToUpperInvariant())
 				{
 					using (var reader = new StreamReader(context.Request.InputStream))
 					{
@@ -80,16 +80,16 @@ namespace Sitecore.Ship.AspNet.Publish
 		private static bool CanHandle(HttpContextBase context)
 		{
 			return context.Request.Url != null &&
-				   IsPublishModeUrl(context.Request.Url.PathAndQuery.ToLowerInvariant()) &&
+				   IsPublishModeUrl(context.Request.Url.PathAndQuery.ToUpperInvariant()) &&
 				   context.Request.HttpMethod == "POST";
 		}
 
 		private static bool IsPublishModeUrl(string urlPath)
 		{
-			return urlPath.EndsWith("/services/publish/full", StringComparison.Ordinal) ||
-				   urlPath.EndsWith("/services/publish/smart", StringComparison.Ordinal) ||
-				   urlPath.EndsWith("/services/publish/incremental", StringComparison.Ordinal) ||
-				   urlPath.EndsWith("/services/publish/listofitems", StringComparison.Ordinal);
+			return urlPath.EndsWith("/services/publish/full", StringComparison.OrdinalIgnoreCase) ||
+				   urlPath.EndsWith("/services/publish/smart", StringComparison.OrdinalIgnoreCase) ||
+				   urlPath.EndsWith("/services/publish/incremental", StringComparison.OrdinalIgnoreCase) ||
+				   urlPath.EndsWith("/services/publish/listofitems", StringComparison.OrdinalIgnoreCase);
 		}
 
 		private static PublishParameters GetRequest(HttpRequestBase request)
