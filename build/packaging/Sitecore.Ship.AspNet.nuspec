@@ -8,7 +8,7 @@
     <projectUrl>https://github.com/kevinobee/Sitecore.Ship</projectUrl>
     <description>Sitecore package installer and remote publishing over HTTP. This package is built using native ASP.NET functionality and takes no dependency on the Nancy framework.</description>
     <releaseNotes>0.4.0 pre-release</releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <copyright>Copyright 2021</copyright>
     <tags>Sitecore Package HTTP</tags>
     <language>en-GB</language>
     <license type="expression">MIT</license>
@@ -24,7 +24,7 @@
     <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Core.pdb" target="lib\net45" />
     <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Infrastructure.dll" target="lib\net45" />
     <file src="..\..\artifacts\Build\lib\net45\Sitecore.Ship.Infrastructure.pdb" target="lib\net45" />
-    
+
     <file src="..\..\src\Sitecore.Ship.AspNet\content\**\*" target="content" />
   </files>
 </package>
