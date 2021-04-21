@@ -19,5 +19,3 @@ set NuGetExe=nuget
 nuget restore
 
 msbuild Build\Build.proj /t:"%target%" /p:Configuration="%config%" /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
-
-git checkout src\Common\CommonVersionInfo.cs

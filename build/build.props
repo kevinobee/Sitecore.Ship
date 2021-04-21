@@ -22,7 +22,6 @@
     <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
     <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
     <CourierPath>$(ToolsPath)\Sitecore.Courier\</CourierPath>
-    <XunitExePath>@(Xunit->'%(relativedir)%(filename)%(extension)')</XunitExePath>
   </PropertyGroup>
 
   <PropertyGroup>

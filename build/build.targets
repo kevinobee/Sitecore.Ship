@@ -1,81 +1,46 @@
-<?xml version="1.0"
-			encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-		<Import Project="$(MSBuildProjectDirectory)\build.props" />
-		<Import Project="$(MSBuildProjectDirectory)\build.tasks" />
+	<Import Project="$(MSBuildProjectDirectory)\build.props" />
+	<Import Project="$(MSBuildProjectDirectory)\build.tasks" />
 
     <Import Project="$(MSBuildProjectDirectory)\smokeTests.targets" />
     <Import Project="$(MSBuildProjectDirectory)\elapsed-time.targets" />
 
-    <UsingTask AssemblyFile="$(XunitExePath)"
-               TaskName="Xunit.Runner.MSBuild.xunit" />
+	<Target Name="Clean" BeforeTargets="Init">
 
-		<Target Name="Clean"
-						BeforeTargets="Init">
+			<RemoveDir Directories="$(ArtifactsPath)" />
 
-				<RemoveDir Directories="$(ArtifactsPath)" />
+	</Target>
 
-		</Target>
+	<Target Name="Init">
 
-		<Target Name="Init">
+			<MakeDir Directories="$(ArtifactsPath)"
+								Condition="!Exists('$(ArtifactsPath)')" />
 
-				<MakeDir Directories="$(ArtifactsPath)"
-								 Condition="!Exists('$(ArtifactsPath)')" />
+			<MakeDir Directories="$(PackageResultsPath)"
+								Condition="!Exists('$(PackageResultsPath)')" />
 
-				<MakeDir Directories="$(PackageResultsPath)"
-								 Condition="!Exists('$(PackageResultsPath)')" />
+			<MakeDir Directories="$(TestResultsPath)"
+								Condition="!Exists('$(TestResultsPath)')" />
 
-				<MakeDir Directories="$(TestResultsPath)"
-								 Condition="!Exists('$(TestResultsPath)')" />
+	</Target>
 
-		</Target>
-
-		<Target Name="PackageRestore"
-            BeforeTargets="Build">
+	<Target Name="PackageRestore" BeforeTargets="Build">
 
         <Exec Command="$(NugetExe) restore $(ProjectRoot)\$(ProjectName).sln" />
 
     </Target>
 
-    <Target Name="EnsureDependencies"
-            BeforeTargets="PackageRestore">
+    <Target Name="EnsureDependencies" BeforeTargets="PackageRestore">
 
         <Error
             Text="NugetExe environment variable is not set"
             Condition="'$(NugetExe)' == ''" />
 		</Target>
 
-		<ItemGroup>
-				<!-- Apply versioning to src\Common\*.cs files - should only be applied on CI server -->
-
-				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-						<Find>AssemblyVersion\("\d+\.\d+\.\d+"\)</Find>
-						<ReplaceWith>AssemblyVersion("$(Version)")</ReplaceWith>
-				</RegexTransform>
-
-				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-						<Find>AssemblyFileVersion\("\d+\.\d+\.\d+\.\d+"\)</Find>
-						<ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
-				</RegexTransform>
-
-				<RegexTransform Include="$(ProjectRoot)\src\Common\CommonVersionInfo.cs">
-						<Find>AssemblyInformationalVersion\("\d+\.\d+\.\d+"\)</Find>
-						<ReplaceWith>AssemblyInformationalVersion("$(ProductVersion)")</ReplaceWith>
-				</RegexTransform>
-
-		</ItemGroup>
-
-		<Target Name="UpdateVersion"
-						BeforeTargets="Build">
-
-				<RegexTransform Items="@(RegexTransform)" />
-
-		</Target>
-
-		<Target Name="ValidateVersionInfo"
-						BeforeTargets="ReportVersionInfo">
+		<Target Name="ValidateVersionInfo" BeforeTargets="ReportVersionInfo">
 
 			<Error Text="MajorVersion environment variable is not set"
 						 Condition="$(MajorVersion) == ''" />
@@ -96,8 +61,7 @@
 
 		<Target Name="ReportVersionInfo">
 
-			<Message Text="Build Version"
-							 Importance="High" />
+			<Message Text="Build Version" Importance="High" />
 
 			<Message Text="MajorVersion   : '$(MajorVersion)'" />
 			<Message Text="MinorVersion   : '$(MinorVersion)'" />
@@ -106,50 +70,36 @@
 			<Message Text="SHA            : '$(SHA)'" />
 			<Message Text="PRERELEASE     : '$(PRERELEASE)'" />
 
-			<Message Text="Assembly Versioning"
-							 Importance="High" />
+			<Message Text="Assembly Versioning" Importance="High" />
 
 			<Message Text="ProductVersion : '$(ProductVersion)' -  AssemblyInformationalVersion" />
 			<Message Text="FileVersion    : '$(FileVersion)' - AssemblyFileVersion" />
 			<Message Text="Version        : '$(Version)' - AssemblyVersion" />
 
-			<Message Text="NuGet Package Versioning"
-							 Importance="High" />
+			<Message Text="NuGet Package Versioning" Importance="High" />
 
 			<Message Text="PackageVersion : '$(PackageVersion)'" />
 
-			<Message Text="Build Environment"
-							 Importance="High" />
+			<Message Text="Build Environment" Importance="High" />
 
       		<Message Text="TestWebsiteUrl : '$(TestWebsiteUrl)'" />
       		<Message Text="TestWebsitePath: '$(TestWebsitePath)'" />
 		</Target>
 
 		<Target Name="RunUnitTests">
-
+<!-- TODO
 				<ItemGroup>
 						<TestAssemblies Include="$(ProjectRoot)\test\unit-test\**\bin\$(Configuration)\*.Test.dll" />
 				</ItemGroup>
 
 				<xunit Assemblies="@(TestAssemblies)"
 							 Xml="$(OutputXmlFile)"
-							 NoLogo="true" />
+							 NoLogo="true" /> -->
 
 		</Target>
 
-		<Target Name="StdPackage">
-
-				<ItemGroup>
-						<NuspecFiles Include="$(PackagingPath)\*.nuspec" />
-				</ItemGroup>
-
-				<Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
-
-		</Target>
-
-		<Target Name="IntegrationTests"
-						AfterTargets="StdPackage">
-
+		<Target Name="IntegrationTests" AfterTargets="Package">
+<!-- TODO
 				<ItemGroup>
 						<IntegrationTestAssemblies
 							Include="$(ProjectRoot)\test\integration-test\**\bin\$(Configuration)\*Integration.Test.dll"
@@ -162,21 +112,19 @@
 
 				<xunit Assemblies="@(IntegrationTestAssemblies)"
 							 Xml="$(IntegrationTestResults)"
-							 NoLogo="true" />
+							 NoLogo="true" /> -->
 
     </Target>
 
-    <!-- CI Build Integration Targets - Version, Build, Test, Analyze, Package -->
+    <!-- CI Build Integration Targets - Version, Build, Test, Package -->
 
-    <Target Name="Version"
-            BeforeTargets="Init">
+    <Target Name="Version" BeforeTargets="Init">
 
         <CallTarget Targets="ReportVersionInfo" />
 
     </Target>
 
-    <Target Name="Build"
-            DependsOnTargets="Init" >
+    <Target Name="Build" DependsOnTargets="Init" >
 
         <Message Text="Project Root = $(ProjectRoot)" />
 
@@ -202,7 +150,11 @@
 
 		<Target Name="Package">
 
-				<CallTarget Targets="StdPackage" />
+			<ItemGroup>
+					<NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+			</ItemGroup>
+
+			<Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
 
 		</Target>
 
