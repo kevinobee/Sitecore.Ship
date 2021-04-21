@@ -6,6 +6,7 @@ using Sitecore.Ship.Core.Domain;
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Sitecore.Ship.Infrastructure.DataAccess
 {
@@ -34,7 +35,7 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
                 {
                     item.Editing.BeginEdit();
                     item.Fields[PACKAGE_ID_FIELD_NAME].Value = package.PackageId;
-                    item.Fields[DATE_INSTALLED_FIELD_NAME].Value = package.DateInstalled.ToString();
+                    item.Fields[DATE_INSTALLED_FIELD_NAME].Value = package.DateInstalled.ToString(CultureInfo.CurrentCulture);
                     item.Fields[DESCRIPTION_FIELD_NAME].Value = package.Description;
                 }
                 finally
@@ -56,7 +57,7 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
                 {
                     entries.Add(new InstalledPackage()
                         {
-                            DateInstalled = DateTime.Parse(child.Fields[DATE_INSTALLED_FIELD_NAME].Value),
+                            DateInstalled = DateTime.Parse(child.Fields[DATE_INSTALLED_FIELD_NAME].Value, CultureInfo.CurrentCulture),
                             PackageId = child.Fields[PACKAGE_ID_FIELD_NAME].Value,
                             Description = child.Fields[DESCRIPTION_FIELD_NAME].Value
                         });

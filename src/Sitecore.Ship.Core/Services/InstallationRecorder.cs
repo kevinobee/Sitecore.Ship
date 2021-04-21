@@ -60,7 +60,7 @@ namespace Sitecore.Ship.Core.Services
             if (_packageInstallationSettings.RecordInstallationHistory)
             {
                 var children = _packageHistoryRepository.GetAll();
-                var package = children.OrderByDescending(x => int.Parse(x.PackageId)).FirstOrDefault();
+                var package = children.OrderByDescending(x => int.Parse(x.PackageId, CultureInfo.CurrentCulture)).FirstOrDefault();
 
                 if (package != null) return package;
             }
