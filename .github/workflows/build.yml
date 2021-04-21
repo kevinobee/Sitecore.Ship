@@ -11,26 +11,28 @@ jobs:
     - uses: actions/checkout@v1
       name: Checkout Code
 
-    - name: Setup MSBuild Path
-      uses: warrenbuckley/Setup-MSBuild@v1         # uses: microsoft/setup-msbuild@v1.0.0
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    # - name: Setup MSBuild Path
+    #   uses: warrenbuckley/Setup-MSBuild@v1         # uses: microsoft/setup-msbuild@v1.0.0
+    #   env:
+    #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    # - name: Setup NuGet
+    #   uses: NuGet/setup-nuget@v1.0.2
+    #   env:
+    #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Restore NuGet Packages
-      run: nuget restore Sitecore.Ship.sln
-      # dotnet restore
+      run: dotnet restore
+      # nuget restore Sitecore.Ship.sln
 
     - name: Run CLI Build
-      run: cmd.exe /c .\build.cmd
-      # dotnet build
+      run: cmd.exe /c dotnet build
 
-      # dotnet test
-      # dotnet pack
+    - name: Run Automated Code Tests
+      run: cmd.exe /c dotnet test
+
+    - name: Create NuGet Packages
+      run: cmd.exe /c dotnet pack
 
     # - name: Build and Publish Web App
     #   run: msbuild Sitecore.Ship.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
