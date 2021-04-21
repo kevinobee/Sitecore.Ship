@@ -14,7 +14,7 @@ namespace Sitecore.Ship.AspNet
 
         public abstract void HandleRequest(HttpContextBase context);
 
-        protected void JsonResponse(string json, HttpStatusCode statusCode, HttpContextBase context)
+        protected static void JsonResponse(string json, HttpStatusCode statusCode, HttpContextBase context)
         {
             context.Response.StatusCode = (int)statusCode;
             context.Response.Clear();
