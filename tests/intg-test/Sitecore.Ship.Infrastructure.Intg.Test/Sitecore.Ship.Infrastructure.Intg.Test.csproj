@@ -27,13 +27,11 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj" />
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>

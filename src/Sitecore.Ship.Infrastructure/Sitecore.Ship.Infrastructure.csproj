@@ -35,12 +35,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="..\Common\CommonVersionInfo.cs" Link="Properties\CommonVersionInfo.cs" />
     <Compile Include="..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
@@ -50,5 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Update\Installer\ContingencyEntryExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

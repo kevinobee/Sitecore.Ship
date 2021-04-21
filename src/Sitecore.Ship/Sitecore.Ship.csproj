@@ -22,11 +22,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="6.0.8" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="..\Common\CommonVersionInfo.cs" Link="Properties\CommonVersionInfo.cs" />
     <Compile Include="..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />

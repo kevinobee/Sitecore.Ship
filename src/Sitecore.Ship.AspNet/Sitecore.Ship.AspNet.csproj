@@ -19,10 +19,6 @@
     <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="..\Common\CommonVersionInfo.cs" Link="Properties\CommonVersionInfo.cs" />
     <Compile Include="..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
@@ -35,6 +31,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj" />
     <ProjectReference Include="..\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj" />
-    <ProjectReference Include="..\Sitecore.Ship\Sitecore.Ship.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>

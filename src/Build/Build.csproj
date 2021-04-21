@@ -20,10 +20,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
   </ItemGroup>
   <ItemGroup>

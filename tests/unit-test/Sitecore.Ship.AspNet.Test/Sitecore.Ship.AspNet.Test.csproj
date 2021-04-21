@@ -30,13 +30,11 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.AspNet\Sitecore.Ship.AspNet.csproj" />
     <ProjectReference Include="..\..\..\src\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj" />
     <ProjectReference Include="..\..\TestUtils\TestUtils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
   </ItemGroup>
 </Project>
