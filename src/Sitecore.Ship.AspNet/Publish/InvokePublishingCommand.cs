@@ -84,10 +84,10 @@ namespace Sitecore.Ship.AspNet.Publish
 
 		private static bool IsPublishModeUrl(string urlPath)
 		{
-			return urlPath.EndsWith("/services/publish/full") ||
-				   urlPath.EndsWith("/services/publish/smart") ||
-				   urlPath.EndsWith("/services/publish/incremental") ||
-				   urlPath.EndsWith("/services/publish/listofitems");
+			return urlPath.EndsWith("/services/publish/full", StringComparison.Ordinal) ||
+				   urlPath.EndsWith("/services/publish/smart", StringComparison.Ordinal) ||
+				   urlPath.EndsWith("/services/publish/incremental", StringComparison.Ordinal) ||
+				   urlPath.EndsWith("/services/publish/listofitems", StringComparison.Ordinal);
 		}
 
 		private static PublishParameters GetRequest(HttpRequestBase request)
