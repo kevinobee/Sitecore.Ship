@@ -30,7 +30,7 @@ namespace Sitecore.Ship.Infrastructure
 		{
 			if (itemsToPublish == null)
 			{
-				throw new ArgumentNullException("itemsToPublish");
+				throw new ArgumentNullException(nameof(itemsToPublish));
 			}
 
 			if (itemsToPublish.Items.Count == 0)
