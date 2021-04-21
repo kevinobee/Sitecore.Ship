@@ -116,7 +116,7 @@ namespace Sitecore.Ship.Infrastructure.Update
             }
         }
         
-        private PackageInstallationInfo GetInstallationInfo(string packagePath)
+        private static PackageInstallationInfo GetInstallationInfo(string packagePath)
         {
             var info = new PackageInstallationInfo
             {
@@ -131,7 +131,7 @@ namespace Sitecore.Ship.Infrastructure.Update
             return info;
         }
 
-        private void SaveInstallationMessages(List<ContingencyEntry> entries, string historyPath)
+        private static void SaveInstallationMessages(List<ContingencyEntry> entries, string historyPath)
         {
             string path = Path.Combine(historyPath, "messages.xml");
 

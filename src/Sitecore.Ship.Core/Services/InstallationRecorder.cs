@@ -68,16 +68,16 @@ namespace Sitecore.Ship.Core.Services
             return new InstalledPackageNotFound();
         }
 
-        private string GetDescription(string packagePath)
+        private static string GetDescription(string packagePath)
         {
            return Path.GetFileName(packagePath).Split('-').Last().Split('.').First();
         }
 
-        private string GetPackageIdFromName(string packagePath)
+        private static string GetPackageIdFromName(string packagePath)
         {
             //Abstract this so can inject own convention?
 
-            //So, Covention is currently: {ID}-DescriptiveName.extension
+            //So, Convention is currently: {ID}-DescriptiveName.extension
             // E.G 01-AboutPage.update
             // E.G 02-HomePage.zip
             return Path.GetFileName(packagePath).Split('-').First();
