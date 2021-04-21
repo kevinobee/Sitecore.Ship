@@ -151,8 +151,8 @@
 			<Message Text="Build Environment"
 							 Importance="High" />
 
-      		<Message Text="TestWebsiteUrl           : '$(TestWebsiteUrl)'" />
-      		<Message Text="TestWebsitePath          : '$(TestWebsitePath)'" />
+      		<Message Text="TestWebsiteUrl : '$(TestWebsiteUrl)'" />
+      		<Message Text="TestWebsitePath: '$(TestWebsitePath)'" />
 		</Target>
 
 		<Target Name="RunUnitTests">
