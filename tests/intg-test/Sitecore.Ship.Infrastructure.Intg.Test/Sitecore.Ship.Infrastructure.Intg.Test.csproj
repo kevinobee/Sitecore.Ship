@@ -1,19 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{BDC01387-0F6C-468B-AD27-63B9F6404E13}</ProjectGuid>
-    <ProjectGuid>{E18F1279-A765-4852-BF4C-CB401BDBC909}</ProjectGuid>
     <TargetFramework>net45</TargetFramework>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <AssemblyTitle>Sitecore.Ship.Infrastructure.Intg.Test</AssemblyTitle>
-    <Product>Sitecore.Ship.Infrastructure.Intg.Test</Product>
-    <Copyright>Copyright ©  2013</Copyright>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
