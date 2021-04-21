@@ -9,19 +9,10 @@
     <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
     <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
     <BuildDestinationDir>$(BuildResultsPath)\lib\net45</BuildDestinationDir>
-    <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
+    <!-- <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath> -->
     <PackageResultsPath>$(ArtifactsPath)\Packages</PackageResultsPath>
-    <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile>
-    <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile>
-    <PackagesPath>$(ProjectRoot)\packages</PackagesPath>
-    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
-
-    <!-- Optionally override tooling paths with CI server Enrinorment variables -->
-    <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.2.8.6\tools\nuget.exe</NugetExe>
-
-    <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
-    <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
-    <CourierPath>$(ToolsPath)\Sitecore.Courier\</CourierPath>
+    <!-- <OutputHtmlFile>$(TestResultsPath)\TestResults.html</OutputHtmlFile> -->
+    <!-- <OutputXmlFile>$(TestResultsPath)\TestResults.xml</OutputXmlFile> -->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -51,9 +42,5 @@
     <ProductVersion>$(MajorMinorPatch)$(BuildNumber)$(CommitSHA)</ProductVersion>
 
   </PropertyGroup>
-
-  <ItemGroup>
-    <Xunit Include="$(PackagesPath)\xunit.runner.msbuild.2.1.0\build\**\xunit.runner.msbuild.dll" />
-  </ItemGroup>
 
 </Project>

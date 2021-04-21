@@ -3,27 +3,25 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<Import Project="$(MSBuildProjectDirectory)\build.props" />
-	<Import Project="$(MSBuildProjectDirectory)\build.tasks" />
-
     <Import Project="$(MSBuildProjectDirectory)\smokeTests.targets" />
     <Import Project="$(MSBuildProjectDirectory)\elapsed-time.targets" />
 
 	<Target Name="Clean" BeforeTargets="Init">
 
-			<RemoveDir Directories="$(ArtifactsPath)" />
+		<RemoveDir Directories="$(ArtifactsPath)" />
 
 	</Target>
 
 	<Target Name="Init">
 
-			<MakeDir Directories="$(ArtifactsPath)"
-								Condition="!Exists('$(ArtifactsPath)')" />
+		<MakeDir Directories="$(ArtifactsPath)"
+							Condition="!Exists('$(ArtifactsPath)')" />
 
-			<MakeDir Directories="$(PackageResultsPath)"
-								Condition="!Exists('$(PackageResultsPath)')" />
+		<MakeDir Directories="$(PackageResultsPath)"
+							Condition="!Exists('$(PackageResultsPath)')" />
 
-			<MakeDir Directories="$(TestResultsPath)"
-								Condition="!Exists('$(TestResultsPath)')" />
+		<!-- <MakeDir Directories="$(TestResultsPath)"
+							Condition="!Exists('$(TestResultsPath)')" /> -->
 
 	</Target>
 
@@ -128,38 +126,38 @@
 
         <Message Text="Project Root = $(ProjectRoot)" />
 
-				<MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
-								 Targets="Build"
-								 Properties="Configuration=$(Configuration)" />
-
-				<ItemGroup>
-						<Net45Libs Include="$(ProjectRoot)\src\*\bin\$(Configuration)\*.dll; $(ProjectRoot)\src\*\bin\$(Configuration)\*.pdb;" />
-				</ItemGroup>
-
-				<Copy SourceFiles="@(Net45Libs)"
-							DestinationFolder="$(BuildDestinationDir)"
-							SkipUnchangedFiles="True" />
-
-		</Target>
-
-		<Target Name="Test">
-
-				<CallTarget Targets="RunUnitTests" />
-
-		</Target>
-
-		<Target Name="Package">
+			<MSBuild Projects="$(ProjectRoot)\$(ProjectName).sln"
+								Targets="Build"
+								Properties="Configuration=$(Configuration)" />
 
 			<ItemGroup>
-					<NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+					<Net45Libs Include="$(ProjectRoot)\src\*\bin\$(Configuration)\*.dll; $(ProjectRoot)\src\*\bin\$(Configuration)\*.pdb;" />
 			</ItemGroup>
 
-			<Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+			<Copy SourceFiles="@(Net45Libs)"
+						DestinationFolder="$(BuildDestinationDir)"
+						SkipUnchangedFiles="True" />
 
-		</Target>
+	</Target>
 
-		<Target Name="Full" DependsOnTargets="Build; Test; Package">
-			<!-- Triggers dependencies to initiate a full build -->
-		</Target>
+	<Target Name="Test">
+
+		<CallTarget Targets="RunUnitTests" />
+
+	</Target>
+
+	<Target Name="Package">
+
+		<ItemGroup>
+			<NuspecFiles Include="$(PackagingPath)\*.nuspec" />
+		</ItemGroup>
+
+		<Exec Command="$(NugetExe) pack %(NuspecFiles.Identity) -Verbosity detailed -Version $(PackageVersion) -OutputDirectory $(PackageResultsPath)" />
+
+	</Target>
+
+	<Target Name="Full" DependsOnTargets="Build; Test; Package">
+		<!-- Triggers dependencies to initiate a full build -->
+	</Target>
 
 </Project>

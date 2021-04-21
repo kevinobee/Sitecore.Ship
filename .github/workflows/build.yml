@@ -23,9 +23,14 @@ jobs:
 
     - name: Restore NuGet Packages
       run: nuget restore Sitecore.Ship.sln
+      # dotnet restore
 
     - name: Run CLI Build
       run: cmd.exe /c .\build.cmd
+      # dotnet build
+
+      # dotnet test
+      # dotnet pack
 
     # - name: Build and Publish Web App
     #   run: msbuild Sitecore.Ship.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
