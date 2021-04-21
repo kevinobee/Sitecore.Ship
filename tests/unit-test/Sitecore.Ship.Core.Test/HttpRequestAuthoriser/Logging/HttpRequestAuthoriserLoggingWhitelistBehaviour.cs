@@ -1,3 +1,4 @@
+using System;
 using Moq;
 using Should;
 using Xunit;
@@ -28,13 +29,13 @@ namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser.Logging
         [Fact]
         public void log_message_contains_diagnostic()
         {
-            DiagnosticMessage.ShouldContain("packageInstallation whitelist is denying access to ");
+            DiagnosticMessage.ShouldContain("packageInstallation whitelist is denying access to ", StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
         public void log_message_contains_diagnostic_contains_callers_IP()
         {
-            DiagnosticMessage.ShouldContain(_userHostAddress);
+            DiagnosticMessage.ShouldContain(_userHostAddress, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

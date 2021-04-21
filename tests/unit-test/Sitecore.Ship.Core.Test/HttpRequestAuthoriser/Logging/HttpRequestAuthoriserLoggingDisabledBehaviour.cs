@@ -1,3 +1,4 @@
+using System;
 using Moq;
 using Should;
 using Xunit;
@@ -22,7 +23,7 @@ namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser.Logging
         [Fact]
         public void log_message_contains_diagnostic()
         {
-            DiagnosticMessage.ShouldContain("packageInstallation 'enabled' setting is false");
+            DiagnosticMessage.ShouldContain("packageInstallation 'enabled' setting is false", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
