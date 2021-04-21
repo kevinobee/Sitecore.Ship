@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using Sitecore.Ship.Core.Domain;
+﻿using Sitecore.Ship.Core.Domain;
+
+using System.Collections.ObjectModel;
+
 using Xunit;
 
 namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser
@@ -55,7 +57,7 @@ namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser
         {
             // Arrange
             PackageInstallationSettings.IsEnabled = true;
-            PackageInstallationSettings.AddressWhitelist = new List<string> { "1.2.3.4"};
+            PackageInstallationSettings.AddressWhitelist = new Collection<string> { "1.2.3.4"};
 
             CheckRequests.Setup(x => x.IsLocal).Returns(true);
             CheckRequests.Setup(x => x.UserHostAddress).Returns("2.3.4.5");
@@ -72,7 +74,7 @@ namespace Sitecore.Ship.Core.Test.HttpRequestAuthoriser
         {
             // Arrange
             PackageInstallationSettings.IsEnabled = true;
-            PackageInstallationSettings.AddressWhitelist = new List<string> { "1.2.3.4" }; 
+            PackageInstallationSettings.AddressWhitelist = new Collection<string> { "1.2.3.4" }; 
             
             CheckRequests.Setup(x => x.IsLocal).Returns(true);
             CheckRequests.Setup(x => x.UserHostAddress).Returns("1.2.3.4");

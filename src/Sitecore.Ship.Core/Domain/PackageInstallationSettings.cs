@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Sitecore.Ship.Core.Domain
 {
@@ -10,7 +11,7 @@ namespace Sitecore.Ship.Core.Domain
             AllowRemoteAccess = false;
             AllowPackageStreaming = false;
             RecordInstallationHistory = false;
-            AddressWhitelist = new List<string>();
+            AddressWhitelist = new Collection<string>();
             MuteAuthorisationFailureLogging = false;
         }
 
@@ -18,7 +19,7 @@ namespace Sitecore.Ship.Core.Domain
         public bool AllowRemoteAccess { get; set; }
         public bool AllowPackageStreaming { get; set; }
         public bool RecordInstallationHistory { get; set; }
-        public List<string> AddressWhitelist { get; set; }
+        public Collection<string> AddressWhitelist { get; set; }
         public bool MuteAuthorisationFailureLogging { get; set; }
 
         public bool HasAddressWhitelist { get { return AddressWhitelist.Count > 0; } }

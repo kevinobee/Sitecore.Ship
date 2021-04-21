@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
 using Moq;
 using Xunit;
 
@@ -41,7 +41,7 @@ namespace Sitecore.Ship.Core.Test.Services
         {
             _packageInstallationSettings.RecordInstallationHistory = true;
 
-            _packageHistoryRepository.Setup(x => x.GetAll()).Returns(new List<InstalledPackage>());
+            _packageHistoryRepository.Setup(x => x.GetAll()).Returns(new Collection<InstalledPackage>());
 
             // Act
             var response = _recorder.GetLatestPackage();

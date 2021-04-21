@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Sitecore.Configuration;
+﻿using Sitecore.Configuration;
 using Sitecore.Data.Items;
 using Sitecore.SecurityModel;
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
+
+using System;
+using System.Collections.ObjectModel;
 
 namespace Sitecore.Ship.Infrastructure.DataAccess
 {
@@ -43,9 +44,9 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
             }
         }
 
-        public List<InstalledPackage> GetAll()
+        public Collection<InstalledPackage> GetAll()
         {
-            var entries = new List<InstalledPackage>();
+            var entries = new Collection<InstalledPackage>();
 
             var rootItem = GetRootItem();
 

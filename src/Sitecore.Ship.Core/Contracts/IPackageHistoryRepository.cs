@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using Sitecore.Ship.Core.Domain;
+﻿using Sitecore.Ship.Core.Domain;
+
+using System.Collections.ObjectModel;
 
 namespace Sitecore.Ship.Core.Contracts
 {
     public interface IPackageHistoryRepository
     {
         void Add(InstalledPackage record);
-        List<InstalledPackage> GetAll();
+
+        Collection<InstalledPackage> GetAll();
     }
 }

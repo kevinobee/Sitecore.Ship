@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Collections.ObjectModel;
 using Moq;
 using Should;
 using Xunit;
@@ -70,7 +70,7 @@ namespace Sitecore.Ship.Test
         public void Recorder_returns_highest_version_from_get_latest_when_multiple_entries_exist()
         {
             _mockPackageHistoryRepository.Setup(x => x.GetAll()).Returns(
-                new List<InstalledPackage>
+                new Collection<InstalledPackage>
                     {
                         new InstalledPackage {PackageId = "01"},
                         new InstalledPackage {PackageId = "02"},

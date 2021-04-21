@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 
 namespace Sitecore.Ship.Core.Domain
 {
@@ -6,9 +6,9 @@ namespace Sitecore.Ship.Core.Domain
     {
         public PackageManifest()
         {
-            Entries = new List<PackageManifestEntry>();
+            Entries = new Collection<PackageManifestEntry>();
         }
         
-        public List<PackageManifestEntry> Entries { get; private set; } 
+        public Collection<PackageManifestEntry> Entries { get; private set; } 
     }
 }
