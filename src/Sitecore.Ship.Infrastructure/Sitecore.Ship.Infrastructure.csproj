@@ -43,9 +43,6 @@
     <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Update\Installer\ContingencyEntryExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
   </ItemGroup>

@@ -38,7 +38,4 @@
     <ProjectReference Include="..\Sitecore.Ship.Core\Sitecore.Ship.Core.csproj" />
     <ProjectReference Include="..\Sitecore.Ship.Infrastructure\Sitecore.Ship.Infrastructure.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Package\Install\PackageResponseExtensions.cs" />
-  </ItemGroup>
 </Project>

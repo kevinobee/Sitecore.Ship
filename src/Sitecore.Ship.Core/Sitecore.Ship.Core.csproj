@@ -20,7 +20,4 @@
     <Compile Include="..\Common\CommonVersionInfo.cs" Link="Properties\CommonVersionInfo.cs" />
     <Compile Include="..\Common\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Domain\InstallUpdateResult.cs" />
-  </ItemGroup>
 </Project>
