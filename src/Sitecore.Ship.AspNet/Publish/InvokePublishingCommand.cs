@@ -25,8 +25,10 @@ namespace Sitecore.Ship.AspNet.Publish
 		}
 
 		public override void HandleRequest(HttpContextBase context)
-		{
-			if (CanHandle(context))
+        {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
+            if (CanHandle(context))
 			{
 				var publishParameters = GetRequest(context.Request);
 
@@ -73,7 +75,7 @@ namespace Sitecore.Ship.AspNet.Publish
 			{
 				Successor.HandleRequest(context);
 			}
-		}
+        }
 
 		private static bool CanHandle(HttpContextBase context)
 		{

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web;
 
 namespace Sitecore.Ship.AspNet
@@ -16,6 +17,9 @@ namespace Sitecore.Ship.AspNet
 
         protected static void JsonResponse(string json, HttpStatusCode statusCode, HttpContextBase context)
         {
+            if (json == null) throw new ArgumentNullException(nameof(json));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             context.Response.StatusCode = (int)statusCode;
             context.Response.Clear();
             context.Response.ContentType = "application/json; charset=utf-8";

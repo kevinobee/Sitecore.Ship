@@ -24,6 +24,8 @@ namespace Sitecore.Ship.AspNet.Publish
 
         public override void HandleRequest(HttpContextBase context)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             if (CanHandle(context))
             {
                 var completedRequest = GetRequest(context.Request);

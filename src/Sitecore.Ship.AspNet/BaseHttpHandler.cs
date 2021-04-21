@@ -34,6 +34,8 @@ namespace Sitecore.Ship.AspNet
 
         public void ProcessRequest(HttpContext context)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             if (!_authoriser.IsAllowed())
             {
                 context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;

@@ -8,6 +8,8 @@ namespace Sitecore.Ship.AspNet
     {
         public override void HandleRequest(HttpContextBase context)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             if (CanHandle(context))
             {
                 var assemblyName = GetType().Assembly.GetName();

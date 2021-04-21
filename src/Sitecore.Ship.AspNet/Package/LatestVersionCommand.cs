@@ -28,6 +28,8 @@ namespace Sitecore.Ship.AspNet.Package
 
         public override void HandleRequest(HttpContextBase context)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
             if (CanHandle(context))
             {
                 try
