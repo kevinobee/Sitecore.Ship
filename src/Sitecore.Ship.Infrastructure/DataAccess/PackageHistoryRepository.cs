@@ -21,6 +21,8 @@ namespace Sitecore.Ship.Infrastructure.DataAccess
 
         public void Add(InstalledPackage package)
         {
+            if (package == null) throw new ArgumentNullException(nameof(package));
+
             using (new SecurityDisabler())
             {
                 // TODO how does this behave if the package has not been installed?

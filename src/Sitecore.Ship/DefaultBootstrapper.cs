@@ -27,6 +27,8 @@ namespace Sitecore.Ship
 
         protected override void ConfigureConventions(Nancy.Conventions.NancyConventions nancyConventions)
         {
+            if (nancyConventions == null) throw new ArgumentNullException(nameof(nancyConventions));
+
             base.ConfigureConventions(nancyConventions);
             nancyConventions.ViewLocationConventions.Add((viewName, model, context) =>
                                                          string.Concat(context.ModuleName, "/views/", viewName.ToLower(CultureInfo.CurrentCulture)));
@@ -34,6 +36,8 @@ namespace Sitecore.Ship
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+
             container.AutoRegister(new[]
             {
                 typeof (IPackageRepository).Assembly, 

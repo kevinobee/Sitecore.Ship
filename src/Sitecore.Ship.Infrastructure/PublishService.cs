@@ -57,7 +57,9 @@ namespace Sitecore.Ship.Infrastructure
 
 		public void Run(PublishParameters publishParameters)
 		{
-			var publishingMode = publishParameters.Mode.ToLower(CultureInfo.CurrentCulture);
+            if (publishParameters == null) throw new ArgumentNullException(nameof(publishParameters));
+
+            var publishingMode = publishParameters.Mode.ToLower(CultureInfo.CurrentCulture);
 
 			if (!_publishingActions.ContainsKey(publishingMode))
 			{
@@ -69,7 +71,9 @@ namespace Sitecore.Ship.Infrastructure
 
 		public DateTime GetLastCompletedRun(PublishLastCompleted completeParameters)
 		{
-			// please note http://stackoverflow.com/questions/12416141/get-the-date-time-that-sitecore-last-published
+            if (completeParameters == null) throw new ArgumentNullException(nameof(completeParameters));
+
+            // please note http://stackoverflow.com/questions/12416141/get-the-date-time-that-sitecore-last-published
 
 			var source = Sitecore.Configuration.Factory.GetDatabase(completeParameters.Source);
 			var target = Sitecore.Configuration.Factory.GetDatabase(completeParameters.Target);

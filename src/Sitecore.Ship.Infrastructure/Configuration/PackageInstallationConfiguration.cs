@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace Sitecore.Ship.Infrastructure.Configuration
 {
@@ -50,7 +51,8 @@ namespace Sitecore.Ship.Infrastructure.Configuration
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((WhitelistElement)(element)).Name;
+            if (element == null) throw new ArgumentNullException(nameof(element));
+            return ((WhitelistElement)element).Name;
         }
 
         public WhitelistElement this[int idx]

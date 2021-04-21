@@ -8,6 +8,8 @@ namespace Sitecore.Ship.Core.Services
     {
         public static PackageManifestEntry GetManifestEntry(string dataKey)
         {
+            if (dataKey == null) throw new ArgumentNullException(nameof(dataKey));
+
             if (dataKey.EndsWith("}", StringComparison.InvariantCultureIgnoreCase))
             {
                 var elements = dataKey.Split(new[] { "_{" }, 2, StringSplitOptions.None);

@@ -1,4 +1,5 @@
-﻿using Sitecore.Ship.Core.Contracts;
+﻿using System;
+using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Core
@@ -14,6 +15,8 @@ namespace Sitecore.Ship.Core
 
         public PackageManifest AddPackage(InstallPackage package)
         {
+            if (package == null) throw new ArgumentNullException(nameof(package));
+
             return _packageRunner.Execute(package.Path, package.DisableIndexing);
         }
     }

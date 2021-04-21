@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Sitecore.Ship.Core.Contracts;
 
 namespace Sitecore.Ship.Infrastructure.IO
@@ -15,6 +16,8 @@ namespace Sitecore.Ship.Infrastructure.IO
 
         public string GetPackageToInstall(Stream source)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
             _tempPackageFile = _tempFile.Filename;
             ReadPosIntoFile(source, _tempPackageFile);
             return _tempPackageFile;
