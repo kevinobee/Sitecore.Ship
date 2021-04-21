@@ -45,11 +45,6 @@
         <Error
             Text="NugetExe environment variable is not set"
             Condition="'$(NugetExe)' == ''" />
-<!-- TODO
-				<Error
-						Text="NugetExe '$(NugetExe)' does not exist on the file system"
-						Condition="! Exists('$(NugetExe)')" />
-	-->
 		</Target>
 
 		<ItemGroup>
@@ -136,7 +131,6 @@
 						<TestAssemblies Include="$(ProjectRoot)\test\unit-test\**\bin\$(Configuration)\*.Test.dll" />
 				</ItemGroup>
 
-        <!-- TODO ensure test assemblies count > 0 -->
 				<xunit Assemblies="@(TestAssemblies)"
 							 Xml="$(OutputXmlFile)"
 							 NoLogo="true" />
