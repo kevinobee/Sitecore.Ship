@@ -4,7 +4,7 @@ using Sitecore.Ship.Core.Domain;
 
 namespace Sitecore.Ship.Core.Services
 {
-    public class ZipEntryDataParser
+    public static class ZipEntryDataParser
     {
         public static PackageManifestEntry GetManifestEntry(string dataKey)
         {

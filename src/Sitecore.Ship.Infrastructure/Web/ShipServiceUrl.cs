@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Sitecore.Ship.Infrastructure.Web
+﻿namespace Sitecore.Ship.Infrastructure.Web
 {
-    public class ShipServiceUrl
+    public static class ShipServiceUrl
     {
         public static string PackageLatestVersion
         {
