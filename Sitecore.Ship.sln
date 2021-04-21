@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0717179-F14B-4667-8D5A-5980EC935F0F}"
 EndProject
@@ -15,11 +15,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2A29E5BC-9DE1-4299-AFD9-86F1CC77B921}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit test", "unit test", "{923D9377-9025-425B-9698-1A38947CA973}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{BFDC90B2-65F5-4F9E-A49F-9CD8060A2B4B}"
-	ProjectSection(SolutionItems) = preProject
-		lib\README.md = lib\README.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D11D4F10-B2C8-4E1C-BF78-B192D303D20D}"
 	ProjectSection(SolutionItems) = preProject
@@ -217,5 +212,8 @@ Global
 		{FB70597F-145D-4B5B-8401-171A843F1CBB} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{16F17633-E78E-4D1A-8A07-2BFBF2CB85D9} = {F0717179-F14B-4667-8D5A-5980EC935F0F}
 		{7684F283-CC34-455B-BC75-BA436AE7B32C} = {9BF13B7F-07E4-43B3-9B90-E06EBB39CC53}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF7A67B2-7E58-42AF-9ED5-34905CE53A01}
 	EndGlobalSection
 EndGlobal
