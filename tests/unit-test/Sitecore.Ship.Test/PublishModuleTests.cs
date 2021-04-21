@@ -1,15 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using Moq;
 
-using Moq;
 using Nancy;
 using Nancy.Testing;
+
 using Should;
-using Xunit;
 
 using Sitecore.Ship.Core.Contracts;
 using Sitecore.Ship.Core.Domain;
 using Sitecore.Ship.Publish;
+
+using System;
+
+using Xunit;
 
 namespace Sitecore.Ship.Test
 {
@@ -77,11 +79,11 @@ namespace Sitecore.Ship.Test
             _publishParameters.Mode.ShouldEqual("full");
             _publishParameters.Source.ShouldEqual("master");
 
-            _publishParameters.Targets.Count().ShouldEqual(2);
+            _publishParameters.Targets.Length.ShouldEqual(2);
             _publishParameters.Targets.ShouldContain("target1");
             _publishParameters.Targets.ShouldContain("target2");
 
-            _publishParameters.Languages.Count().ShouldEqual(2);
+            _publishParameters.Languages.Length.ShouldEqual(2);
             _publishParameters.Languages.ShouldContain("lang1");
             _publishParameters.Languages.ShouldContain("lang2");
 
@@ -113,7 +115,7 @@ namespace Sitecore.Ship.Test
                 with.Header("Content-Type", "application/x-www-form-urlencoded");
             });
 
-            _publishParameters.Targets.Count().ShouldEqual(1);
+            _publishParameters.Targets.Length.ShouldEqual(1);
             _publishParameters.Targets[0].ShouldEqual("web");
             response.StatusCode.ShouldEqual(HttpStatusCode.Accepted);
         }
@@ -127,7 +129,7 @@ namespace Sitecore.Ship.Test
                 with.Header("Content-Type", "application/x-www-form-urlencoded");
             });
 
-            _publishParameters.Languages.Count().ShouldEqual(1);
+            _publishParameters.Languages.Length.ShouldEqual(1);
             _publishParameters.Languages[0].ShouldEqual("en");
             response.StatusCode.ShouldEqual(HttpStatusCode.Accepted);
         }
