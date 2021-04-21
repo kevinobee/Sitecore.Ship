@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Should;
 using Sitecore.Ship.Core.Contracts;
@@ -80,7 +81,10 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
 
             var response = _reader.GetManifest(testPackagePath);
 
-            response.Entries.Count(x => x.Path.ToLower().Contains("master/sitecore/templates")).ShouldBeGreaterThan(1);
+            response
+                .Entries
+                .Count(x => x.Path.ToLower(CultureInfo.CurrentCulture).Contains("master/sitecore/templates"))
+                .ShouldBeGreaterThan(1);
         }
     }
 }

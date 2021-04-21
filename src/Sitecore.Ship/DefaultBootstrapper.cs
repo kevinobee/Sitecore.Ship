@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 
 using Nancy;
@@ -28,7 +29,7 @@ namespace Sitecore.Ship
         {
             base.ConfigureConventions(nancyConventions);
             nancyConventions.ViewLocationConventions.Add((viewName, model, context) =>
-                                                         string.Concat(context.ModuleName, "/views/", viewName.ToLower()));
+                                                         string.Concat(context.ModuleName, "/views/", viewName.ToLower(CultureInfo.CurrentCulture)));
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)

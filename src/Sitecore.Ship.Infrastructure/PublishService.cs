@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Sitecore.Data;
@@ -56,7 +57,7 @@ namespace Sitecore.Ship.Infrastructure
 
 		public void Run(PublishParameters publishParameters)
 		{
-			var publishingMode = publishParameters.Mode.ToLower();
+			var publishingMode = publishParameters.Mode.ToLower(CultureInfo.CurrentCulture);
 
 			if (!_publishingActions.ContainsKey(publishingMode))
 			{
