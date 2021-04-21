@@ -24,9 +24,6 @@
 				<MakeDir Directories="$(ArtifactsPath)"
 								 Condition="!Exists('$(ArtifactsPath)')" />
 
-				<MakeDir Directories="$(AnalysisResultsPath)"
-								 Condition="!Exists('$(AnalysisResultsPath)')" />
-
 				<MakeDir Directories="$(PackageResultsPath)"
 								 Condition="!Exists('$(PackageResultsPath)')" />
 
@@ -53,28 +50,6 @@
 						Text="NugetExe '$(NugetExe)' does not exist on the file system"
 						Condition="! Exists('$(NugetExe)')" />
 	-->
-		</Target>
-
-		<Target Name="FxCop"
-						Condition="Exists('$(FxCopDir)')">
-
-				<PropertyGroup>
-						<BuildAnalysisPath>$(ProjectRoot)\build\analysis</BuildAnalysisPath>
-						<FxCopCustomDictionaryFile>$(BuildAnalysisPath)\FxCop.CustomDictionary.xml</FxCopCustomDictionaryFile>
-						<FxCopExe>$(FxCopDir)\FxCopCmd.exe</FxCopExe>
-						<PlatformDir Condition="'$(PlatformDir)' == ''">c:\Windows\Microsoft.NET\Framework\v4.0.30319</PlatformDir>
-						<FxCopOptions>/summary /successfile /searchgac</FxCopOptions>
-						<FxCopReportFormat>$(FxCopDir)\Xml\FxCopReport.xsl</FxCopReportFormat>
-						<FxCopAnalysisLogFile>$(AnalysisResultsPath)\FxCopReport.html</FxCopAnalysisLogFile>
-						<AssemblyFiles>$(BuildDestinationDir)\Sitecore.Ship*.dll</AssemblyFiles>
-				</PropertyGroup>
-
-				<Message Text="FxCopDir is $(FxCopDir)" />
-
-				<Exec
-						Command="$(FxCopExe) /dictionary:$(FxCopCustomDictionaryFile) /out:$(FxCopAnalysisLogFile) /outxsl:$(FxCopReportFormat) $(FxCopOptions) /platform:$(PlatformDir) /file:$(AssemblyFiles) /rulesetdirectory:&quot;$(FxCopDir)\..\Rule Sets&quot; /rule:+$(FxCopDir)\Rules"
-						WorkingDirectory="$(FxCopDir)"/>
-
 		</Target>
 
 		<ItemGroup>
@@ -231,23 +206,14 @@
 
 		</Target>
 
-		<Target Name="Analyze">
-
-				<CallTarget Targets="FxCop" />
-
-		</Target>
-
 		<Target Name="Package">
 
 				<CallTarget Targets="StdPackage" />
 
 		</Target>
 
-		<Target Name="Full"
-						DependsOnTargets="Build; Test; Analyze; Package">
-
-						<!-- Fire dependencies to initiate a full -->
-
+		<Target Name="Full" DependsOnTargets="Build; Test; Package">
+			<!-- Triggers dependencies to initiate a full build -->
 		</Target>
 
 </Project>

@@ -7,7 +7,6 @@
     <ProjectRoot>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..'))</ProjectRoot>
     <PackagingPath>$(MSBuildProjectDirectory)\packaging</PackagingPath>
     <ArtifactsPath>$(ProjectRoot)\artifacts</ArtifactsPath>
-    <AnalysisResultsPath>$(ArtifactsPath)\CodeAnalysis</AnalysisResultsPath>
     <BuildResultsPath>$(ArtifactsPath)\Build</BuildResultsPath>
     <BuildDestinationDir>$(BuildResultsPath)\lib\net45</BuildDestinationDir>
     <TestResultsPath>$(ArtifactsPath)\TestResults</TestResultsPath>
@@ -21,7 +20,6 @@
     <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.2.8.6\tools\nuget.exe</NugetExe>
 
     <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
-    <FxCopDir>$(PackagesPath)\FxCop.BuildTools.1.0.1\tools\FxCop</FxCopDir>
     <CurlPath>$(PackagesPath)\curl.7.30.0.2\tools\native\v110\x64\Release\ltcg</CurlPath>
     <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
     <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
