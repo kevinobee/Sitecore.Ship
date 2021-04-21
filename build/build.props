@@ -20,8 +20,6 @@
     <NugetExe Condition="$(NugetExe) == '' ">$(PackagesPath)\NuGet.CommandLine.2.8.6\tools\nuget.exe</NugetExe>
 
     <!-- Define build project dependencies path - TODO search for file rather than hard code path -->
-    <CurlPath>$(PackagesPath)\curl.7.30.0.2\tools\native\v110\x64\Release\ltcg</CurlPath>
-    <CurlExePath>$(CurlPath)\curl.exe</CurlExePath>
     <MSBuildExtensionPack>$(PackagesPath)\MSBuild.Extension.Pack.1.8.0\tools\net40\MSBuild.ExtensionPack.dll</MSBuildExtensionPack>
     <CourierPath>$(ToolsPath)\Sitecore.Courier\</CourierPath>
     <XunitExePath>@(Xunit->'%(relativedir)%(filename)%(extension)')</XunitExePath>

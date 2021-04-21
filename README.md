@@ -137,10 +137,8 @@ You can then run the smoke tests by entering:
 .\build.cmd RunSmokeTests
 ```
 
-A series of curl commands fire off HTTP requests to the Sitecore.Ship service routes and the results are printed out to the console. Each of these commands should execute successfully before you send a pull request back to the main project.
+A series of HTTP requests are sent to the Sitecore.Ship service routes and the results are printed out to the console. Each of these commands should execute successfully before you send a pull request back to the main project.
 
 ### Developer Tooling
 
 * [POSTMAN](http://www.getpostman.com/) is a powerful HTTP client that runs as a Chrome browser extension and greatly helps with testing test REST web services.
-
-* [cUrl Documentation](http://curl.haxx.se/docs/httpscripting.html) - see section 4.3 File Upload POST
