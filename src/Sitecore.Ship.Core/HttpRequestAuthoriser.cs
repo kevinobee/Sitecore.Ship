@@ -38,7 +38,7 @@ namespace Sitecore.Ship.Core
             {
                 var foundAddress = _packageInstallationSettings.AddressWhitelist.Any(
                     x =>
-                        string.Compare(x, _checkRequests.UserHostAddress, StringComparison.InvariantCultureIgnoreCase) == 0);
+                        string.Compare(x, _checkRequests.UserHostAddress, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (!foundAddress)
                 {

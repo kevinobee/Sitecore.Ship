@@ -84,7 +84,7 @@ namespace Sitecore.Ship.Publish
         {
             var publishingModes = new[] { "full", "smart", "incremental" };
 
-            return publishingModes.Any(x => string.Compare(x, mode, StringComparison.InvariantCultureIgnoreCase) == 0);
+            return publishingModes.Any(x => string.Compare(x, mode, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }
