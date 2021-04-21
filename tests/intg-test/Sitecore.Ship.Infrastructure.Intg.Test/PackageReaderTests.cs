@@ -11,74 +11,63 @@ namespace Sitecore.Ship.Infrastructure.Intg.Test
 {
     public class PackageReaderTests
     {
-        private readonly string _testPackagePath;
+        private const string TestPackagePath = @"test-packages\01-package.update";
+        
         private readonly PackageManifestReader _reader;
 
         public PackageReaderTests()
         {
-            _testPackagePath = @"..\..\..\..\acceptance-test\01-package.update";
-
             _reader = new PackageManifestReader();
         }
 
         [Fact]
-        public void Package_reader_implements_package_manifest_repository()
+        public void PackageManifestReader_Implements_IPackageManifestRepository()
         {
             _reader.ShouldImplement<IPackageManifestRepository>();
         }
         
-        [Fact]
-        public void Process_should_return_a_package_manifest()
+        [Theory]
+        [InlineData(TestPackagePath)]
+        public void PackageManifestReader_GetManifest_ReturnsPackageManifest(string testPackagePath)
         {
-            var response = _reader.GetManifest(_testPackagePath);
+            var response = _reader.GetManifest(testPackagePath);
 
             response.ShouldBeType<PackageManifest>();
         }
-
-        [Fact]
-        public void Process_should_return_added_item_field_values_for_single_item()
+        
+        [Theory]
+        [InlineData(TestPackagePath)]
+        public void PackageManifestReader_GetManifest_ReturnsManifestContainingSingleItem(string testPackagePath)
         {
-            var response = _reader.GetManifest(_testPackagePath);
+            var response = _reader.GetManifest(testPackagePath);
 
             response.Entries.Count.ShouldEqual(1);
             response.Entries[0].ID.ShouldEqual(new Guid("110d559f-dea5-42ea-9c1c-8a5df7e70ef9"));
             response.Entries[0].Path.ShouldEqual("addeditems/master/sitecore/content/home");
         }
 
-        [Fact]
-        public void Process_should_return_added_item_field_values_for_multiple_items()
+        [Theory]
+        [InlineData(@"test-packages\Sitecore.Mvc.Contrib.1.0.0.130626.update")]
+        public void PackageManifestReader_GetManifest_ReturnsManifestContainingMultpipleItems(string testPackagePath)
         {
-            const string testPackagePath = @"..\..\..\..\acceptance-test\Sitecore.Mvc.Contrib.1.0.0.130626.update";
-
             var response = _reader.GetManifest(testPackagePath);
 
             response.Entries.Count.ShouldBeGreaterThan(1);
         }
 
-        [Fact]
-        public void Process_should_throw_invalid_operation_exception_if_package_not_found()
+        [Theory]
+        [InlineData(@"test-packages\package.update")]
+        public void PackageManifestReader_GetManifest_ThrowsInvalidOperationExceptionIfPackageNotFound(string testPackagePath)
         {
-            const string filename = @"..\..\..\acceptance-test\package.update";
+            var exception = Assert.Throws<InvalidOperationException>(() => _reader.GetManifest(testPackagePath));
 
-            InvalidOperationException exceptionThrown = null;
-
-            try
-            {
-                _reader.GetManifest(filename);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exceptionThrown = ex;
-            }
-
-            exceptionThrown.ShouldNotBeNull();
+            exception.ShouldNotBeNull();
         }
 
-        [Fact]
-        public void Process_should_return_added_item_field_values_for_templates()
+        [Theory]
+        [InlineData(@"test-packages\SitecoreShip.zip")]
+        public void PackageManifestReader_GetManifest_ContainsItemFieldsForTemplates(string testPackagePath)
         {
-            const string testPackagePath = @"..\..\..\..\..\build\sitecore packages\SitecoreShip.zip";
-
             var response = _reader.GetManifest(testPackagePath);
 
             response

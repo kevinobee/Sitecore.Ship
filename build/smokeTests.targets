@@ -6,8 +6,8 @@
 
   <Target Name="RunSmokeTests">
     <PropertyGroup>
-      <SitecoreShipPackagePath>$(ProjectRoot)\build\sitecore packages\SitecoreShip.zip</SitecoreShipPackagePath>
-      <TestPackagePath>$(ProjectRoot)\tests\acceptance-test\01-package.update</TestPackagePath>
+      <SitecoreShipPackagePath>$(ProjectRoot)\tests\intg-test\test-packages\SitecoreShip.zip</SitecoreShipPackagePath>
+      <TestPackagePath>$(ProjectRoot)\tests\intg-test\test-packages\01-package.update</TestPackagePath>
     </PropertyGroup>
 
     <ItemGroup>

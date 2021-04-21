@@ -5,6 +5,7 @@
     <Product>Build</Product>
     <Copyright>Copyright ©  2016</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -49,5 +50,8 @@
     <None Include="..\..\build\smokeTests.targets">
       <Link>command-line\smokeTests.targets</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sitecore.Ship\Sitecore.Ship.csproj" />
   </ItemGroup>
 </Project>
