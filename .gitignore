@@ -26,10 +26,6 @@ obj/
 _ReSharper*/
 TestResults
 
-#Project specific ignores
-lib/*.dll
-lib/*.pdb
-
 # NuGet ignores
 .nuget/
 

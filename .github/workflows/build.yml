@@ -1,0 +1,28 @@
+name: Build Sitecore.Ship
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      name: Checkout Code
+
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1         # uses: microsoft/setup-msbuild@v1.0.0
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Restore NuGet Packages
+      run: nuget restore Sitecore.Ship.sln
+
+    - name: Run CLI Build
+      run: cmd.exe /c .\build.cmd
