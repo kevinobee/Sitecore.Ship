@@ -22,12 +22,3 @@ jobs:
 
     - name: Run CLI Build
       run: cmd.exe /c .\build.cmd
-
-    # - name: Build and Publish Web App
-    #   run: msbuild Sitecore.Ship.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
-
-    # - name: Upload Artifact
-    #   uses: actions/upload-artifact@v1.0.0
-    #   with:
-    #     name: published_webapp
-    #     path: bin\Release\Publish
